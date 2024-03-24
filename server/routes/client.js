@@ -8,7 +8,8 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())
 
-router.get('/', async (req, res) => {
+// test
+router.get('/test', async (req, res) => {
     res.send('Hello World!');
 });
 
