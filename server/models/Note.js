@@ -6,7 +6,7 @@ const NotesSchema = new Schema({
         type: String,
         required: true
     },
-    memo: {
+    entry: {
         type: String,
         required: true
     },
