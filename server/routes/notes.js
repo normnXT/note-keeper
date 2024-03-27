@@ -19,10 +19,10 @@ router.get("/test", (req, res) => {
 router.get("/", async (req, res) => {
     try {
         const notes = await Note.find();
-        res.status(200).json(notes);
+        res.json(notes).status(200);
     } catch (err) {
         console.error(err);
-        res.status(404).json({ error: "No notes found" });
+        res.json({ error: "No notes found" }).status(404);
     }
 });
 
@@ -31,10 +31,10 @@ router.post("/", async (req, res) => {
     try {
         const newNote = new Note(req.body);
         const newNoteRes = await newNote.save();
-        res.status(201).json(newNoteRes);
+        res.json(newNoteRes).status(201);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Failed to create note" });
+        res.json({ error: "Failed to create note" }).status(500);
     }
 });
 
@@ -42,10 +42,10 @@ router.post("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         const note = await Note.findById(req.params.id);
-        res.status(200).json(note);
+        res.json(note).status(200);
     } catch (err) {
         console.error(err);
-        res.status(404).json({ error: "No note found" });
+        res.json({ error: "No note found" }).status(404);
     }
 });
 
@@ -56,10 +56,10 @@ router.patch("/:id", async (req, res) => {
             req.params.id,
             req.body,
         );
-        res.status(200).json(updatedNote);
+        res.json(updatedNote).status(200);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Failed to update note" });
+        res.json({ error: "Failed to update note" }).status(500);
     }
 });
 
@@ -67,10 +67,10 @@ router.patch("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
     try {
         const deletedNote = await Note.findByIdAndDelete(req.params.id);
-        res.status(200).send(deletedNote._id);
+        res.send(deletedNote._id).status(200);
     } catch (err) {
         console.error(err);
-        res.status(404).json({ error: "Failed to delete note" });
+        res.json({ error: "Failed to delete note" }).status(404);
     }
 });
 
