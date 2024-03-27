@@ -1,16 +1,17 @@
-const mongoose = require('mongoose');
-const app = require('express')();
+const mongoose = require("mongoose");
+const app = require("express")();
 
-const router = require('./routes/notes');
-const uri = require('./config/keys').mongoProdURI;
+const router = require("./routes/notes");
+const uri = require("./config/keys").mongoProdURI;
 
 // Route handling to follow /notes subdirectory
-app.use('/notes', router);
+app.use("/notes", router);
 
 // Database connection
-mongoose.connect(uri)
+mongoose
+    .connect(uri)
     .then(() => console.log(`Mongodb Connected`))
-    .catch(error => console.log(error));
+    .catch((error) => console.log(error));
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
