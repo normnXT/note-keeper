@@ -6,7 +6,7 @@ import {
     CardBody,
     CardFooter,
     Typography,
-    Button,
+    IconButton,
 } from "@material-tailwind/react";
 
 const Notes = () => {
@@ -14,7 +14,7 @@ const Notes = () => {
 
     const fetchNotes = useCallback(async () => {
         try {
-            const res = await axios.get("notes");
+            const res = await axios.get("/notes");
             setNotes(res.data);
         } catch (err) {
             console.error(err);
@@ -26,26 +26,23 @@ const Notes = () => {
     }, [fetchNotes]);
 
     return (
-        <div>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
             {notes.map((note) => (
-                <div
-                    className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"
-                    key={note._id}
-                >
-                    <Card className="mt-6 w-96">
+                <div key={note._id}>
+                    <Card className="bg-gray-800 hover:bg-gray-700">
                         <CardBody>
-                            <Typography variant="h1">{note.title}</Typography>
-                            <Typography>{note.entry}</Typography>
+                            <p className="text-xl text-sepia-200">{note.title}</p>
+                            <p className="line-clamp-3 text-sepia-100">{note.entry}</p>
                             {/*<Typography variant="h1">Title</Typography>*/}
                             {/*<Typography>Text to test how the notes look and how the component works given the new frameworks</Typography>*/}
                         </CardBody>
-                        <CardFooter>
-                            <Button variant="filled" color="blue">
-                                <PencilSquareIcon className="h-6 w-6 text-gray-300" />
-                            </Button>
-                            <Button variant="filled" color="red">
-                                <TrashIcon className="h-6 w-6 text-gray-300" />
-                            </Button>
+                        <CardFooter className="flex flex-cols-2 gap-2 self-end">
+                            <IconButton variant="outlined" color="blue">
+                                <PencilSquareIcon className="h-5 w-5 text-sepia-100" />
+                            </IconButton>
+                            <IconButton variant="outlined" color="red">
+                                <TrashIcon className="h-5 w-5 text-sepia-100" />
+                            </IconButton>
                         </CardFooter>
                     </Card>
                 </div>
