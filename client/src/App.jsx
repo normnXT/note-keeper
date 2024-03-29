@@ -1,5 +1,7 @@
+import NoteCard from "./components/NoteCard";
+
 function App() {
-    return <div>Hello World</div>;
+    return <NoteCard />;
 }
 
 export default App;
