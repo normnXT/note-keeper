@@ -1,7 +1,9 @@
-import NoteCard from "./components/NoteCard";
+// import NoteCards from "./components/NotesCardsTemp";
+import NoteCards from "./components/NoteCards";
+// import NoteCardsWrapper from "./components/NoteCardsWrapper";
 
 function App() {
-    return <NoteCard />;
+    return <NoteCards />;
 }
 
 export default App;
