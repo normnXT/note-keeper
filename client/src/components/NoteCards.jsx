@@ -18,8 +18,7 @@ import { Grid, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
-import 'swiper/css/navigation';
-
+import "swiper/css/navigation";
 
 const NoteCards = () => {
     const [notes, setNotes] = useState([]);
@@ -38,49 +37,47 @@ const NoteCards = () => {
     }, [fetchNotes]);
 
     return (
-        <>
-            <Swiper
-                slidesPerView={3}
-                grid={{
-                    rows: 2,
-                    fill: "row"
-                }}
-                spaceBetween={10}
-                pagination={{
-                    clickable: true
-                }}
-                navigation={true}
-                modules={[Grid, Pagination, Navigation]}
-                className="grid-swiper"
-            >
-                <div>
-                    {notes.map((note) => (
-                        <SwiperSlide key={note._id}>
-                            <Card className="bg-gray-800 hover:bg-gray-700">
-                                <CardBody>
-                                    <p className="text-xl text-sepia-200">
-                                        {note.title}
-                                    </p>
-                                    <p className="line-clamp-3 text-sepia-100">
-                                        {note.entry}
-                                    </p>
-                                </CardBody>
-                                <CardFooter className="flex flex-cols-2 gap-2 self-end">
-                                    <IconButton variant="outlined" color="blue">
-                                        <PencilSquareIcon className="h-5 w-5 text-sepia-100" />
-                                    </IconButton>
-                                    <IconButton variant="outlined" color="red">
-                                        <TrashIcon className="h-5 w-5 text-sepia-100" />
-                                    </IconButton>
-                                </CardFooter>
-                            </Card>
-                        </SwiperSlide>
-                    ))}
-                </div>
-            </Swiper>
-        </>
+        <Swiper
+            slidesPerView={3}
+            grid={{
+                rows: 2,
+                fill: "row",
+            }}
+            spaceBetween={10}
+            pagination={{
+                clickable: true,
+            }}
+            navigation={true}
+            allowTouchMove={false}
+            modules={[Grid, Pagination, Navigation]}
+            className="grid-swiper"
+        >
+            <div>
+                {notes.map((note) => (
+                    <SwiperSlide key={note._id}>
+                        <Card className="bg-gray-800 hover:bg-gray-700">
+                            <CardBody>
+                                <p className="text-xl text-sepia-200">
+                                    {note.title}
+                                </p>
+                                <p className="line-clamp-3 text-sepia-100">
+                                    {note.entry}
+                                </p>
+                            </CardBody>
+                            <CardFooter className="grid-cols-2 grid gap-2 self-end">
+                                <IconButton variant="outlined" color="blue">
+                                    <PencilSquareIcon className="h-5 w-5 text-sepia-100" />
+                                </IconButton>
+                                <IconButton variant="outlined" color="red">
+                                    <TrashIcon className="h-5 w-5 text-sepia-100" />
+                                </IconButton>
+                            </CardFooter>
+                        </Card>
+                    </SwiperSlide>
+                ))}
+            </div>
+        </Swiper>
     );
 };
-
 
 export default NoteCards;

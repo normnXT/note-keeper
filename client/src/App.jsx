@@ -1,5 +1,5 @@
 // import NoteCards from "./components/NotesCardsTemp";
-import NoteCards from "./components/NoteCards";
+import NoteCards from "./components/NoteCardsTemp";
 // import NoteCardsWrapper from "./components/NoteCardsWrapper";
 
 function App() {
