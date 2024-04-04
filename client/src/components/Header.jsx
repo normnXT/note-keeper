@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Navbar, Button } from "@material-tailwind/react";
-import EditorModal from "./EditorModal";
+import { EditorModalContext } from "../App";
 
 function Header() {
-    const [open, setOpen] = useState(false);
+    const editorModalContext = useContext(EditorModalContext);
 
-    const handleOpen = () => setOpen(!open);
+    const handleOpenEditor = () => editorModalContext.setOpenEditor(true);
 
     return (
         <Navbar className="bg-darkgray-100 mx-auto border-none px-4 py-2 lg:px-8 lg:py-4">
-            <Button onClick={handleOpen}>Add Note</Button>
-            <EditorModal open={open} handler={handleOpen} />
+            <Button onClick={handleOpenEditor}>Add Note</Button>
         </Navbar>
     );
-};
+}
 
 export default Header;

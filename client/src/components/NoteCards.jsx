@@ -78,6 +78,6 @@ function NoteCards() {
             </div>
         </Swiper>
     );
-};
+}
 
 export default NoteCards;
