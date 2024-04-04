@@ -39,18 +39,27 @@ function NoteCards() {
     return (
         <Swiper
             slidesPerView={3}
+            slidesPerGroup={6}
+            spaceBetween={10}
+            allowTouchMove={false}
+            style={{
+                "--swiper-navigation-color": "#fff",
+                "--swiper-pagination-color": "#fff",
+                "--swiper-pagination-bottom": "-15px",
+            }}
             grid={{
                 rows: 2,
                 fill: "row",
             }}
-            spaceBetween={10}
             pagination={{
                 clickable: true,
             }}
-            navigation={true}
-            allowTouchMove={false}
+            navigation={{
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            }}
             modules={[Grid, Pagination, Navigation]}
-            className="grid-swiper"
+            className="overflow-visible"
         >
             <div>
                 {notes.map((note) => (
@@ -64,11 +73,11 @@ function NoteCards() {
                                     {note.entry}
                                 </p>
                             </CardBody>
-                            <CardFooter className="grid grid-cols-2 gap-2 self-end">
-                                <IconButton variant="outlined" color="blue">
+                            <CardFooter className="flex flex-row gap-2 self-end">
+                                <IconButton variant="outlined" color="white">
                                     <PencilSquareIcon className="h-5 w-5 text-sepia-100" />
                                 </IconButton>
-                                <IconButton variant="outlined" color="red">
+                                <IconButton variant="outlined" color="white">
                                     <TrashIcon className="h-5 w-5 text-sepia-100" />
                                 </IconButton>
                             </CardFooter>
@@ -76,6 +85,8 @@ function NoteCards() {
                     </SwiperSlide>
                 ))}
             </div>
+            <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div>
         </Swiper>
     );
 }
