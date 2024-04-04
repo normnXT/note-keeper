@@ -1,9 +1,18 @@
-// import NoteCards from "./components/NotesCardsTemp";
-import NoteCards from "./components/NoteCardsTemp";
-// import NoteCardsWrapper from "./components/NoteCardsWrapper";
+import Header from "./components/Header";
+import NoteCards from "./components/NoteCards";
+import { useEffect } from "react";
 
 function App() {
-    return <NoteCards />;
+    useEffect(() => {
+        document.body.style.backgroundColor = "#222021";
+    }, []);
+
+    return (
+        <>
+            <Header />
+            <NoteCards />
+        </>
+    );
 }
 
 export default App;

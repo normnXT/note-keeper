@@ -20,7 +20,7 @@ import "swiper/css/grid";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-const NoteCards = () => {
+function NoteCards() {
     const [notes, setNotes] = useState([]);
 
     const fetchNotes = useCallback(async () => {
@@ -55,7 +55,7 @@ const NoteCards = () => {
             <div>
                 {notes.map((note) => (
                     <SwiperSlide key={note._id}>
-                        <Card className="bg-gray-800 hover:bg-gray-700">
+                        <Card className="bg-darkgray-100 hover:bg-darkgray-200">
                             <CardBody>
                                 <p className="text-xl text-sepia-200">
                                     {note.title}
@@ -64,7 +64,7 @@ const NoteCards = () => {
                                     {note.entry}
                                 </p>
                             </CardBody>
-                            <CardFooter className="grid-cols-2 grid gap-2 self-end">
+                            <CardFooter className="grid grid-cols-2 gap-2 self-end">
                                 <IconButton variant="outlined" color="blue">
                                     <PencilSquareIcon className="h-5 w-5 text-sepia-100" />
                                 </IconButton>

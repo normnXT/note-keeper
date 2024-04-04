@@ -5,6 +5,10 @@ module.exports = withMT({
   theme: {
     extend: {
       colors: {
+        darkgray: {
+          100: "#1c1b1b",
+          200: "#202020"
+        },
         sepia: {
           100: "#F4ECD8",
           200: "#e8dec3"
