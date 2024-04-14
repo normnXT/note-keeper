@@ -38,28 +38,18 @@ function NoteCards() {
 
     return (
         <div>
-            <div
-                className="swiper-button-next"
-                style={{ "--swiper-navigation-color": "#fff" }}
-            />
-            <div
-                className="swiper-button-prev"
-                style={{ "--swiper-navigation-color": "#fff" }}
-            />
             <Swiper
                 slidesPerView={3}
                 slidesPerGroup={9}
                 allowTouchMove={false}
-                spaceBetween={15}
-                style={{
-                    "--swiper-pagination-color": "#fff",
-                }}
+                spaceBetween={12}
                 mousewheel={true}
                 grid={{
                     rows: 3,
                     fill: "column",
                 }}
                 pagination={{
+                    el: ".swiper-pagination",
                     clickable: true,
                 }}
                 navigation={{
@@ -67,7 +57,7 @@ function NoteCards() {
                     prevEl: ".swiper-button-prev",
                 }}
                 modules={[Grid, Pagination, Navigation, Mousewheel]}
-                className="h-[90vh] w-[90vw]"
+                className="h-[80vh] w-[90vw]"
             >
                 <div>
                     {notes.map((note) => (
@@ -100,6 +90,18 @@ function NoteCards() {
                     ))}
                 </div>
             </Swiper>
+            <div
+                className="swiper-button-next"
+                style={{ "--swiper-navigation-color": "#fff" }}
+            />
+            <div
+                className="swiper-button-prev"
+                style={{ "--swiper-navigation-color": "#fff" }}
+            />
+            <div
+                className="swiper-pagination"
+                style={{ "--swiper-pagination-color": "#fff" }}
+            />
         </div>
     );
 }

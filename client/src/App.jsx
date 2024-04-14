@@ -15,7 +15,7 @@ function App() {
     }, []);
 
     return (
-        <div className="App">
+        <div className="flex flex-col gap-4 p-4">
             <Dialog open={ openEditor } handler={ handleOpenEditor }>
                 Hello World
                 <Button onClick={ handleOpenEditor }>Close</Button>
