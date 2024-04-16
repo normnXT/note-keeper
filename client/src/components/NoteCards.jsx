@@ -37,16 +37,16 @@ function NoteCards() {
     }, [fetchNotes]);
 
     return (
-        <div>
+        <div className="">
             <Swiper
                 slidesPerView={3}
-                slidesPerGroup={9}
+                slidesPerGroup={3}
                 allowTouchMove={false}
                 spaceBetween={12}
                 mousewheel={true}
                 grid={{
                     rows: 3,
-                    fill: "column",
+                    fill: "row",
                 }}
                 pagination={{
                     el: ".swiper-pagination",
@@ -57,7 +57,7 @@ function NoteCards() {
                     prevEl: ".swiper-button-prev",
                 }}
                 modules={[Grid, Pagination, Navigation, Mousewheel]}
-                className="h-[80vh] w-[90vw]"
+                // className="h-[80vh] w-[90vw]"
             >
                 <div>
                     {notes.map((note) => (
@@ -67,7 +67,7 @@ function NoteCards() {
                                     <p className="text-xl text-sepia-200">
                                         {note.title}
                                     </p>
-                                    <p className="line-clamp-3 text-sepia-100">
+                                    <p className="line-clamp-1 text-sepia-100">
                                         {note.entry}
                                     </p>
                                 </CardBody>
