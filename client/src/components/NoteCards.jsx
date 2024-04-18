@@ -44,8 +44,34 @@ function NoteCards() {
                 allowTouchMove={false}
                 spaceBetween={12}
                 mousewheel={true}
+                breakpoints={{
+                    786: {
+                        grid: {
+                            rows: 2,
+                        },
+                    },
+                    1024: {
+                        grid: {
+                            rows: 2,
+                        },
+                    },
+                    1080: {
+                        grid: {
+                            rows: 3,
+                        },
+                    },
+                    1440: {
+                        grid: {
+                            rows: 3,
+                        },
+                    },
+                    2160: {
+                        grid: {
+                            rows: 4,
+                        },
+                    },
+                }}
                 grid={{
-                    rows: 3,
                     fill: "row",
                 }}
                 pagination={{
@@ -61,13 +87,14 @@ function NoteCards() {
             >
                 <div>
                     {notes.map((note) => (
-                        <SwiperSlide key={note._id} className="p">
+                        <SwiperSlide key={note._id}>
+                            {/*min-h-60 lg:min-h-60 xl:min-h-72 */}
                             <Card className="bg-darkgray-100 hover:bg-darkgray-200">
                                 <CardBody>
                                     <p className="text-xl text-sepia-200">
                                         {note.title}
                                     </p>
-                                    <p className="line-clamp-1 text-sepia-100">
+                                    <p className="line-clamp-3 text-sepia-100">
                                         {note.entry}
                                     </p>
                                 </CardBody>
@@ -94,14 +121,17 @@ function NoteCards() {
                 className="swiper-button-next"
                 style={{ "--swiper-navigation-color": "#fff" }}
             />
+            ;
             <div
                 className="swiper-button-prev"
                 style={{ "--swiper-navigation-color": "#fff" }}
             />
+            ;
             <div
                 className="swiper-pagination"
                 style={{ "--swiper-pagination-color": "#fff" }}
             />
+            ;
         </div>
     );
 }
