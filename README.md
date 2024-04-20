@@ -11,11 +11,13 @@
 8. Move buttons to appropriate spot alongside cards
 9. Fix width and height of cards to fit viewport and buttons
 10. Figure out why blank slides are not showing once all notes are displayed in carousel
-11. Consider removing the note preview due to how notes are written
-12. BREAKPOINTS IN SWIPER PARAMS
+12.
 13. Fix title text wrapping
-14. Set card heights/content heights to fit window
-15. Fix breakpoints in components and breakpoints in tailwind to be screen size width
+**14. Set card heights/content heights and flex to fit window**
+14. Align buttons to bottom of card, have grid fit to viewport with padding by manipulating card height 
+(find out what is currently controlling card height, swiperslide or MT card).
+14. material-tailwind card component, might find new component
+
 
 # Maybes
 

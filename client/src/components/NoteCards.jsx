@@ -37,41 +37,47 @@ function NoteCards() {
     }, [fetchNotes]);
 
     return (
-        <div className="">
+        <div className="px-12">
             <Swiper
                 slidesPerView={3}
                 slidesPerGroup={3}
                 allowTouchMove={false}
                 spaceBetween={12}
                 mousewheel={true}
-                breakpoints={{
-                    786: {
-                        grid: {
-                            rows: 2,
-                        },
-                    },
-                    1024: {
-                        grid: {
-                            rows: 2,
-                        },
-                    },
-                    1080: {
-                        grid: {
-                            rows: 3,
-                        },
-                    },
-                    1440: {
-                        grid: {
-                            rows: 3,
-                        },
-                    },
-                    2160: {
-                        grid: {
-                            rows: 4,
-                        },
-                    },
-                }}
+                // breakpoints={{
+                //     1024: {
+                //         grid: {
+                //             rows: 2,
+                //         },
+                //     },
+                //     1280: {
+                //         grid: {
+                //             rows: 2,
+                //         },
+                //     },
+                //     1600: {
+                //         grid: {
+                //             rows: 3,
+                //         },
+                //     },
+                //     1920: {
+                //         grid: {
+                //             rows: 3,
+                //         },
+                //     },
+                //     2560: {
+                //         grid: {
+                //             rows: 4,
+                //         },
+                //     },
+                //     3840: {
+                //         grid: {
+                //             rows: 5,
+                //         },
+                //     },
+                // }}
                 grid={{
+                    rows: 3,
                     fill: "row",
                 }}
                 pagination={{
@@ -121,17 +127,14 @@ function NoteCards() {
                 className="swiper-button-next"
                 style={{ "--swiper-navigation-color": "#fff" }}
             />
-            ;
             <div
                 className="swiper-button-prev"
                 style={{ "--swiper-navigation-color": "#fff" }}
             />
-            ;
             <div
                 className="swiper-pagination"
                 style={{ "--swiper-pagination-color": "#fff" }}
             />
-            ;
         </div>
     );
 }
