@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import axios from "axios";
 
 // UI - heroicons
@@ -15,10 +15,14 @@ import {
 // UI - swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Grid, Pagination, Navigation, Mousewheel } from "swiper/modules";
+import SwiperCore from "swiper";
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { EditorModalContext } from "../App";
+
+SwiperCore.use([Navigation, Pagination, Mousewheel, Grid]);
 
 function NoteCards() {
     const [notes, setNotes] = useState([]);
@@ -36,68 +40,95 @@ function NoteCards() {
         fetchNotes();
     }, [fetchNotes]);
 
+    const editorModalContext = useContext(EditorModalContext);
+
+    const handleOpenEditor = () => editorModalContext.setOpenEditor(true);
+
+    const [swiperParams, setSwiperParams] = useState({
+        slidesPerView: 3,
+        slidesPerGroup: 3,
+        allowTouchMove: false,
+        spaceBetween: 12,
+        mousewheel: true,
+        grid: {
+            fill: "row",
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });
+
+    useEffect(() => {
+        const handleResize = () => {
+            const windowHeight = window.innerHeight;
+            if (windowHeight < 576) {
+                setSwiperParams((prevParams) => ({
+                    ...prevParams,
+                    grid: { rows: 1 },
+                }));
+            // } else if (windowHeight < 720) {
+            //     setSwiperParams((prevParams) => ({
+            //         ...prevParams,
+            //         grid: { rows: 2 },
+            //     }));
+            } else if (windowHeight < 768) {
+                setSwiperParams((prevParams) => ({
+                    ...prevParams,
+                    grid: { rows: 2 },
+                }));
+            // } else if (windowHeight < 900) {
+            //     setSwiperParams((prevParams) => ({
+            //         ...prevParams,
+            //         grid: { rows: 3 },
+            //     }));
+            } else if (windowHeight < 1080) {
+                setSwiperParams((prevParams) => ({
+                    ...prevParams,
+                    grid: { rows: 3 },
+                }));
+            } else if (windowHeight < 1440) {
+                setSwiperParams((prevParams) => ({
+                    ...prevParams,
+                    grid: { rows: 4 },
+                }));
+            } else if (windowHeight < 2160) {
+                setSwiperParams((prevParams) => ({
+                    ...prevParams,
+                    grid: { rows: 7 },
+                }));
+            } else {
+                setSwiperParams((prevParams) => ({
+                    ...prevParams,
+                    grid: { rows: 1 },
+                }));
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+        handleResize();
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
     return (
         <div className="px-12">
             <Swiper
-                slidesPerView={3}
-                slidesPerGroup={3}
-                allowTouchMove={false}
-                spaceBetween={12}
-                mousewheel={true}
-                // breakpoints={{
-                //     1024: {
-                //         grid: {
-                //             rows: 2,
-                //         },
-                //     },
-                //     1280: {
-                //         grid: {
-                //             rows: 2,
-                //         },
-                //     },
-                //     1600: {
-                //         grid: {
-                //             rows: 3,
-                //         },
-                //     },
-                //     1920: {
-                //         grid: {
-                //             rows: 3,
-                //         },
-                //     },
-                //     2560: {
-                //         grid: {
-                //             rows: 4,
-                //         },
-                //     },
-                //     3840: {
-                //         grid: {
-                //             rows: 5,
-                //         },
-                //     },
-                // }}
-                grid={{
-                    rows: 3,
-                    fill: "row",
-                }}
-                pagination={{
-                    el: ".swiper-pagination",
-                    clickable: true,
-                }}
-                navigation={{
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                }}
-                modules={[Grid, Pagination, Navigation, Mousewheel]}
-                // className="h-[80vh] w-[90vw]"
+                {...swiperParams}
+                className="h-[86vh]"
             >
                 <div>
                     {notes.map((note) => (
                         <SwiperSlide key={note._id}>
-                            {/*min-h-60 lg:min-h-60 xl:min-h-72 */}
                             <Card className="bg-darkgray-100 hover:bg-darkgray-200">
                                 <CardBody>
-                                    <p className="text-xl text-sepia-200">
+                                    <p className="line-clamp-1 text-xl text-sepia-200">
                                         {note.title}
                                     </p>
                                     <p className="line-clamp-3 text-sepia-100">
@@ -108,6 +139,7 @@ function NoteCards() {
                                     <IconButton
                                         variant="outlined"
                                         color="white"
+                                        onClick={handleOpenEditor}
                                     >
                                         <PencilSquareIcon className="h-5 w-5 text-sepia-100" />
                                     </IconButton>
