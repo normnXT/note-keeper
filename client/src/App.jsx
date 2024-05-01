@@ -22,24 +22,25 @@ function App() {
         }
     };
 
-    // // Prevent Bootstrap dialog from blocking focusin
-    // document.addEventListener("focusin", (e) => {
-    //     if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
-    //         e.stopImmediatePropagation();
-    //     });
-
     return (
         <div className="flex flex-col gap-4 p-4">
-            <Dialog open={openEditor} handler={handleOpenEditor}>
+            <Dialog
+                open={openEditor}
+                handler={handleOpenEditor}
+                dismiss={{ outsidePress: false }}
+            >
                 <Editor
-                    apiKey="lusn0n1htzwnmfxmhqlnybkv1b4dojkqk625ixxh7uwp2i2x"
+                    // apiKey="lusn0n1htzwnmfxmhqlnybkv1b4dojkqk625ixxh7uwp2i2x"
+                    tinymceScriptSrc="/tinymce/tinymce.min.js"
+                    licenseKey="gpl"
                     onInit={(evt, editor) => (editorRef.current = editor)}
                     initialValue="<p>This is the initial content of the editor.</p>"
                     disableEnforceFocus={true}
                     init={{
-                        height: 500,
+                        height: 350,
                         menubar: false,
-                        skin: "oxide-dark",
+                        skin: "custom",
+                        content_css: "custom",
                         plugins: [
                             "advlist",
                             "autolink",
@@ -66,8 +67,9 @@ function App() {
                             "alignright alignjustify | bullist numlist outdent indent | " +
                             "removeformat | help",
                         content_style:
-                            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                            "body { font-family:Roboto,Arial,sans-serif; font-size:14px }",
                     }}
+                    className="tox-tinymce-aux"
                 />
                 <Button onClick={log}>Log editor content</Button>
                 <Button onClick={handleOpenEditor}>Close</Button>
