@@ -9,10 +9,14 @@ function Header() {
     const handleOpenEditor = () => editorModalContext.setOpenEditor(true);
 
     return (
-        <Navbar className="mx-auto bg-darkgray-100 border-none px-8 py-4">
+        <Navbar className="mx-auto border-none bg-darkgray-100 px-8 py-4">
             <div className="mx-auto flex items-center justify-between">
                 <img src={logo} alt="Logo" />
-                <Button variant="outlined" color="white" className="text-sepia-200" onClick={handleOpenEditor}>
+                <Button
+                    variant="outlined"
+                    className="!border-sepia-100 text-sepia-200"
+                    onClick={handleOpenEditor}
+                >
                     Add Note
                 </Button>
             </div>

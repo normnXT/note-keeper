@@ -136,16 +136,16 @@ function NoteCards() {
                                     <CardFooter className="flex flex-row gap-2 self-end">
                                         <IconButton
                                             variant="outlined"
-                                            color="white"
+                                            className="!border-sepia-100"
                                             onClick={handleOpenEditor}
                                         >
-                                            <PencilSquareIcon className="h-5 w-5 text-sepia-100" />
+                                            <PencilSquareIcon className="h-5 w-5 text-sepia-200" />
                                         </IconButton>
                                         <IconButton
                                             variant="outlined"
-                                            color="white"
+                                            className="!border-sepia-100"
                                         >
-                                            <TrashIcon className="h-5 w-5 text-sepia-100" />
+                                            <TrashIcon className="h-5 w-5 text-sepia-200" />
                                         </IconButton>
                                     </CardFooter>
                                 </Card>
@@ -154,7 +154,7 @@ function NoteCards() {
                     </div>
                 </Swiper>
             ) : (
-                <p className="flex fixed inset-0 items-center justify-center text-xl text-sepia-200">
+                <p className="fixed inset-0 flex items-center justify-center text-xl text-sepia-200">
                     Start adding notes!
                 </p>
             )}

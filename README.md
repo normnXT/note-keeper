@@ -16,10 +16,11 @@
 ~~15. Align buttons to bottom of card, have grid fit to viewport with padding by manipulating card height~~ 
 ~~(find out what is currently controlling card height, swiperslide or MT card).~~
 ~~16. material-tailwind card component, might find new component~~
-17. Fix color issues with TinyMCE editor, might involve creating a custom skin
+~~17. Fix color issues with TinyMCE editor, might involve creating a custom skin~~
 ~~18. Resolve issue with z-score of dropdowns and popups of editor~~
 ~~19. Look into other possible editors that might be easier, and look at their color/modal features~~
-20. Follow the guide! Read carefully. https://www.tiny.cloud/docs/tinymce/latest/creating-a-skin/
+~~20. Follow the guide! Read carefully. https://www.tiny.cloud/docs/tinymce/latest/creating-a-skin/~~
+18. Check onSubmit function in Record.jsx of mern-stack-example project. Browse other projects.
 
 
 # Maybes
