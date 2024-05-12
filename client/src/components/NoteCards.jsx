@@ -24,25 +24,34 @@ import { EditorModalContext } from "../App";
 
 SwiperCore.use([Navigation, Pagination, Mousewheel, Grid]);
 
-function NoteCards() {
-    const [notes, setNotes] = useState([]);
-
-    const fetchNotes = useCallback(async () => {
-        try {
-            const res = await axios.get("/notes");
-            setNotes(res.data);
-        } catch (err) {
-            console.error(err);
-        }
-    }, []);
-
-    useEffect(() => {
-        fetchNotes();
-    }, [fetchNotes]);
+function NoteCards(props) {
+    const notes = props.notes;
 
     const editorModalContext = useContext(EditorModalContext);
 
-    const handleOpenEditor = () => editorModalContext.setOpenEditor(true);
+    const handleOpenEditor = (noteId, noteTitle, noteEntry) => {
+        editorModalContext.setCurrentNote({
+            _id: noteId,
+            title: noteTitle,
+            entry: noteEntry,
+        });
+        editorModalContext.setOpenEditor(true);
+        editorModalContext.setIsNew(false);
+    };
+
+    const onDelete = async (id) => {
+        try {
+            const res = await axios.delete(`/notes/${id}`);
+            if (res.status === 200) {
+                const updatedNotes = notes.filter(
+                    (note) => note._id !== id,
+                );
+                editorModalContext.setNotes(updatedNotes);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     const [swiperParams, setSwiperParams] = useState({
         slidesPerView: 3,
@@ -124,26 +133,39 @@ function NoteCards() {
                     <div>
                         {notes.map((note) => (
                             <SwiperSlide key={note._id}>
-                                <Card className="bg-darkgray-100 hover:bg-darkgray-200">
+                                <Card className="min-h-[244px] bg-darkgray-100 hover:bg-darkgray-200">
                                     <CardBody>
-                                        <p className="line-clamp-1 text-xl text-sepia-200">
-                                            {note.title}
-                                        </p>
-                                        <p className="line-clamp-3 text-sepia-100">
-                                            {note.entry}
-                                        </p>
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: note.title,
+                                            }}
+                                            className="line-clamp-1 text-xl text-sepia-200"
+                                        />
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: note.entry,
+                                            }}
+                                            className="line-clamp-3 text-sepia-100"
+                                        />
                                     </CardBody>
-                                    <CardFooter className="flex flex-row gap-2 self-end">
+                                    <CardFooter className="mt-auto flex flex-row gap-2 self-end">
                                         <IconButton
                                             variant="outlined"
                                             className="!border-sepia-100"
-                                            onClick={handleOpenEditor}
+                                            onClick={() =>
+                                                handleOpenEditor(
+                                                    note._id,
+                                                    note.title,
+                                                    note.entry,
+                                                )
+                                            }
                                         >
                                             <PencilSquareIcon className="h-5 w-5 text-sepia-200" />
                                         </IconButton>
                                         <IconButton
                                             variant="outlined"
                                             className="!border-sepia-100"
+                                            onClick={() => onDelete(note._id)}
                                         >
                                             <TrashIcon className="h-5 w-5 text-sepia-200" />
                                         </IconButton>

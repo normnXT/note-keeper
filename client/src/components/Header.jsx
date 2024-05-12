@@ -6,7 +6,11 @@ import logo from "../assets/logo.png";
 function Header() {
     const editorModalContext = useContext(EditorModalContext);
 
-    const handleOpenEditor = () => editorModalContext.setOpenEditor(true);
+    const handleOpenEditor = () => {
+        editorModalContext.setOpenEditor(true);
+        editorModalContext.setCurrentNote({ _id: "", title: "", entry: "" });
+        editorModalContext.setIsNew(true);
+    };
 
     return (
         <Navbar className="mx-auto border-none bg-darkgray-100 px-8 py-4">

@@ -11,11 +11,14 @@ import { Button, Dialog, Input } from "@material-tailwind/react";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
 
-export const EditorModalContext = createContext();
+export const EditorModalContext = createContext(undefined);
 
 function App() {
     const [openEditor, setOpenEditor] = useState(false);
-    const [note, setNote] = useState({
+    const [isNew, setIsNew] = useState(true);
+    const [notes, setNotes] = useState([]);
+    const [currentNote, setCurrentNote] = useState({
+        _id: "",
         title: "",
         entry: "",
     });
@@ -24,29 +27,49 @@ function App() {
 
     const editorRef = useRef(null);
 
-    const onChange = (e) => {
-        setNote((prev) => {
-            let note = { ...prev };
-            note[`${e.target.id}`] = e.target.value;
-            return note;
-        });
-    };
-
-    // const submitNote = useCallback(async () => {
-    //     if (editorRef.current) {
-    //         try {
-    //             let newNoteRes = editorRef.current.getContent();
-    //             const res = await axios.post("/notes");
-    //             res.send(newNoteRes);
-    //         } catch (err) {
-    //             console.error(err);
-    //         }
-    //     }
-    // }, []);
+    const getNotes = useCallback(async () => {
+        try {
+            const res = await axios.get("/notes");
+            setNotes(res.data);
+        } catch (err) {
+            console.error(err);
+        }
+    }, []);
 
     useEffect(() => {
-        document.body.style.backgroundColor = "#222021";
-    }, []);
+        getNotes();
+    }, [notes]);
+
+    const onSubmit = async () => {
+        try {
+            if (isNew) {
+                // console.log(currentNote);
+                const res = await axios.post("/notes", { title: currentNote.title, entry: currentNote.entry });
+                setNotes(oldNotes => [...oldNotes, res.data]);
+            } else {
+                // console.log(currentNote);
+                const res = await axios.patch(`/notes/${currentNote._id}`, { title: currentNote.title, entry: currentNote.entry });
+                setNotes(oldNotes => [...oldNotes, res.data]);
+            }
+            handleOpenEditor();
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const onTitleChange = (e) => {
+        setCurrentNote((prevNote) => ({
+            ...prevNote,
+            title: e.target.value,
+        }));
+    };
+
+    const onEditorChange = (entry) => {
+        setCurrentNote((prevNote) => ({
+            ...prevNote,
+            entry: entry,
+        }));
+    };
 
     return (
         <div className="flex flex-col gap-4 p-4">
@@ -59,9 +82,9 @@ function App() {
                 <Input
                     variant="outlined"
                     placeholder="Title"
-                    value={note.title}
+                    value={currentNote.title}
                     id="title"
-                    onChange={onChange}
+                    onChange={onTitleChange}
                     className="flex gap-4 !border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-100 focus:!border-gray-500"
                     labelProps={{ className: "hidden" }}
                 />
@@ -70,9 +93,8 @@ function App() {
                     licenseKey="gpl"
                     onInit={(evt, editor) => (editorRef.current = editor)}
                     disableEnforceFocus={true}
-                    value={note.entry}
-                    id="entry"
-                    onChange={onChange}
+                    value={currentNote.entry}
+                    onEditorChange={onEditorChange}
                     init={{
                         height: 350,
                         menubar: false,
@@ -109,7 +131,13 @@ function App() {
                     }}
                     className="tox-tinymce-aux"
                 />
-                {/*<Button onClick={submitNote}>Log editor content</Button>*/}
+                <Button
+                    onClick={onSubmit}
+                    variant="outlined"
+                    className="!border-sepia-100 text-sepia-200"
+                >
+                    Submit
+                </Button>
                 <Button
                     onClick={handleOpenEditor}
                     variant="outlined"
@@ -118,9 +146,11 @@ function App() {
                     Close
                 </Button>
             </Dialog>
-            <EditorModalContext.Provider value={{ setOpenEditor }}>
+            <EditorModalContext.Provider
+                value={{ setOpenEditor, currentNote, setCurrentNote, setIsNew, setNotes }}
+            >
                 <Header />
-                <NoteCards />
+                <NoteCards notes={notes} />
             </EditorModalContext.Provider>
         </div>
     );

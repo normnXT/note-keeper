@@ -39,15 +39,15 @@ router.post("/", async (req, res) => {
 });
 
 // GET /notes/:id will get a single note
-router.get("/:id", async (req, res) => {
-    try {
-        const note = await Note.findById(req.params.id);
-        res.json(note).status(200);
-    } catch (err) {
-        console.error(err);
-        res.json({ error: "No note found" }).status(404);
-    }
-});
+// router.get("/:id", async (req, res) => {
+//     try {
+//         const note = await Note.findById(req.params.id);
+//         res.json(note).status(200);
+//     } catch (err) {
+//         console.error(err);
+//         res.json({ error: "No note found" }).status(404);
+//     }
+// });
 
 // PATCH /notes/:id will update a single note
 router.patch("/:id", async (req, res) => {
