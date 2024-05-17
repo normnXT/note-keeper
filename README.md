@@ -21,6 +21,7 @@
 ~~19. Look into other possible editors that might be easier, and look at their color/modal features~~
 ~~20. Follow the guide! Read carefully. https://www.tiny.cloud/docs/tinymce/latest/creating-a-skin/~~
 18. Check onSubmit function in Record.jsx of mern-stack-example project. Browse other projects.
+19. Add urls to .env and any other objects like port
 
 
 # Maybes

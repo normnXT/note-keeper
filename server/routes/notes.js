@@ -6,10 +6,6 @@ const Note = require("../models/Note");
 const router = express.Router();
 router.use(express.json());
 
-// ***DEV NOTES***
-// work out error messages once front-end is further along
-//
-
 // GET /notes/test
 router.get("/test", (req, res) => {
     res.send("Hello World!");
