@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 
 // UI - heroicons
@@ -43,9 +43,7 @@ function NoteCards(props) {
         try {
             const res = await axios.delete(`/notes/${id}`);
             if (res.status === 200) {
-                const updatedNotes = notes.filter(
-                    (note) => note._id !== id,
-                );
+                const updatedNotes = notes.filter((note) => note._id !== id);
                 editorModalContext.setNotes(updatedNotes);
             }
         } catch (err) {
@@ -150,8 +148,8 @@ function NoteCards(props) {
                                     </CardBody>
                                     <CardFooter className="mt-auto flex flex-row gap-2 self-end">
                                         <IconButton
-                                            variant="outlined"
-                                            className="!border-sepia-100"
+                                            ripple={true}
+                                            className="!border !border-sepia-100 !bg-opacity-0"
                                             onClick={() =>
                                                 handleOpenEditor(
                                                     note._id,
@@ -163,8 +161,8 @@ function NoteCards(props) {
                                             <PencilSquareIcon className="h-5 w-5 text-sepia-200" />
                                         </IconButton>
                                         <IconButton
-                                            variant="outlined"
-                                            className="!border-sepia-100"
+                                            ripple={true}
+                                            className="!border !border-sepia-100 !bg-opacity-0"
                                             onClick={() => onDelete(note._id)}
                                         >
                                             <TrashIcon className="h-5 w-5 text-sepia-200" />

@@ -38,18 +38,24 @@ function App() {
 
     useEffect(() => {
         getNotes();
-    }, [notes]);
+    }, [getNotes, notes]);
 
     const onSubmit = async () => {
         try {
             if (isNew) {
                 // console.log(currentNote);
-                const res = await axios.post("/notes", { title: currentNote.title, entry: currentNote.entry });
-                setNotes(oldNotes => [...oldNotes, res.data]);
+                const res = await axios.post("/notes", {
+                    title: currentNote.title,
+                    entry: currentNote.entry,
+                });
+                setNotes((oldNotes) => [...oldNotes, res.data]);
             } else {
                 // console.log(currentNote);
-                const res = await axios.patch(`/notes/${currentNote._id}`, { title: currentNote.title, entry: currentNote.entry });
-                setNotes(oldNotes => [...oldNotes, res.data]);
+                const res = await axios.patch(`/notes/${currentNote._id}`, {
+                    title: currentNote.title,
+                    entry: currentNote.entry,
+                });
+                setNotes((oldNotes) => [...oldNotes, res.data]);
             }
             handleOpenEditor();
         } catch (err) {
@@ -131,23 +137,31 @@ function App() {
                     }}
                     className="tox-tinymce-aux"
                 />
-                <Button
-                    onClick={onSubmit}
-                    variant="outlined"
-                    className="!border-sepia-100 text-sepia-200"
-                >
-                    Submit
-                </Button>
-                <Button
-                    onClick={handleOpenEditor}
-                    variant="outlined"
-                    className="!border-sepia-100 text-sepia-200"
-                >
-                    Close
-                </Button>
+                <div className="flex flex-row gap-2 self-end">
+                    <Button
+                        onClick={onSubmit}
+                        ripple={true}
+                        className="!border !border-sepia-100 !bg-opacity-0 text-sepia-200"
+                    >
+                        Submit
+                    </Button>
+                    <Button
+                        onClick={handleOpenEditor}
+                        ripple={true}
+                        className="!border !border-sepia-100 !bg-opacity-0 text-sepia-200"
+                    >
+                        Close
+                    </Button>
+                </div>
             </Dialog>
             <EditorModalContext.Provider
-                value={{ setOpenEditor, currentNote, setCurrentNote, setIsNew, setNotes }}
+                value={{
+                    setOpenEditor,
+                    currentNote,
+                    setCurrentNote,
+                    setIsNew,
+                    setNotes,
+                }}
             >
                 <Header />
                 <NoteCards notes={notes} />
