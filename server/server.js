@@ -1,7 +1,9 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const app = require("express")();
+const express = require("express");
+const app = express();
 const cors = require("cors");
+const session = require("express-session");
 const passport = require("passport");
 const OAuth2Strategy = require("passport-google-oauth2").Strategy;
 
@@ -9,23 +11,18 @@ const noteRouter = require("./routes/notes");
 const authRouter = require("./routes/auth");
 const mongo_uri = require("./config/keys").mongoProdURI;
 const User = require("./models/User");
-const express = require("express");
 
 // Loads .env into process.env
 dotenv.config();
 
 app.use(express.json());
 
-// Route handling to follow /notes and /auth subdirectories
-app.use("/notes", noteRouter);
-app.use("/auth", authRouter);
-
-// Enables cross-origin resource sharing between Google API and client
+// Sets up express session to store user session data server side
 app.use(
-    cors({
-        origin: "http://localhost:3000",
-        methods: "GET,POST,PUT,DELETE",
-        credentials: true,
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
     }),
 );
 
@@ -71,6 +68,19 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
     done(null, user);
 });
+
+// Route handling to follow /notes and /auth subdirectories
+app.use("/notes", noteRouter);
+app.use("/auth", authRouter);
+
+// Enables cross-origin resource sharing between Google API and client
+app.use(
+    cors({
+        origin: "http://localhost:3000",
+        methods: "GET,POST,PUT,DELETE",
+        credentials: true,
+    }),
+);
 
 // Database connection
 mongoose

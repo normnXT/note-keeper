@@ -1,8 +1,21 @@
 const passport = require("passport");
 const express = require("express");
+const Note = require("../models/Note");
 
 const router = express.Router();
 router.use(express.json());
+
+// GET all users
+router.get("/", async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json(users).status(200);
+    } catch (err) {
+        console.error(err);
+        res.json({ error: "No notes found" }).status(404);
+    }
+});
+
 
 router.get("/login/success", (req, res) => {
     if (req.user) {
@@ -28,14 +41,16 @@ router.get("/google", passport.authenticate("google", ["profile", "email"]));
 router.get(
     "/google/callback",
     passport.authenticate("google", {
-        successRedirect: "http://localhost:3000",
+        successRedirect: "http://localhost:3000/",
         failureRedirect: "/login/failed",
     }),
 );
 
-router.get("/logout", (req, res) => {
-    req.logout();
-    res.redirect("http://localhost:3000");
+router.get("/logout", (req, res, next) => {
+    req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('http://localhost:3000/');
+  });
 });
 
 module.exports = router;

@@ -25,9 +25,9 @@ import { EditorModalContext } from "../App";
 SwiperCore.use([Navigation, Pagination, Mousewheel, Grid]);
 
 function NoteCards(props) {
-    const notes = props.notes;
-
     const editorModalContext = useContext(EditorModalContext);
+
+    const notes = props.notes;
 
     const handleOpenEditor = (noteId, noteTitle, noteEntry) => {
         editorModalContext.setCurrentNote({
