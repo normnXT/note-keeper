@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Navbar, Button } from "@material-tailwind/react";
 import { EditorModalContext } from "../App";
 import logo from "../assets/logo.png";
-import web_dark_rd_goog from "../assets/web_dark_rd_goog.png";
+import google_color from "../assets/google_color.svg";
 import axios from "axios";
 
 function Header() {
@@ -41,8 +41,12 @@ function Header() {
     return (
         <Navbar className="mx-auto border-none bg-darkgray-100 px-8 py-4">
             <div className="mx-auto flex items-center justify-between">
-                <div className="flex flex-row gap-4 self-start items-center justify-between">
-                    <img src={logo} alt="Logo" className="border border-white rounded-md" />
+                <div className="flex flex-row items-center justify-between gap-4 self-start">
+                    <img
+                        src={logo}
+                        alt="Logo"
+                        className="rounded-md border border-white"
+                    />
                     <Button
                         variant="outlined"
                         className="!border-sepia-100 text-sepia-200"
@@ -53,13 +57,13 @@ function Header() {
                 </div>
                 {Object?.keys(userData)?.length > 0 ? (
                     <div className="flex flex-row gap-4 self-end">
-                        <p className="p-2 text-sepia-200">
+                        <span className="flex justify-center items-center text-sepia-200">
                             {userData?.displayName}
-                        </p>
+                        </span>
                         <img
                             src={userData?.image}
                             className="w-10 rounded-full"
-                            alt="profile image"
+                            alt="profile"
                         />
                         <Button
                             variant="outlined"
@@ -70,12 +74,19 @@ function Header() {
                         </Button>
                     </div>
                 ) : (
-                    <img
-                        src={web_dark_rd_goog}
-                        className="mt-auto flex self-end"
-                        alt="login"
+                    <Button
+                        variant="outlined"
+                        className="flex items-center justify-center gap-2 border !border-sepia-100 px-4 py-2 text-sepia-200"
                         onClick={loginGoogle}
-                    />
+                    >
+                        <img
+                            class="h-6 w-6"
+                            src={google_color}
+                            loading="lazy"
+                            alt="google logo"
+                        />
+                        <span>Sign in with Google</span>
+                    </Button>
                 )}
             </div>
         </Navbar>

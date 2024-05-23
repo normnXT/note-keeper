@@ -1,11 +1,11 @@
 # Todo
 
 
-1. Get to writing/planning the client 
+~~1. Get to writing/planning the client~~ 
 2. Validation of data inbound/outbound and error handling 
-3. Google OAuth 
-4. TinyMCE
-5. Add favicon and manifest, work with viewport if needed
+~~3. Google OAuth~~ 
+~~4. TinyMCE~~
+~~5. Add favicon and manifest, work with viewport if needed~~
 6. Add navbar/header with list and grid routes. Implement list and grid views for the notes. 
 ~~7. ~~Fix overlapping cards on vertical span when viewport size changes~~~~
 ~~8. Move buttons to appropriate spot alongside cards~~
@@ -20,8 +20,15 @@
 ~~18. Resolve issue with z-score of dropdowns and popups of editor~~
 ~~19. Look into other possible editors that might be easier, and look at their color/modal features~~
 ~~20. Follow the guide! Read carefully. https://www.tiny.cloud/docs/tinymce/latest/creating-a-skin/~~
-18. Check onSubmit function in Record.jsx of mern-stack-example project. Browse other projects.
+~~18. Check onSubmit function in Record.jsx of mern-stack-example project. Browse other projects.~~
 19. Add urls to .env and any other objects like port
+20. Comment the code
+21. Add a login screen
+22. Toastify messages
+23. Loading spinner
+24. create context folder
+~~22. Change google sign-in to square~~
+23. Use user id in mongo notes schema (do some more research first on account-based schemas)
 
 
 # Maybes
