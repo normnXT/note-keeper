@@ -1,20 +1,15 @@
 import { Card, Input, Button } from "@material-tailwind/react";
 import google_color from "../assets/google_color.svg";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
     const navigate = useNavigate();
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
     const loginGoogle = () => {
         window.open("http://localhost:4000/auth/google/callback", "_self");
-    };
-
-    const onRegister = () => {
-        navigate("/register");
-    };
-
-    const onResetPassword = () => {
-        navigate("/resetpassword");
     };
 
     return (
@@ -28,6 +23,10 @@ function Login() {
                 <div className="mb-1 flex flex-col gap-4">
                     <span className="-mb-3 text-sepia-200">Your Email</span>
                     <Input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
                         size="lg"
                         placeholder="name@mail.com"
                         className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
@@ -38,6 +37,9 @@ function Login() {
                     <span className="-mb-3 text-sepia-200">Password</span>
                     <Input
                         type="password"
+                        id="password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
                         size="lg"
                         placeholder="********"
                         className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
@@ -71,7 +73,7 @@ function Login() {
                     <Button
                         variant="outlined"
                         className="mt-2 !border-sepia-100 text-sepia-200"
-                        onClick={onRegister}
+                        onClick={() => navigate("/register")}
                         fullWidth
                     >
                         Register
@@ -79,7 +81,7 @@ function Login() {
                     <Button
                         variant="outlined"
                         className="mt-2 !border-sepia-100 text-sepia-200"
-                        onClick={onResetPassword}
+                        onClick={() => navigate("/resetpassword")}
                         fullWidth
                     >
                         Reset Password

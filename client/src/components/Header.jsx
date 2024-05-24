@@ -2,13 +2,12 @@ import React, { useContext, useEffect } from "react";
 import { Navbar, Button } from "@material-tailwind/react";
 import { Context } from "../App";
 import logo from "../assets/logo.png";
-import google_color from "../assets/google_color.svg";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function Header() {
     const context = useContext(Context);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const getUser = async () => {
         try {
@@ -27,16 +26,12 @@ function Header() {
 
     const handleOpenEditor = () => {
         if (Object.keys(context.userData).length === 0) {
-            navigate('/login')
+            navigate("/login");
         } else {
             context.setOpenEditor(true);
             context.setCurrentNote({ _id: "", title: "", entry: "" });
             context.setIsNew(true);
         }
-    };
-
-    const loginGoogle = () => {
-        window.open("http://localhost:4000/auth/google/callback", "_self");
     };
 
     const logoutGoogle = () => {
@@ -53,26 +48,28 @@ function Header() {
                         className="rounded-md border border-white"
                     />
                     <Button
-                        variant="outlined"
-                        className="!border-sepia-100 text-sepia-200"
+                        ripple={true}
+                        className="!border !border-sepia-100 !bg-opacity-0 text-sepia-200"
                         onClick={handleOpenEditor}
                     >
                         Add Note
                     </Button>
                 </div>
-                {Object?.keys(context.userData)?.length > 0 ? (
+                {Object.keys(context.userData).length > 0 ? (
                     <div className="flex flex-row gap-4 self-end">
                         <span className="flex items-center justify-center text-sepia-200">
-                            {context.userData?.displayName}
+                            {context.userData.displayName}
                         </span>
-                        <img
-                            src={context.userData?.image}
-                            className="w-10 rounded-full"
-                            alt="profile"
-                        />
+                        {context.userData?.image && (
+                            <img
+                                src={context.userData.image}
+                                className="w-10 rounded-full"
+                                alt="profile"
+                            />
+                        )}
                         <Button
-                            variant="outlined"
-                            className="!border-sepia-100 text-sepia-200"
+                            ripple={true}
+                            className="!border !border-sepia-100 !bg-opacity-0 text-sepia-200"
                             onClick={logoutGoogle}
                         >
                             Logout
@@ -80,17 +77,11 @@ function Header() {
                     </div>
                 ) : (
                     <Button
-                        variant="outlined"
-                        className="flex items-center justify-center gap-2 border !border-sepia-100 px-4 py-2 text-sepia-200"
-                        onClick={loginGoogle}
+                        ripple={true}
+                        className="!border !border-sepia-100 !bg-opacity-0 text-sepia-200"
+                        onClick={() => navigate("/login")}
                     >
-                        <img
-                            className="h-6 w-6"
-                            src={google_color}
-                            loading="lazy"
-                            alt="google logo"
-                        />
-                        <span>Sign in with Google</span>
+                        Sign in
                     </Button>
                 )}
             </div>
