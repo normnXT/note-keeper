@@ -23,13 +23,16 @@
 ~~18. Check onSubmit function in Record.jsx of mern-stack-example project. Browse other projects.~~
 19. Add urls to .env and any other objects like port
 20. Comment the code
-21. Add a login screen
+~~21. Add a login screen~~
 22. Toastify messages
 23. Loading spinner
-24. create context folder
+~~24. create context folder~~
 ~~22. Change google sign-in to square~~
 23. Use user id in mongo notes schema (do some more research first on account-based schemas)
-24. add texture to website background
+24. Add texture to website background
+25. Password reset
+26. Organize imports
+
 
 
 # Maybes

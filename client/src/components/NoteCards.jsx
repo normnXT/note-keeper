@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { Context } from "../App";
 
 // UI - heroicons
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
@@ -20,7 +21,6 @@ import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Context } from "../App";
 
 SwiperCore.use([Navigation, Pagination, Mousewheel, Grid]);
 

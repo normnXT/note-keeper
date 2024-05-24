@@ -4,13 +4,17 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const loginGoogle = () => {
         window.open("http://localhost:4000/auth/google/callback", "_self");
     };
 
     const onRegister = () => {
-      navigate("/register")
+        navigate("/register");
+    };
+
+    const onResetPassword = () => {
+        navigate("/resetpassword");
     };
 
     return (
@@ -51,7 +55,7 @@ function Login() {
                 </Button>
                 <Button
                     variant="outlined"
-                    className="flex items-center justify-center gap-2 border mt-2 !border-sepia-100 text-sepia-200 px-4 py-2"
+                    className="mt-2 flex items-center justify-center gap-2 border !border-sepia-100 px-4 py-2 text-sepia-200"
                     onClick={loginGoogle}
                     fullWidth
                 >
@@ -63,14 +67,24 @@ function Login() {
                     />
                     <span>Sign in with Google</span>
                 </Button>
-                <Button
-                    variant="outlined"
-                    className="mt-2 !border-sepia-100 text-sepia-200"
-                    onClick={onRegister}
-                    fullWidth
-                >
-                    Register
-                </Button>
+                <div className="flex flex-row gap-2">
+                    <Button
+                        variant="outlined"
+                        className="mt-2 !border-sepia-100 text-sepia-200"
+                        onClick={onRegister}
+                        fullWidth
+                    >
+                        Register
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        className="mt-2 !border-sepia-100 text-sepia-200"
+                        onClick={onResetPassword}
+                        fullWidth
+                    >
+                        Reset Password
+                    </Button>
+                </div>
             </form>
         </Card>
     );
