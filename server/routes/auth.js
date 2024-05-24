@@ -5,16 +5,16 @@ const Note = require("../models/Note");
 const router = express.Router();
 router.use(express.json());
 
-// GET all users
-router.get("/", async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json(users).status(200);
-    } catch (err) {
-        console.error(err);
-        res.json({ error: "No notes found" }).status(404);
-    }
-});
+// GET all users - for testing
+// router.get("/", async (req, res) => {
+//     try {
+//         const users = await User.find();
+//         res.json(users).status(200);
+//     } catch (err) {
+//         console.error(err);
+//         res.json({ error: "No user found" }).status(404);
+//     }
+// });
 
 
 router.get("/login/success", (req, res) => {

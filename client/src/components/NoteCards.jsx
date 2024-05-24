@@ -20,31 +20,29 @@ import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { EditorModalContext } from "../App";
+import { Context } from "../App";
 
 SwiperCore.use([Navigation, Pagination, Mousewheel, Grid]);
 
-function NoteCards(props) {
-    const editorModalContext = useContext(EditorModalContext);
-
-    const notes = props.notes;
+function NoteCards() {
+    const context = useContext(Context);
 
     const handleOpenEditor = (noteId, noteTitle, noteEntry) => {
-        editorModalContext.setCurrentNote({
+        context.setCurrentNote({
             _id: noteId,
             title: noteTitle,
             entry: noteEntry,
         });
-        editorModalContext.setOpenEditor(true);
-        editorModalContext.setIsNew(false);
+        context.setOpenEditor(true);
+        context.setIsNew(false);
     };
 
     const onDelete = async (id) => {
         try {
             const res = await axios.delete(`/notes/${id}`);
             if (res.status === 200) {
-                const updatedNotes = notes.filter((note) => note._id !== id);
-                editorModalContext.setNotes(updatedNotes);
+                const updatedNotes = context.notes.filter((note) => note._id !== id);
+                context.setNotes(updatedNotes);
             }
         } catch (err) {
             console.error(err);
@@ -126,10 +124,10 @@ function NoteCards(props) {
 
     return (
         <div className="px-12">
-            {notes.length > 0 ? (
+            {context.notes.length > 0 ? (
                 <Swiper {...swiperParams} className="h-[86vh]">
                     <div>
-                        {notes.map((note) => (
+                        {context.notes.map((note) => (
                             <SwiperSlide key={note._id}>
                                 <Card className="min-h-[244px] bg-darkgray-100 hover:bg-darkgray-200">
                                     <CardBody>
@@ -175,7 +173,7 @@ function NoteCards(props) {
                 </Swiper>
             ) : (
                 <p className="fixed inset-0 flex items-center justify-center text-xl text-sepia-200">
-                    Start adding notes!
+                    Sign in to start adding notes!
                 </p>
             )}
             <div

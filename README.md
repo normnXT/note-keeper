@@ -29,6 +29,7 @@
 24. create context folder
 ~~22. Change google sign-in to square~~
 23. Use user id in mongo notes schema (do some more research first on account-based schemas)
+24. add texture to website background
 
 
 # Maybes

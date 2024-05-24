@@ -1,20 +1,21 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Navbar, Button } from "@material-tailwind/react";
-import { EditorModalContext } from "../App";
+import { Context } from "../App";
 import logo from "../assets/logo.png";
 import google_color from "../assets/google_color.svg";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
-    const editorModalContext = useContext(EditorModalContext);
-    const [userData, setUserData] = useState({});
+    const context = useContext(Context);
+    const navigate = useNavigate()
 
     const getUser = async () => {
         try {
             const res = await axios.get("/auth/login/success", {
                 withCredentials: true,
             });
-            setUserData(res.data.user);
+            context.setUserData(res.data.user);
         } catch (err) {
             console.log(err);
         }
@@ -25,9 +26,13 @@ function Header() {
     }, []);
 
     const handleOpenEditor = () => {
-        editorModalContext.setOpenEditor(true);
-        editorModalContext.setCurrentNote({ _id: "", title: "", entry: "" });
-        editorModalContext.setIsNew(true);
+        if (Object.keys(context.userData).length === 0) {
+            navigate('/login')
+        } else {
+            context.setOpenEditor(true);
+            context.setCurrentNote({ _id: "", title: "", entry: "" });
+            context.setIsNew(true);
+        }
     };
 
     const loginGoogle = () => {
@@ -55,13 +60,13 @@ function Header() {
                         Add Note
                     </Button>
                 </div>
-                {Object?.keys(userData)?.length > 0 ? (
+                {Object?.keys(context.userData)?.length > 0 ? (
                     <div className="flex flex-row gap-4 self-end">
-                        <span className="flex justify-center items-center text-sepia-200">
-                            {userData?.displayName}
+                        <span className="flex items-center justify-center text-sepia-200">
+                            {context.userData?.displayName}
                         </span>
                         <img
-                            src={userData?.image}
+                            src={context.userData?.image}
                             className="w-10 rounded-full"
                             alt="profile"
                         />
@@ -80,7 +85,7 @@ function Header() {
                         onClick={loginGoogle}
                     >
                         <img
-                            class="h-6 w-6"
+                            className="h-6 w-6"
                             src={google_color}
                             loading="lazy"
                             alt="google logo"
