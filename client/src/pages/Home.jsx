@@ -16,7 +16,7 @@ function App() {
     const getNotes = useCallback(async () => {
         try {
             const res = await axios.get("/notes");
-            console.log("Setting Notes");
+            // console.log("Setting Notes");
             context.setNotes(res.data);
         } catch (err) {
             console.error(err);
