@@ -32,6 +32,7 @@
 24. Add texture to website background
 25. Password reset
 26. Organize imports
+27. Fix "sign-in to start adding notes" message based on user state
 
 
 

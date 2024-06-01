@@ -70,6 +70,7 @@ function NoteCards() {
 
     useEffect(() => {
         const handleResize = () => {
+            // console.log('Resizing window')
             const windowHeight = window.innerHeight;
             if (windowHeight < 576) {
                 setSwiperParams((prevParams) => ({
@@ -172,9 +173,9 @@ function NoteCards() {
                     </div>
                 </Swiper>
             ) : (
-                <p className="fixed inset-0 flex items-center justify-center text-xl text-sepia-200">
+                <div className="flex items-center justify-center fixed inset-0 text-xl text-sepia-200">
                     Sign in to start adding notes!
-                </p>
+                </div>
             )}
             <div
                 className="swiper-button-next"
@@ -188,7 +189,6 @@ function NoteCards() {
                 className="swiper-pagination"
                 style={{ "--swiper-pagination-color": "#fff" }}
             />
-            ;
         </div>
     );
 }

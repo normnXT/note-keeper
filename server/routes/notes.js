@@ -13,8 +13,11 @@ router.get("/test", (req, res) => {
 
 // GET /notes will get all notes
 router.get("/", async (req, res) => {
+    if (!req.user) {
+        return res.json({ error: "User not authenticated" }).status(401);
+    }
     try {
-        const notes = await Note.find();
+        const notes = await Note.find({ user: req.user.id });
         res.json(notes).status(200);
     } catch (err) {
         console.error(err);
@@ -25,7 +28,10 @@ router.get("/", async (req, res) => {
 // POST /notes will create a note
 router.post("/", async (req, res) => {
     try {
-        const newNote = new Note(req.body);
+        const newNote = new Note({
+            user: req.user.id,
+            ...req.body,
+        });
         const newNoteRes = await newNote.save();
         res.json(newNoteRes).status(201);
     } catch (err) {
@@ -51,6 +57,7 @@ router.patch("/:id", async (req, res) => {
         const updatedNote = await Note.findByIdAndUpdate(
             req.params.id,
             req.body,
+            { new: true }
         );
         res.json(updatedNote).status(200);
     } catch (err) {

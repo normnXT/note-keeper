@@ -1,12 +1,6 @@
 import Header from "../components/Header";
 import NoteCards from "../components/NoteCards";
-import React, {
-    useEffect,
-    useState,
-    useRef,
-    useCallback,
-    useContext,
-} from "react";
+import React, { useEffect, useRef, useCallback, useContext } from "react";
 import { Button, Dialog, Input } from "@material-tailwind/react";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
@@ -22,6 +16,7 @@ function App() {
     const getNotes = useCallback(async () => {
         try {
             const res = await axios.get("/notes");
+            console.log("Setting Notes");
             context.setNotes(res.data);
         } catch (err) {
             console.error(err);
@@ -30,13 +25,13 @@ function App() {
 
     useEffect(() => {
         getNotes();
-    }, [getNotes, context.notes]);
+    }, [getNotes]);
 
     const onSubmit = async () => {
         try {
             if (context.isNew) {
                 // console.log(currentNote);
-                const res = await axios.post("/notes/home", {
+                const res = await axios.post("/notes", {
                     title: context.currentNote.title,
                     entry: context.currentNote.entry,
                 });
@@ -50,7 +45,10 @@ function App() {
                         entry: context.currentNote.entry,
                     },
                 );
-                context.setNotes((oldNotes) => [...oldNotes, res.data]);
+                const updatedNotes = context.notes.map((note) =>
+                    note._id === context.currentNote._id ? res.data : note,
+                );
+                context.setNotes(updatedNotes);
             }
             handleOpenEditor();
         } catch (err) {

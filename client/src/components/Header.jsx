@@ -22,7 +22,7 @@ function Header() {
 
     useEffect(() => {
         getUser();
-    }, []);
+    }, [getUser]);
 
     const handleOpenEditor = () => {
         if (Object.keys(context.userData).length === 0) {
@@ -39,7 +39,7 @@ function Header() {
     };
 
     return (
-        <Navbar className="mx-auto border-none bg-darkgray-100 px-8 py-4">
+        <Navbar className="mx-auto border-none bg-darkgray-100 px-8 py-4 z-50">
             <div className="mx-auto flex items-center justify-between">
                 <div className="flex flex-row items-center justify-between gap-4 self-start">
                     <img
