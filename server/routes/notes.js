@@ -1,6 +1,4 @@
 const express = require("express");
-
-// imports mongoose library and mongoose Note model for database operations
 const Note = require("../models/Note");
 
 const router = express.Router();
@@ -14,14 +12,15 @@ router.get("/test", (req, res) => {
 // GET /notes will get all notes
 router.get("/", async (req, res) => {
     if (!req.user) {
-        return res.json({ error: "User not authenticated" }).status(401);
-    }
-    try {
-        const notes = await Note.find({ user: req.user.id });
-        res.json(notes).status(200);
-    } catch (err) {
-        console.error(err);
-        res.json({ error: "No notes found" }).status(404);
+        return res.status(401).send("User not authenticated");
+    } else {
+        try {
+            const notes = await Note.find({ user: req.user.id });
+            res.status(200).json(notes);
+        } catch (err) {
+            console.error(err);
+            res.status(404).send("No notes found");
+        }
     }
 });
 
@@ -33,10 +32,11 @@ router.post("/", async (req, res) => {
             ...req.body,
         });
         const newNoteRes = await newNote.save();
-        res.json(newNoteRes).status(201);
+        res.status(201).json(newNoteRes);
+        // throw new Error('Test error');
     } catch (err) {
         console.error(err);
-        res.json({ error: "Failed to create note" }).status(500);
+        res.status(500).send("Failed to create note");
     }
 });
 
@@ -57,12 +57,12 @@ router.patch("/:id", async (req, res) => {
         const updatedNote = await Note.findByIdAndUpdate(
             req.params.id,
             req.body,
-            { new: true }
+            { new: true },
         );
-        res.json(updatedNote).status(200);
+        res.status(200).json(updatedNote);
     } catch (err) {
         console.error(err);
-        res.json({ error: "Failed to update note" }).status(500);
+        res.status(500).send("Failed to update note");
     }
 });
 
@@ -70,10 +70,10 @@ router.patch("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
     try {
         const deletedNote = await Note.findByIdAndDelete(req.params.id);
-        res.send(deletedNote._id).status(200);
+        res.status(200).send(deletedNote._id);
     } catch (err) {
         console.error(err);
-        res.json({ error: "Failed to delete note" }).status(404);
+        res.status(404).send("Failed to delete note");
     }
 });
 

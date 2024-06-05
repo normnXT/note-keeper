@@ -5,6 +5,7 @@ import { Button, Dialog, Input } from "@material-tailwind/react";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
 import { Context } from "../App";
+import { toast } from 'react-toastify'
 
 function App() {
     const context = useContext(Context);
@@ -35,7 +36,10 @@ function App() {
                     title: context.currentNote.title,
                     entry: context.currentNote.entry,
                 });
-                context.setNotes((oldNotes) => [...oldNotes, res.data]);
+                if (res.status === 201) {
+                    context.setNotes((oldNotes) => [...oldNotes, res.data]);
+                    toast.success("Note submitted successfully")
+                }
             } else {
                 // console.log(currentNote);
                 const res = await axios.patch(
@@ -45,14 +49,18 @@ function App() {
                         entry: context.currentNote.entry,
                     },
                 );
-                const updatedNotes = context.notes.map((note) =>
-                    note._id === context.currentNote._id ? res.data : note,
-                );
-                context.setNotes(updatedNotes);
+                if (res.status === 200) {
+                    const updatedNotes = context.notes.map((note) =>
+                        note._id === context.currentNote._id ? res.data : note,
+                    );
+                    context.setNotes(updatedNotes);
+                    toast.success("Note updated successfully")
+                }
             }
             handleOpenEditor();
         } catch (err) {
             console.error(err);
+            toast.error(err.response.data)
         }
     };
 

@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function ResetPassword() {
-    const navigate = useNavigate()
-    const [email, setEmail] = useState("")
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
 
     return (
         <Card
@@ -20,7 +20,7 @@ function ResetPassword() {
                         type="email"
                         id="email"
                         value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)}
                         size="lg"
                         placeholder="name@mail.com"
                         className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"

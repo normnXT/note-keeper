@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Context } from "../App";
+import { toast } from 'react-toastify';
 
 // UI - heroicons
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
@@ -41,11 +42,15 @@ function NoteCards() {
         try {
             const res = await axios.delete(`/notes/${id}`);
             if (res.status === 200) {
-                const updatedNotes = context.notes.filter((note) => note._id !== id);
+                const updatedNotes = context.notes.filter(
+                    (note) => note._id !== id,
+                );
                 context.setNotes(updatedNotes);
+                toast.success("Note deleted successfully")
             }
         } catch (err) {
             console.error(err);
+            toast.error(err.response.data)
         }
     };
 
@@ -173,8 +178,10 @@ function NoteCards() {
                     </div>
                 </Swiper>
             ) : (
-                <div className="flex items-center justify-center fixed inset-0 text-xl text-sepia-200">
-                    Sign in to start adding notes!
+                <div className="fixed inset-0 flex items-center justify-center text-xl text-sepia-200">
+                    {Object.keys(context.userData).length > 0
+                        ? "Start adding notes!"
+                        : "Sign in to start adding notes!"}
                 </div>
             )}
             <div

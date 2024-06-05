@@ -32,10 +32,11 @@
 24. Add texture to website background
 25. Password reset
 26. Organize imports
-27. Fix "sign-in to start adding notes" message based on user state
+~~27. Fix "sign-in to start adding notes" message based on user state~~
+28. Set up local routes and passport, then work on password reset and confirmation
+29. Figure out why the header login/logout section isn't always updating, and why the profile image failed to load once
 
 
 
 # Maybes
-
 1. Build the backend in Django

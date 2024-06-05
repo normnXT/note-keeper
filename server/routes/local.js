@@ -1,14 +1,19 @@
-// const passport = require("passport");
-// const express = require("express");
-// const User = require("../models/User");
-//
-// const router = express.Router();
-// router.use(express.json());
-//
-// // GET /local/test
-// router.get("/test", (req, res) => {
-//     res.send("Hello World!");
-// });
+const passport = require("passport");
+const express = require("express");
+const bcrypt = require("bcryptjs");
+const User = require("../models/User");
+const {
+    sendThankYouEmail,
+    sendPasswordResetEmail
+} = require("../utils/sendEmail");
+
+const router = express.Router();
+router.use(express.json());
+
+// GET /local/test
+router.get("/test", (req, res) => {
+    res.send("Hello World!");
+});
 //
 // // log the user in using local passport strategy
 // app.post("/login", (req, res, next) => {
@@ -41,44 +46,44 @@
 //     })(req, res, next);
 // });
 //
-// // /register is an HTTP POST method. Client POSTS register form data to backend to be created as a user.
-// // accepts form inputs from frontend register page
-// app.post("/register", (req, res) => {
-//     // check if a user with the given email already exists
-//     User.findOne({ email: req.body.email }, async (err, doc) => {
-//         if (err) {
-//             res.status(400).send(err);
-//         }
-//         // if user already exists, don't register
-//         if (doc) {
-//             res.status(400).send("A user already exists with that email!");
-//         }
-//         // if user doesn't exist, register a new user
-//         if (!doc) {
-//             const pword = req.body.password;
-//             const pwordConfirm = req.body.confirmPassword;
-//             // encrypt the password the user gives, so it is not stored as plaintext in the DB
-//             const hashedPword = await bcrypt.hash(req.body.password, 10);
-//             // if passwords in the register form match and there is no existing email in the DB, create a new user
-//             if (pword === pwordConfirm) {
-//                 const newUser = new User({
-//                     firstName: req.body.firstName,
-//                     lastName: req.body.lastName,
-//                     email: req.body.email,
-//                     password: hashedPword,
-//                     confirmedEmail: false,
-//                 });
-//                 // get details (including uuid) of this newly registered user
-//                 const savedNewUser = await newUser.save();
-//                 // send confirmation email with email address and uuid attached
-//                 sendConfirmationEmail(req.body.email, savedNewUser._id);
-//                 res.status(200).send("Registered into DB successfully!");
-//             } else {
-//                 res.status(400).send("Passwords mismatch! Could not register.");
-//             }
-//         }
-//     });
-// });
+// /register is an HTTP POST method. Client POSTS register form data to backend to be created as a user.
+// accepts form inputs from frontend register page
+router.post("/register", async (req, res) => {
+    try {
+        // check if a user with the given email already exists
+        const user = await User.findOne({ email: req.body.email });
+
+        // if user already exists, don't register
+        if (user) {
+            res.status(400).send("A user already exists with that email");
+        } else {
+            // if user doesn't exist, register a new user
+            const { displayName, email, password, confirmPassword } = req.body;
+            // encrypt the password the user gives, so it is not stored as plaintext in the DB
+            const hashedPassword = await bcrypt.hash(password, 10);
+            // if passwords in the register form match and there is no existing email in the DB, create a new user
+            if (password === confirmPassword) {
+                const newUser = new User({
+                    displayName: displayName,
+                    email: email,
+                    password: hashedPassword
+                });
+                // get details (including uuid) of this newly registered user
+                const savedNewUser = await newUser.save();
+                // send confirmation email with email address and uuid attached
+                sendThankYouEmail(savedNewUser.email, savedNewUser.displayName);
+                res.status(200).send("Registered successfully");
+            } else {
+                res.status(400).send("Registration failed due to mismatching passwords");
+            }
+        }
+        // throw new Error("Test Error")
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("An error occurred during registration");
+    }
+});
+
 //
 // // once the button for email confirmation is clicked, update the DB to mark the user's email as confirmed
 // // accepts a userid
@@ -194,4 +199,4 @@
 //     res.status(200).send("You have successfully logged out!");
 // });
 //
-// module.exports = router;
+module.exports = router;

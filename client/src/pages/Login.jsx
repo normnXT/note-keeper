@@ -2,14 +2,19 @@ import { Card, Input, Button } from "@material-tailwind/react";
 import google_color from "../assets/google_color.svg";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify'
 
 function Login() {
     const navigate = useNavigate();
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const loginGoogle = () => {
-        window.open("http://localhost:4000/auth/google/callback", "_self");
+        try {
+            window.open("http://localhost:4000/auth/google/callback", "_self");
+        } catch (err) {
+            toast.error(err.response.data)
+        }
     };
 
     return (
@@ -26,7 +31,7 @@ function Login() {
                         type="email"
                         id="email"
                         value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)}
                         size="lg"
                         placeholder="name@mail.com"
                         className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
@@ -39,7 +44,7 @@ function Login() {
                         type="password"
                         id="password"
                         value={password}
-                        onChange={e => setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                         size="lg"
                         placeholder="********"
                         className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"

@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 
-const sendConfirmationEmail = (emailAddress, userID) => {
+const sendThankYouEmail = (emailAddress, displayName) => {
 
     const smtpTransport = nodemailer.createTransport({
         service: 'Gmail',
@@ -14,13 +14,9 @@ const sendConfirmationEmail = (emailAddress, userID) => {
     const email = {
         from: 'Note Keeper',
         to: emailAddress,
-        subject: 'Note Keeper | email confirmation',
+        subject: 'Note Keeper | Thank you!',
         html: `
-        Thank you! To finalise the registration process,
-        <a href='${process.env.CLIENT_URL}/confirm/${userID}'>
-          click here to confirm your email address.
-        </a>
-        If you didn't register to Note Keeper, you can safely ignore this email.
+        <p>Thank you for successfully registering to Note Keeper ${displayName}!</p>
       `,
     };
 
@@ -47,10 +43,10 @@ const sendPasswordResetEmail = (emailAddress, userID) => {
     const email = {
         from: 'Note Keeper',
         to: emailAddress,
-        subject: 'Note Keeper | password reset',
+        subject: 'Note Keeper | Password reset',
         html: `
         If it was you who requested this change,
-        <a href='${process.env.CLIENT_URL}/passwordchange/${userID}'>
+        <a href='${process.env.CLIENT_URL}/resetpassword/${userID}'> 
           click here to reset your password.
         </a>
         If you didn't request a password reset, you can ignore this email.
@@ -67,4 +63,4 @@ const sendPasswordResetEmail = (emailAddress, userID) => {
     });
 };
 
-module.exports = {sendConfirmationEmail, sendPasswordResetEmail};
+module.exports = {sendThankYouEmail, sendPasswordResetEmail};

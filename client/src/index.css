@@ -3,14 +3,18 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    font-family: "Roboto", system-ui, sans-serif;
-  }
+    html {
+        font-family: "Roboto", system-ui, sans-serif;
+    }
 }
 
 @layer utilities {
     .tox.tox-silver-sink.tox-tinymce-aux {
         z-index: 100000 !important;
+    }
+
+    .Toastify__toast-container {
+        z-index: 200000;
     }
 }
 

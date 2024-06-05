@@ -1,38 +1,25 @@
 const passport = require("passport");
 const express = require("express");
+const dotenv = require("dotenv");
+const User = require("../models/User");
 
 const router = express.Router();
 router.use(express.json());
 
-// GET all users - for testing
-router.get("/", async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json(users).status(200);
-    } catch (err) {
-        console.error(err);
-        res.json({ error: "No user found" }).status(404);
-    }
-});
-
+dotenv.config()
 
 router.get("/login/success", (req, res) => {
     if (req.user) {
         res.status(200).json({
-            error: false,
-            message: "Successfully logged in",
             user: req.user,
         });
     } else {
-        res.status(403).json({ error: true, message: "Not authorized" });
+        res.status(403).send("Not authorized");
     }
 });
 
 router.get("/login/failed", (req, res) => {
-    res.status(401).json({
-        error: true,
-        message: "Login failure",
-    });
+    res.status(401).send("Login failure");
 });
 
 router.get("/google", passport.authenticate("google", ["profile", "email"]));
@@ -41,7 +28,7 @@ router.get(
     "/google/callback",
     passport.authenticate("google", {
         successRedirect: `${process.env.CLIENT_URL}`,
-        failureRedirect: "/login/failed",
+        failureRedirect: `${process.env.CLIENT_URL}/login/failed`,
     }),
 );
 

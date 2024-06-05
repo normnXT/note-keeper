@@ -10,7 +10,8 @@ const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
 const AuthStrategy = require("passport-google-oauth2").Strategy;
 
-// const localRouter = require("./routes/local");
+const adminRouter = require("./routes/admin");
+const localRouter = require("./routes/local");
 const noteRouter = require("./routes/notes");
 const authRouter = require("./routes/auth");
 const mongo_uri = require("./config/keys").mongoProdURI;
@@ -33,7 +34,7 @@ app.use(
     }),
 );
 
-// app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // Initializes passport session and sets passport strategy
 app.use(passport.initialize());
@@ -52,46 +53,52 @@ passport.use(
                 let user = await User.findOne({ googleId: profile.id });
 
                 if (!user) {
-                    user = new User({
+
+                    const newUser = new User({
                         googleId: profile.id,
                         displayName: profile.displayName,
                         email: profile.emails[0].value,
                         image: profile.photos[0].value,
                     });
 
-                    await user.save();
+                    await newUser.save();
                 }
 
                 return done(null, user);
-            } catch (error) {
-                return done(error, null);
+            } catch (err) {
+                return done(err, null);
             }
         },
     ),
 );
 
-// passport.use(
-//     new LocalStrategy(
-//         { usernameField: "email", passwordField: "password" },
-//         (email, password, done) => {
-//             User.findOne({ email: email }, (err, user) => {
-//                 if (err) throw err;
-//
-//                 if (!user) return done(null, false);
-//
-//                 bcrypt.compare(password, user.password, (err, result) => {
-//                     if (err) throw err;
-//
-//                     if (result === true) {
-//                         return done(null, user);
-//                     } else {
-//                         return done(null, false);
-//                     }
-//                 });
-//             });
-//         },
-//     ),
-// );
+passport.use(
+    new LocalStrategy(
+        { usernameField: "email", passwordField: "password" },
+        async (email, password, done) => {
+            try {
+                const user = await User.findOne({ email: email });
+
+                if (!user) {
+                    return done(null, false);
+                } else {
+                    bcrypt.compare(password, user.password, (err, res) => {
+                        if (err) throw err;
+
+                        if (res === true) {
+                            return done(null, user);
+                        } else {
+                            return done(null, false);
+                        }
+                    });
+                }
+            } catch (err) {
+                console.log(err);
+                done(err);
+            }
+        },
+    ),
+);
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -100,21 +107,30 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
     User.findOne({ _id: id })
         .then((user) => {
+            if (!user) {
+                return done(null, false);
+            }
+
             const userInfo = {
                 id: user._id,
                 displayName: user.displayName,
                 email: user.email,
                 image: user.image || null,
             };
+
             done(null, userInfo);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            console.log(err);
+            done(err);
+        });
 });
 
 // Route handling to follow /notes, /auth, and /local subdirectories
+app.use("/admin", adminRouter);
 app.use("/notes", noteRouter);
 app.use("/auth", authRouter);
-// app.use("/local", localRouter);
+app.use("/local", localRouter);
 
 // Enables cross-origin resource sharing between Google API and client
 app.use(
