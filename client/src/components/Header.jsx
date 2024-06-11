@@ -4,6 +4,7 @@ import { Context } from "../App";
 import logo from "../assets/logo.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Header() {
     const context = useContext(Context);
@@ -31,6 +32,20 @@ function Header() {
             context.setOpenEditor(true);
             context.setCurrentNote({ _id: "", title: "", entry: "" });
             context.setIsNew(true);
+        }
+    };
+
+    const onLogout = async(e) => {
+        e.preventDefault()
+        try {
+            const res = await axios.get('/local/logout', {withCredentials: true})
+            if (res.status === 200) {
+                context.setUserData({});
+                context.setNotes([]);
+            }
+        } catch (err) {
+            console.log(err)
+            toast.error("Logout failed")
         }
     };
 
@@ -70,7 +85,7 @@ function Header() {
                         <Button
                             ripple={true}
                             className="!border !border-sepia-100 !bg-opacity-0 text-sepia-200"
-                            onClick={logoutGoogle}
+                            onClick={context.userData.googleId ? logoutGoogle : onLogout}
                         >
                             Logout
                         </Button>

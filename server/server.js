@@ -50,7 +50,7 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                let user = await User.findOne({ googleId: profile.id });
+                let user = await User.findOne({ email: profile.emails[0].value });
 
                 if (!user) {
 
@@ -61,7 +61,7 @@ passport.use(
                         image: profile.photos[0].value,
                     });
 
-                    await newUser.save();
+                    user = await newUser.save();
                 }
 
                 return done(null, user);

@@ -1,13 +1,39 @@
 import { Card, Input, Button } from "@material-tailwind/react";
 import google_color from "../assets/google_color.svg";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify'
+import axios from "axios";
+import { Context } from "../App";
 
 function Login() {
     const navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const context = useContext(Context);
+    const [loginEmail, setLoginEmail] = useState("");
+    const [loginPassword, setLoginPassword] = useState("");
+
+    const onLogin = async (e) => {
+        e.preventDefault();
+
+        const user = {
+            email: loginEmail,
+            password: loginPassword,
+        };
+
+        try {
+            const res = await axios.post('/local/login', user, { withCredentials: true })
+            if (res.status === 400) {
+                toast.error(res.data)
+            } else {
+                navigate("/")
+                context.setUserData(res.data)
+                toast.success("Successfully logged in")
+            }
+        } catch (err) {
+            console.log(err)
+            toast.error(err.response.data)
+        }
+    };
 
     const loginGoogle = () => {
         try {
@@ -30,8 +56,8 @@ function Login() {
                     <Input
                         type="email"
                         id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={loginEmail}
+                        onChange={(e) => setLoginEmail(e.target.value)}
                         size="lg"
                         placeholder="name@mail.com"
                         className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
@@ -43,10 +69,10 @@ function Login() {
                     <Input
                         type="password"
                         id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={loginPassword}
+                        onChange={(e) => setLoginPassword(e.target.value)}
                         size="lg"
-                        placeholder="********"
+                        placeholder="••••••••"
                         className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
@@ -56,6 +82,7 @@ function Login() {
                 <Button
                     variant="outlined"
                     className="mt-6 !border-sepia-100 text-sepia-200"
+                    onClick={onLogin}
                     fullWidth
                 >
                     Sign In

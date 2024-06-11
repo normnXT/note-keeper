@@ -1,5 +1,6 @@
 const passport = require("passport");
 const express = require("express");
+const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const {
@@ -10,74 +11,65 @@ const {
 const router = express.Router();
 router.use(express.json());
 
+dotenv.config()
+
 // GET /local/test
 router.get("/test", (req, res) => {
     res.send("Hello World!");
 });
-//
-// // log the user in using local passport strategy
-// app.post("/login", (req, res, next) => {
-//     // authenticate the user using our local passport strategy
-//     passport.authenticate("local", (err, user, info) => {
-//         if (err) {
-//             res.send(err);
-//         }
-//         // if authentication failed
-//         if (!user) {
-//             res.status(400).send("Your email or password is incorrect.");
-//         }
-//         // if authentication was successful
-//         else {
-//             req.login(user, (err) => {
-//                 if (err) {
-//                     throw err;
-//                 }
-//                 // if no errors, log in is successful, send user details to client
-//                 console.log("You have been authenticated! Hello there!");
-//                 res.status(200).send({
-//                     id: req.user.id,
-//                     firstName: req.user.firstName,
-//                     lastName: req.user.lastName,
-//                     email: req.user.email,
-//                     confirmedEmail: req.user.confirmedEmail,
-//                 });
-//             });
-//         }
-//     })(req, res, next);
-// });
-//
+
+// log the user in using local passport strategy
+router.post("/login", (req, res, next) => {
+    // authenticate the user using our local passport strategy
+    passport.authenticate("local", (err, user) => {
+        if (err) {
+            res.send(err);
+        }
+        // if authentication failed
+        if (!user) {
+            res.status(400).send("Your email or password is incorrect");
+        }
+        // if authentication was successful
+        else {
+            req.login(user, (err) => {
+                if (err) {
+                    throw err;
+                }
+                // if no errors, log in is successful, send user details to client
+                res.status(200).send({
+                    id: req.user.id,
+                    displayName: req.user.displayName,
+                    email: req.user.email,
+                });
+            });
+        }
+    })(req, res, next);
+});
+
 // /register is an HTTP POST method. Client POSTS register form data to backend to be created as a user.
 // accepts form inputs from frontend register page
 router.post("/register", async (req, res) => {
     try {
-        // check if a user with the given email already exists
         const user = await User.findOne({ email: req.body.email });
 
-        // if user already exists, don't register
         if (user) {
             res.status(400).send("A user already exists with that email");
         } else {
-            // if user doesn't exist, register a new user
             const { displayName, email, password, confirmPassword } = req.body;
-            // encrypt the password the user gives, so it is not stored as plaintext in the DB
             const hashedPassword = await bcrypt.hash(password, 10);
-            // if passwords in the register form match and there is no existing email in the DB, create a new user
             if (password === confirmPassword) {
                 const newUser = new User({
                     displayName: displayName,
                     email: email,
                     password: hashedPassword
                 });
-                // get details (including uuid) of this newly registered user
                 const savedNewUser = await newUser.save();
-                // send confirmation email with email address and uuid attached
                 sendThankYouEmail(savedNewUser.email, savedNewUser.displayName);
                 res.status(200).send("Registered successfully");
             } else {
                 res.status(400).send("Registration failed due to mismatching passwords");
             }
         }
-        // throw new Error("Test Error")
     } catch (err) {
         console.log(err);
         res.status(500).send("An error occurred during registration");
@@ -193,10 +185,12 @@ router.post("/register", async (req, res) => {
 //     res.send(req.user);
 // });
 //
-// // log the user out (end the express session)
-// app.get("/logout", (req, res) => {
-//     req.logout(req.user);
-//     res.status(200).send("You have successfully logged out!");
-// });
-//
+// log the user out (end the express session)
+router.get("/logout", (req, res, next) => {
+    req.logout(function(err) {
+    if (err) { return next(err); }
+    res.status(200).redirect(`${process.env.CLIENT_URL}`);
+  });
+});
+
 module.exports = router;

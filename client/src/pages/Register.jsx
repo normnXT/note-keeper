@@ -1,7 +1,7 @@
 import { Card, Input, Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
-import { Context } from "../App";
+// import { Context } from "../App";
 import { toast } from 'react-toastify';
 import axios from "axios";
 
@@ -78,7 +78,7 @@ function Register() {
                         value={registerPassword}
                         onChange={(e) => setRegisterPassword(e.target.value)}
                         size="lg"
-                        placeholder="********"
+                        placeholder="••••••••"
                         className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
@@ -95,7 +95,7 @@ function Register() {
                             setConfirmRegisterPassword(e.target.value)
                         }
                         size="lg"
-                        placeholder="********"
+                        placeholder="••••••••"
                         className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",

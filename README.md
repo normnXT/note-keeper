@@ -21,20 +21,21 @@
 ~~19. Look into other possible editors that might be easier, and look at their color/modal features~~
 ~~20. Follow the guide! Read carefully. https://www.tiny.cloud/docs/tinymce/latest/creating-a-skin/~~
 ~~18. Check onSubmit function in Record.jsx of mern-stack-example project. Browse other projects.~~
-19. Add urls to .env and any other objects like port
+~~19. Add urls to .env and any other objects like port~~
 20. Comment the code
 ~~21. Add a login screen~~
-22. Toastify messages
+~~22. Toastify messages~~
 23. Loading spinner
 ~~24. create context folder~~
 ~~22. Change google sign-in to square~~
-23. Use user id in mongo notes schema (do some more research first on account-based schemas)
+~~23. Use user id in mongo notes schema (do some more research first on account-based schemas)~~
 24. Add texture to website background
 25. Password reset
 26. Organize imports
 ~~27. Fix "sign-in to start adding notes" message based on user state~~
 28. Set up local routes and passport, then work on password reset and confirmation
 29. Figure out why the header login/logout section isn't always updating, and why the profile image failed to load once
+30. **Remove or figure out admin route privacy before production and delete this message**
 
 
 

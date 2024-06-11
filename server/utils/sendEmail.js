@@ -1,22 +1,22 @@
-const nodemailer = require('nodemailer');
-
+const nodemailer = require("nodemailer");
 
 const sendThankYouEmail = (emailAddress, displayName) => {
-
     const smtpTransport = nodemailer.createTransport({
-        service: 'Gmail',
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
         auth: {
-            user: process.env.EMAIL,
-            pass: process.env.EMAIL_PASSWORD,
+            user: `${process.env.EMAIL}`,
+            pass: `${process.env.APP_PASSWORD}`,
         },
     });
 
     const email = {
-        from: 'Note Keeper',
+        from: "Note Keeper",
         to: emailAddress,
-        subject: 'Note Keeper | Thank you!',
+        subject: "Note Keeper | Thank you!",
         html: `
-        <p>Thank you for successfully registering to Note Keeper ${displayName}!</p>
+        <p>${displayName}, thank you for registering to Note Keeper!</p>
       `,
     };
 
@@ -24,26 +24,27 @@ const sendThankYouEmail = (emailAddress, displayName) => {
         if (error) {
             console.log(error);
         } else {
-            console.log('Email sent successfully!');
+            console.log("Email sent successfully!");
         }
         smtpTransport.close();
     });
 };
 
-
 const sendPasswordResetEmail = (emailAddress, userID) => {
     const smtpTransport = nodemailer.createTransport({
-        service: 'Gmail',
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
         auth: {
-            user: process.env.EMAIL,
-            pass: process.env.EMAIL_PASSWORD,
+            user: `${process.env.EMAIL}`,
+            pass: `${process.env.APP_PASSWORD}`,
         },
     });
 
     const email = {
-        from: 'Note Keeper',
+        from: "Note Keeper",
         to: emailAddress,
-        subject: 'Note Keeper | Password reset',
+        subject: "Note Keeper | Password reset",
         html: `
         If it was you who requested this change,
         <a href='${process.env.CLIENT_URL}/resetpassword/${userID}'> 
@@ -57,10 +58,10 @@ const sendPasswordResetEmail = (emailAddress, userID) => {
         if (error) {
             console.log(error);
         } else {
-            console.log('Email sent successfully!');
+            console.log("Email sent successfully!");
         }
         smtpTransport.close();
     });
 };
 
-module.exports = {sendThankYouEmail, sendPasswordResetEmail};
+module.exports = { sendThankYouEmail, sendPasswordResetEmail };
