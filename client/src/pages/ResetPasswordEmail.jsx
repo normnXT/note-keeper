@@ -60,7 +60,7 @@ function ResetPasswordEmail() {
                     className="mt-6 !border-sepia-100 text-sepia-200"
                     fullWidth
                 >
-                    Request Password Reset Email
+                    Request Email
                 </Button>
             </form>
         </Card>

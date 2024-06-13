@@ -1,5 +1,5 @@
 import Header from "../components/Header";
-import NoteCards from "../components/NoteCards";
+import SwiperGrid from "../components/SwiperGrid";
 import React, { useEffect, useRef, useCallback, useContext } from "react";
 import { Button, Dialog, Input } from "@material-tailwind/react";
 import { Editor } from "@tinymce/tinymce-react";
@@ -156,7 +156,7 @@ function App() {
                 </div>
             </Dialog>
             <Header />
-            <NoteCards />
+            <SwiperGrid />
         </div>
     );
 }
