@@ -36,6 +36,7 @@
 28. Set up local routes and passport, then work on password reset and confirmation
 29. Figure out why the header login/logout section isn't always updating, and why the profile image failed to load once
 30. **Remove or figure out admin route privacy before production and delete this message**
+31. Backend router for password email and reset are complete but not tested, need to make frontend handlers for the functions and get the pages working.
 
 
 

@@ -30,7 +30,7 @@ const sendThankYouEmail = (emailAddress, displayName) => {
     });
 };
 
-const sendPasswordResetEmail = (emailAddress, userID) => {
+const sendPasswordResetEmail = (emailAddress, _id) => {
     const smtpTransport = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 465,
@@ -47,7 +47,7 @@ const sendPasswordResetEmail = (emailAddress, userID) => {
         subject: "Note Keeper | Password reset",
         html: `
         If it was you who requested this change,
-        <a href='${process.env.CLIENT_URL}/resetpassword/${userID}'> 
+        <a href='${process.env.CLIENT_URL}/resetpassword/${_id}'> 
           click here to reset your password.
         </a>
         If you didn't request a password reset, you can ignore this email.

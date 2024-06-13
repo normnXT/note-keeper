@@ -113,7 +113,7 @@ function Login() {
                     <Button
                         variant="outlined"
                         className="mt-2 !border-sepia-100 text-sepia-200"
-                        onClick={() => navigate("/resetpassword")}
+                        onClick={() => navigate("/resetpasswordemail")}
                         fullWidth
                     >
                         Reset Password

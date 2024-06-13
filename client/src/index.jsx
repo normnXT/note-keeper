@@ -12,6 +12,7 @@ import App from "./App";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ResetPasswordEmail from "./pages/ResetPasswordEmail";
 import ResetPassword from "./pages/ResetPassword";
 import "./index.css";
 
@@ -21,7 +22,8 @@ const router = createBrowserRouter(
             <Route index={true} path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/resetpassword" element={<ResetPassword />} />
+            <Route path="/resetpasswordemail" element={<ResetPasswordEmail />} />
+            <Route path="/resetpassword/:id" element={<ResetPassword />} />
         </Route>
     )
 );
