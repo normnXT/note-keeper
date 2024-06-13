@@ -35,17 +35,19 @@ function Header() {
         }
     };
 
-    const onLogout = async(e) => {
-        e.preventDefault()
+    const onLogout = async (e) => {
+        e.preventDefault();
         try {
-            const res = await axios.get('/local/logout', {withCredentials: true})
+            const res = await axios.get("/local/logout", {
+                withCredentials: true,
+            });
             if (res.status === 200) {
                 context.setUserData({});
                 context.setNotes([]);
             }
         } catch (err) {
-            console.log(err)
-            toast.error("Logout failed")
+            console.log(err);
+            toast.error("Logout failed");
         }
     };
 
@@ -85,7 +87,11 @@ function Header() {
                         <Button
                             ripple={true}
                             className="!border !border-sepia-100 !bg-opacity-0 text-sepia-200"
-                            onClick={context.userData.googleId ? logoutGoogle : onLogout}
+                            onClick={
+                                context.userData.googleId
+                                    ? logoutGoogle
+                                    : onLogout
+                            }
                         >
                             Logout
                         </Button>

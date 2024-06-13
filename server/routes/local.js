@@ -105,7 +105,7 @@ router.post("/resetPassword", async (req, res) => {
             const updatedPassword = await User.findOneAndUpdate(
                 { _id: _id },
                 { $set: { password: newPasswordHashed } },
-                { new: true }
+                { new: true },
             );
             if (updatedPassword) {
                 res.status(200).send("Password successfully updated");

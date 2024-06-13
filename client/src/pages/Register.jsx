@@ -1,13 +1,11 @@
 import { Card, Input, Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
-// import { Context } from "../App";
-import { toast } from 'react-toastify';
+import { useState } from "react";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 function Register() {
     const navigate = useNavigate();
-    // const context = useContext(Context);
     const [registerName, setRegisterName] = useState("");
     const [registerEmail, setRegisterEmail] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
@@ -20,20 +18,22 @@ function Register() {
             displayName: registerName,
             email: registerEmail,
             password: registerPassword,
-            confirmPassword: confirmRegisterPassword
+            confirmPassword: confirmRegisterPassword,
         };
 
         try {
-            const res = await axios.post('/local/register', user, { withCredentials: true })
+            const res = await axios.post("/local/register", user, {
+                withCredentials: true,
+            });
             if (res.status === 400) {
-                toast.error(res.data)
+                toast.error(res.data);
             } else {
-                navigate("/")
-                toast.success(res.data)
+                navigate("/");
+                toast.success(res.data);
             }
         } catch (err) {
-            console.log(err)
-            toast.error(err.response.data)
+            console.log(err);
+            toast.error(err.response.data);
         }
     };
 

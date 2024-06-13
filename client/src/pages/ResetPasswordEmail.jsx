@@ -1,8 +1,8 @@
 import { Card, Input, Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 function ResetPasswordEmail() {
     const navigate = useNavigate();
@@ -16,16 +16,18 @@ function ResetPasswordEmail() {
         };
 
         try {
-            const res = await axios.post('/local/sendResetEmail', data, { withCredentials: true })
+            const res = await axios.post("/local/sendResetEmail", data, {
+                withCredentials: true,
+            });
             if (res.status === 400) {
-                toast.error(res.data)
+                toast.error(res.data);
             } else {
-                navigate("/")
-                toast.success(res.data)
+                navigate("/");
+                toast.success(res.data);
             }
         } catch (err) {
-            console.log(err)
-            toast.error(err.response.data)
+            console.log(err);
+            toast.error(err.response.data);
         }
     };
 

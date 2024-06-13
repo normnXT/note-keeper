@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Context } from "../App";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 // UI - heroicons
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
@@ -46,11 +46,11 @@ function NoteCards() {
                     (note) => note._id !== id,
                 );
                 context.setNotes(updatedNotes);
-                toast.success("Note deleted successfully")
+                toast.success("Note deleted successfully");
             }
         } catch (err) {
             console.error(err);
-            toast.error(err.response.data)
+            toast.error(err.response.data);
         }
     };
 

@@ -1,7 +1,7 @@
 import React, { useState, createContext } from "react";
-import { Outlet } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Context = createContext(undefined);
 
@@ -28,11 +28,14 @@ function App() {
                 notes,
                 setNotes,
                 userData,
-                setUserData
+                setUserData,
             }}
         >
             <Outlet />
-            <ToastContainer theme="dark" className="Toastify__toast-container" />
+            <ToastContainer
+                theme="dark"
+                className="Toastify__toast-container"
+            />
         </Context.Provider>
     );
 }

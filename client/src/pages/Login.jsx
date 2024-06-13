@@ -2,7 +2,7 @@ import { Card, Input, Button } from "@material-tailwind/react";
 import google_color from "../assets/google_color.svg";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify";
 import axios from "axios";
 import { Context } from "../App";
 
@@ -21,17 +21,19 @@ function Login() {
         };
 
         try {
-            const res = await axios.post('/local/login', user, { withCredentials: true })
+            const res = await axios.post("/local/login", user, {
+                withCredentials: true,
+            });
             if (res.status === 400) {
-                toast.error(res.data)
+                toast.error(res.data);
             } else {
-                navigate("/")
-                context.setUserData(res.data)
-                toast.success("Successfully logged in")
+                navigate("/");
+                context.setUserData(res.data);
+                toast.success("Successfully logged in");
             }
         } catch (err) {
-            console.log(err)
-            toast.error(err.response.data)
+            console.log(err);
+            toast.error(err.response.data);
         }
     };
 
@@ -39,7 +41,7 @@ function Login() {
         try {
             window.open("http://localhost:4000/auth/google/callback", "_self");
         } catch (err) {
-            toast.error(err.response.data)
+            toast.error(err.response.data);
         }
     };
 

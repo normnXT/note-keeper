@@ -1,12 +1,11 @@
 const passport = require("passport");
 const express = require("express");
 const dotenv = require("dotenv");
-const User = require("../models/User");
 
 const router = express.Router();
 router.use(express.json());
 
-dotenv.config()
+dotenv.config();
 
 router.get("/login/success", (req, res) => {
     if (req.user) {
@@ -33,10 +32,12 @@ router.get(
 );
 
 router.get("/logout", (req, res, next) => {
-    req.logout(function(err) {
-    if (err) { return next(err); }
-    res.redirect(`${process.env.CLIENT_URL}`);
-  });
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect(`${process.env.CLIENT_URL}`);
+    });
 });
 
 module.exports = router;
