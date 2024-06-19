@@ -105,7 +105,7 @@ function Register() {
                 <Button
                     type="submit"
                     variant="outlined"
-                    className="mt-6 !border-sepia-100 text-sepia-200"
+                    className="mt-6 !border-sepia-100 !font-semibold text-sepia-200"
                     // onClick={onRegister}
                     fullWidth
                 >

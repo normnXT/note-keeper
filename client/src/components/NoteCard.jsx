@@ -12,15 +12,16 @@ import { Context } from "../App";
 
 function NoteCard(props) {
     const context = useContext(Context);
+    const { note } = props
 
     const handleOpenEditor = (noteId, noteTitle, noteEntry) => {
+        context.setOpenEditor(!context.openEditor);
+        context.setIsNew(false);
         context.setCurrentNote({
             _id: noteId,
             title: noteTitle,
             entry: noteEntry,
         });
-        context.setOpenEditor(true);
-        context.setIsNew(false);
     };
 
     const onDelete = async (id) => {
@@ -44,29 +45,29 @@ function NoteCard(props) {
             <CardBody>
                 <div
                     dangerouslySetInnerHTML={{
-                        __html: props.note.title,
+                        __html: note.title,
                     }}
-                    className="line-clamp-1 text-xl text-sepia-200"
+                    className="line-clamp-1 text-xl !font-medium text-sepia-200"
                 />
                 <div
                     dangerouslySetInnerHTML={{
-                        __html: props.note.entry,
+                        __html: note.entry,
                     }}
-                    className="line-clamp-3 text-sepia-100"
+                    className="line-clamp-3 !font-light text-sepia-100"
                 />
             </CardBody>
             <CardFooter className="mt-auto flex flex-row gap-2 self-end">
                 <IconButton
                     ripple={true}
                     className="!border !border-sepia-100 !bg-opacity-0"
-                    onClick={handleOpenEditor}
+                    onClick={() => handleOpenEditor(note._id, note.title, note.entry)}
                 >
                     <PencilSquareIcon className="h-5 w-5 text-sepia-200" />
                 </IconButton>
                 <IconButton
                     ripple={true}
                     className="!border !border-sepia-100 !bg-opacity-0"
-                    onClick={() => onDelete(props.note._id)}
+                    onClick={() => onDelete(note._id)}
                 >
                     <TrashIcon className="h-5 w-5 text-sepia-200" />
                 </IconButton>

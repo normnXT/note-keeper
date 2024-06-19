@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../App";
+import { useNavigate } from "react-router-dom";
 import NoteCard from "./NoteCard";
 
 // UI - swiper
@@ -11,11 +12,21 @@ import "swiper/css/grid";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-
 SwiperCore.use([Navigation, Pagination, Mousewheel, Grid]);
 
 function SwiperGrid() {
     const context = useContext(Context);
+    const navigate = useNavigate()
+
+    const handleOpenEditor = () => {
+        if (Object.keys(context.userData).length === 0) {
+            navigate("/login");
+        } else {
+            context.setOpenEditor(!context.openEditor);
+            context.setIsNew(true);
+            context.setCurrentNote({ _id: "", title: "", entry: "" });
+        }
+    };
 
     const [swiperParams, setSwiperParams] = useState({
         slidesPerView: 3,
@@ -96,18 +107,28 @@ function SwiperGrid() {
             {context.notes.length > 0 ? (
                 <Swiper {...swiperParams} className="h-[86vh]">
                     <div>
-                        {context.notes.map((note) => (
-                            <SwiperSlide key={note._id}>
-                                <NoteCard note={note} />
+                        {context.notes.map((cardNote) => (
+                            <SwiperSlide key={cardNote._id}>
+                                <NoteCard note={cardNote} />
                             </SwiperSlide>
                         ))}
                     </div>
                 </Swiper>
             ) : (
-                <div className="fixed inset-0 flex items-center justify-center text-xl text-sepia-200">
-                    {Object.keys(context.userData).length > 0
-                        ? "Start adding notes!"
-                        : "Sign in to start adding notes!"}
+                <div className="fixed inset-0 flex items-center justify-center text-2xl font-semibold text-sepia-200">
+                    {Object.keys(context.userData).length > 0 ? (
+                        <span onClick={handleOpenEditor}>
+                            <span className="opacity-60">Start adding </span>
+                            <span>notes!</span>
+                        </span>
+                    ) : (
+                        <span onClick={handleOpenEditor}>
+                            <span className="opacity-60">
+                                Sign in to keep{" "}
+                            </span>
+                            <span>notes.</span>
+                        </span>
+                    )}
                 </div>
             )}
             <div

@@ -1,26 +1,59 @@
 import Header from "../components/Header";
 import SwiperGrid from "../components/SwiperGrid";
-import React, { useEffect, useRef, useCallback, useContext } from "react";
+import React, {
+    useEffect,
+    useRef,
+    useState,
+    useCallback,
+    useContext,
+} from "react";
 import { Button, Dialog, Input } from "@material-tailwind/react";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
 import { Context } from "../App";
 import { toast } from "react-toastify";
+import Spinner from "../components/Spinner";
+import markdownIt from 'markdown-it';
+import TurndownService from "turndown";
+import { useNavigate } from "react-router-dom";
 
-function App() {
+function Home() {
     const context = useContext(Context);
-
-    const handleOpenEditor = () => context.setOpenEditor(!context.openEditor);
+    const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false);
 
     const editorRef = useRef(null);
 
+    const markdownToHtml = markdownIt();
+    const HtmlToMarkdown = new TurndownService();
+
+    const renderer = (markdownCode) => {
+        return markdownToHtml.render(markdownCode);
+    };
+
+    const parser = (htmlCode) => {
+        return HtmlToMarkdown.turndown(htmlCode);
+    };
+
+    const handleOpenEditor = () => {
+        if (Object.keys(context.userData).length === 0) {
+            navigate("/login");
+        } else {
+            context.setOpenEditor(!context.openEditor);
+            context.setIsNew(true);
+            context.setCurrentNote({ _id: "", title: "", entry: "" });
+        }
+    };
+
     const getNotes = useCallback(async () => {
         try {
+            setIsLoading(true); // Set loading state to true before making the API call
             const res = await axios.get("/notes");
-            // console.log("Setting Notes");
             context.setNotes(res.data);
         } catch (err) {
             console.error(err);
+        } finally {
+            setIsLoading(false); // Set loading state to false after the API call is completed
         }
     }, []);
 
@@ -89,10 +122,11 @@ function App() {
                 <Input
                     variant="outlined"
                     placeholder="Title"
+                    size="lg"
                     value={context.currentNote.title}
                     id="title"
                     onChange={onTitleChange}
-                    className="flex gap-4 !border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
+                    className="flex gap-4 !border !border-sepia-100 !text-lg !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                     labelProps={{ className: "hidden" }}
                 />
                 <Editor
@@ -127,14 +161,22 @@ function App() {
                             "code",
                             "help",
                             "wordcount",
+                            "supercode",
                         ],
                         toolbar:
                             "undo redo | blocks | " +
                             "bold italic forecolor | alignleft aligncenter " +
                             "alignright alignjustify | bullist numlist outdent indent | " +
-                            "removeformat | help",
+                            "removeformat supercode | help",
                         content_style:
                             "body { font-family:Roboto,Arial,sans-serif; font-size:14px }",
+                        supercode: {
+                            theme: 'gruvbox',
+                            renderer: renderer,
+                            parser: parser,
+                            fontSize: 14,
+                            language: "markdown",
+                        },
                     }}
                     className="tox-tinymce-aux"
                 />
@@ -142,23 +184,23 @@ function App() {
                     <Button
                         onClick={onSubmit}
                         ripple={true}
-                        className="!border !border-sepia-100 !bg-opacity-0 text-sepia-200"
+                        className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200"
                     >
                         Submit
                     </Button>
                     <Button
                         onClick={handleOpenEditor}
                         ripple={true}
-                        className="!border !border-sepia-100 !bg-opacity-0 text-sepia-200"
+                        className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200"
                     >
                         Close
                     </Button>
                 </div>
             </Dialog>
             <Header />
-            <SwiperGrid />
+            {isLoading ? <Spinner /> : <SwiperGrid />}
         </div>
     );
 }
 
-export default App;
+export default Home;

@@ -14,7 +14,7 @@ function Login() {
 
     const onLogin = async (e) => {
         e.preventDefault();
-
+        console.log("test");
         const user = {
             email: loginEmail,
             password: loginPassword,
@@ -83,7 +83,7 @@ function Login() {
                 </div>
                 <Button
                     variant="outlined"
-                    className="mt-6 !border-sepia-100 text-sepia-200"
+                    className="mt-6 !border-sepia-100 !font-semibold text-sepia-200"
                     onClick={onLogin}
                     fullWidth
                 >
@@ -91,7 +91,7 @@ function Login() {
                 </Button>
                 <Button
                     variant="outlined"
-                    className="mt-2 flex items-center justify-center gap-2 border !border-sepia-100 px-4 py-2 text-sepia-200"
+                    className="mt-2 flex items-center justify-center gap-2 border !border-sepia-100 px-4 py-2 !font-semibold text-sepia-200"
                     onClick={loginGoogle}
                     fullWidth
                 >
@@ -106,7 +106,7 @@ function Login() {
                 <div className="flex flex-row gap-2">
                     <Button
                         variant="outlined"
-                        className="mt-2 !border-sepia-100 text-sepia-200"
+                        className="mt-2 !border-sepia-100 !font-semibold text-sepia-200"
                         onClick={() => navigate("/register")}
                         fullWidth
                     >
@@ -114,7 +114,7 @@ function Login() {
                     </Button>
                     <Button
                         variant="outlined"
-                        className="mt-2 !border-sepia-100 text-sepia-200"
+                        className="mt-2 !border-sepia-100 !font-semibold text-sepia-200"
                         onClick={() => navigate("/resetpasswordemail")}
                         fullWidth
                     >

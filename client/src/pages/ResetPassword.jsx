@@ -1,7 +1,7 @@
 import { Card, Input, Button } from "@material-tailwind/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify";
 import axios from "axios";
 
 function ResetPassword() {
@@ -76,7 +76,7 @@ function ResetPassword() {
                 <Button
                     type="submit"
                     variant="outlined"
-                    className="mt-6 !border-sepia-100 text-sepia-200"
+                    className="mt-6 !border-sepia-100 !font-semibold text-sepia-200"
                     fullWidth
                 >
                     Submit
