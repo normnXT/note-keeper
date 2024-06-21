@@ -10,6 +10,7 @@ function App() {
     const [isNew, setIsNew] = useState(true);
     const [notes, setNotes] = useState([]);
     const [userData, setUserData] = useState({});
+    const [animateKey, setAnimateKey] = useState(false);
     const [currentNote, setCurrentNote] = useState({
         _id: "",
         title: "",
@@ -21,14 +22,16 @@ function App() {
             value={{
                 openEditor,
                 setOpenEditor,
-                currentNote,
-                setCurrentNote,
                 isNew,
                 setIsNew,
                 notes,
                 setNotes,
                 userData,
                 setUserData,
+                animateKey,
+                setAnimateKey,
+                currentNote,
+                setCurrentNote,
             }}
         >
             <Outlet />

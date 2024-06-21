@@ -9,12 +9,16 @@
 }
 
 @layer utilities {
+    .navbar {
+        z-index: 1;
+    }
+
     .tox.tox-silver-sink.tox-tinymce-aux {
-        z-index: 100000 !important;
+        z-index: 200000 !important;
     }
 
     .Toastify__toast-container {
-        z-index: 200000;
+        z-index: 300000;
     }
 }
 

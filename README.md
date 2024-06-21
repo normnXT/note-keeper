@@ -23,7 +23,7 @@
 20. Comment the code
 ~~21. Add a login screen~~
 ~~22. Toastify messages~~
-23. Loading spinner
+~~23. Loading spinner~~
 ~~24. create context folder~~
 ~~22. Change google sign-in to square~~
 ~~23. Use user id in mongo notes schema (do some more research first on account-based schemas)~~
@@ -35,6 +35,11 @@
 29. Figure out why the header login/logout section isn't always updating, and why the profile image failed to load once
 30. **Remove or figure out admin route privacy before production**
 31. ~~Backend router for password email and reset are complete but not tested, need to make frontend handlers for the functions and get the pages working.~~
+~~32. Change the colors for more contrast~~
+~~33. Use a better looking font assortment~~
+34. Add animations if possible for loading, the icon and buttons hover
+~~35. Possibly change "Start adding notes!" to something more interesting~~
+36. Mess around with framer motion and possibly add a background graphic, then work on commenting the code and production
 
 
 

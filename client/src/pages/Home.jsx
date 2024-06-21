@@ -13,8 +13,6 @@ import axios from "axios";
 import { Context } from "../App";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
-import markdownIt from 'markdown-it';
-import TurndownService from "turndown";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
@@ -23,17 +21,6 @@ function Home() {
     const [isLoading, setIsLoading] = useState(false);
 
     const editorRef = useRef(null);
-
-    const markdownToHtml = markdownIt();
-    const HtmlToMarkdown = new TurndownService();
-
-    const renderer = (markdownCode) => {
-        return markdownToHtml.render(markdownCode);
-    };
-
-    const parser = (htmlCode) => {
-        return HtmlToMarkdown.turndown(htmlCode);
-    };
 
     const handleOpenEditor = () => {
         if (Object.keys(context.userData).length === 0) {
@@ -161,22 +148,14 @@ function Home() {
                             "code",
                             "help",
                             "wordcount",
-                            "supercode",
                         ],
                         toolbar:
                             "undo redo | blocks | " +
                             "bold italic forecolor | alignleft aligncenter " +
                             "alignright alignjustify | bullist numlist outdent indent | " +
-                            "removeformat supercode | help",
+                            "removeformat | help",
                         content_style:
                             "body { font-family:Roboto,Arial,sans-serif; font-size:14px }",
-                        supercode: {
-                            theme: 'gruvbox',
-                            renderer: renderer,
-                            parser: parser,
-                            fontSize: 14,
-                            language: "markdown",
-                        },
                     }}
                     className="tox-tinymce-aux"
                 />
@@ -184,14 +163,14 @@ function Home() {
                     <Button
                         onClick={onSubmit}
                         ripple={true}
-                        className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200"
+                        className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200 hover:opacity-70"
                     >
                         Submit
                     </Button>
                     <Button
                         onClick={handleOpenEditor}
                         ripple={true}
-                        className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200"
+                        className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200 hover:opacity-70"
                     >
                         Close
                     </Button>

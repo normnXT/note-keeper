@@ -117,16 +117,16 @@ function SwiperGrid() {
             ) : (
                 <div className="fixed inset-0 flex items-center justify-center text-2xl font-semibold text-sepia-200">
                     {Object.keys(context.userData).length > 0 ? (
-                        <span onClick={handleOpenEditor}>
+                        <span onClick={handleOpenEditor} className="cursor-pointer">
                             <span className="opacity-60">Start adding </span>
                             <span>notes!</span>
                         </span>
                     ) : (
-                        <span onClick={handleOpenEditor}>
+                        <span onClick={handleOpenEditor} className="cursor-pointer">
                             <span className="opacity-60">
-                                Sign in to keep{" "}
+                                Sign in to{" "}
                             </span>
-                            <span>notes.</span>
+                            <span>keep notes.</span>
                         </span>
                     )}
                 </div>

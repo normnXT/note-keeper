@@ -59,14 +59,14 @@ function NoteCard(props) {
             <CardFooter className="mt-auto flex flex-row gap-2 self-end">
                 <IconButton
                     ripple={true}
-                    className="!border !border-sepia-100 !bg-opacity-0"
+                    className="!border !border-sepia-100 !bg-opacity-0 hover:opacity-70"
                     onClick={() => handleOpenEditor(note._id, note.title, note.entry)}
                 >
                     <PencilSquareIcon className="h-5 w-5 text-sepia-200" />
                 </IconButton>
                 <IconButton
                     ripple={true}
-                    className="!border !border-sepia-100 !bg-opacity-0"
+                    className="!border !border-sepia-100 !bg-opacity-0 hover:opacity-70"
                     onClick={() => onDelete(note._id)}
                 >
                     <TrashIcon className="h-5 w-5 text-sepia-200" />
