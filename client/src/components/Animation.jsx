@@ -23,18 +23,31 @@ function Animation() {
     }, 2000);
 
     const variants = {
-        false: { scale: 1.25 },
-        true: { scale: 2, x: 555, y: 350 },
-        transition: { duration: 1 }
+        start: {
+            scale: 1.25,
+            x: "0vw",
+            y: "0vh",
+            transition: {
+                duration: 2,
+            },
+        },
+        end: {
+            scale: 2,
+            x: 'calc(50vw + 75px)',
+            y: 'calc(50vh - 115px)',
+            transition: {
+                duration: 2,
+            },
+        },
     };
 
     return (
         <>
             <motion.div
-                key="animate-on-state"
-                animate={context.notes.length === 0 ? "true" : "false"}
+                animate={context.notes.length === 0 ? "end" : "start"}
                 variants={variants}
-                style={{ width: "50px", height: "50px" }}
+                initial="start"
+                style={{ width: "50px", height: "50px", position: "fixed", }}
             >
                 <svg viewBox="0 0 100 100">
                     {dataset.map(([x, y, z], index) => (

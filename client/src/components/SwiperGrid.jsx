@@ -103,7 +103,7 @@ function SwiperGrid() {
     }, []);
 
     return (
-        <div className="px-12">
+        <div className="px-12 z-0">
             {context.notes.length > 0 ? (
                 <Swiper {...swiperParams} className="h-[86vh]">
                     <div>

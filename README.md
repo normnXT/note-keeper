@@ -40,6 +40,7 @@
 34. Add animations if possible for loading, the icon and buttons hover
 ~~35. Possibly change "Start adding notes!" to something more interesting~~
 36. Mess around with framer motion and possibly add a background graphic, then work on commenting the code and production
+37. Try not using variants and look at book marked examples
 
 
 

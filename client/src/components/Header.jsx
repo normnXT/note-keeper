@@ -58,8 +58,19 @@ function Header() {
     };
 
     const variants = {
-
-    }
+        start: {
+            x: 76,
+            transition: {
+                duration: 2, // Duration of the transition in seconds
+            },
+        },
+        end: {
+            x: 0,
+            transition: {
+                duration: 2, // Duration of the transition in seconds
+            },
+        },
+    };
 
     return (
         <motion.div
@@ -87,13 +98,18 @@ function Header() {
                         {/*    className="rounded-md border border-white"*/}
                         {/*/>*/}
                         <Animation />
-                        <Button
-                            ripple={true}
-                            className="!border !border-sepia-100 !bg-opacity-0 !text-lg !font-semibold text-sepia-200 hover:opacity-70"
-                            onClick={handleOpenEditor}
+                        <motion.div
+                            animate={context.notes.length === 0 ? "end" : "start"}
+                            variants={variants}
                         >
-                            Add Note
-                        </Button>
+                            <Button
+                                ripple={true}
+                                className="!border !border-sepia-100 !bg-opacity-0 !text-lg !font-semibold text-sepia-200 hover:opacity-70"
+                                onClick={handleOpenEditor}
+                            >
+                                Add Note
+                            </Button>
+                        </motion.div>
                     </div>
                     {Object.keys(context.userData).length > 0 ? (
                         <div className="flex flex-row gap-6 self-end">
@@ -109,7 +125,7 @@ function Header() {
                             )}
                             <Button
                                 ripple={true}
-                                className="!border flex items-center justify-between !border-sepia-100 !bg-opacity-0 !text-lg !font-semibold text-sepia-200 hover:opacity-70"
+                                className="flex items-center justify-between !border !border-sepia-100 !bg-opacity-0 !text-lg !font-semibold text-sepia-200 hover:opacity-70"
                                 onClick={
                                     context.userData.googleId
                                         ? logoutGoogle
