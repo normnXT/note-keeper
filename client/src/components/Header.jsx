@@ -91,7 +91,7 @@ function Header() {
         >
             <Navbar className="mx-auto border-none bg-darkgray-100 px-6 py-4">
                 <div className="mx-auto flex items-center justify-between">
-                    <div className="flex flex-row items-center justify-between gap-6 self-start">
+                    <div className="self-start">
                         {/*<img*/}
                         {/*    src={logo}*/}
                         {/*    alt="Logo"*/}
@@ -99,7 +99,9 @@ function Header() {
                         {/*/>*/}
                         <Animation />
                         <motion.div
-                            animate={context.notes.length === 0 ? "end" : "start"}
+                            animate={
+                                context.notes.length === 0 ? "end" : "start"
+                            }
                             variants={variants}
                         >
                             <Button
@@ -112,20 +114,20 @@ function Header() {
                         </motion.div>
                     </div>
                     {Object.keys(context.userData).length > 0 ? (
-                        <div className="flex flex-row gap-6 self-end">
-                            <span className="!text-md flex items-center justify-between !font-light text-sepia-200">
+                        <div className="flex flex-row gap-3 items-center justify-between self-end">
+                            <span className="!text-md !font-light text-sepia-200">
                                 Hello, {context.userData.displayName}
                             </span>
                             {context.userData?.image && (
                                 <img
                                     src={context.userData.image}
-                                    className="w-10 rounded-full"
+                                    className="h-10 w-10 mr-3 rounded-full"
                                     alt="profile"
                                 />
                             )}
                             <Button
                                 ripple={true}
-                                className="flex items-center justify-between !border !border-sepia-100 !bg-opacity-0 !text-lg !font-semibold text-sepia-200 hover:opacity-70"
+                                className="!border !border-sepia-100 !bg-opacity-0 !text-lg !font-semibold text-sepia-200 hover:opacity-70"
                                 onClick={
                                     context.userData.googleId
                                         ? logoutGoogle

@@ -35,5 +35,8 @@ module.exports = withMT({
             ],
         },
     },
+    // corePlugins: {
+    // preflight: false,
+    // },
     plugins: [],
 });

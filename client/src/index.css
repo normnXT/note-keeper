@@ -6,6 +6,10 @@
     html {
         font-family: ui-sans-serif, system-ui, sans-serif;
     }
+    ul, ol {
+        list-style: revert;
+        padding-left: revert;
+    }
 }
 
 @layer utilities {

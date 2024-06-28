@@ -41,6 +41,7 @@
 ~~35. Possibly change "Start adding notes!" to something more interesting~~
 36. Mess around with framer motion and possibly add a background graphic, then work on commenting the code and production
 37. Try not using variants and look at book marked examples
+38. Move URI to env variables
 
 
 

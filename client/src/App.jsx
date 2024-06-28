@@ -10,7 +10,6 @@ function App() {
     const [isNew, setIsNew] = useState(true);
     const [notes, setNotes] = useState([]);
     const [userData, setUserData] = useState({});
-    const [animateKey, setAnimateKey] = useState(false);
     const [currentNote, setCurrentNote] = useState({
         _id: "",
         title: "",
@@ -28,8 +27,6 @@ function App() {
                 setNotes,
                 userData,
                 setUserData,
-                animateKey,
-                setAnimateKey,
                 currentNote,
                 setCurrentNote,
             }}
