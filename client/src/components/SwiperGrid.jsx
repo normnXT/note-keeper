@@ -35,7 +35,7 @@ function SwiperGrid() {
         spaceBetween: 12,
         mousewheel: true,
         grid: {
-            fill: "row",
+            fill: "column",
         },
         pagination: {
             el: ".swiper-pagination",
