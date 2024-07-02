@@ -1,3 +1,7 @@
+import React, { useContext } from "react";
+
+import { Context } from "../App";
+
 import {
     Card,
     CardBody,
@@ -5,25 +9,26 @@ import {
     IconButton,
 } from "@material-tailwind/react";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-import React, { useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Context } from "../App";
+
 
 function NoteCard(props) {
     const context = useContext(Context);
     const { note } = props
 
-    const handleOpenEditor = (noteId, noteTitle, noteEntry) => {
+    // Opens editor to make changes to a note selected using the ID of the note where the edit button is pressed
+    const onOpenEditor = (noteId, noteTitle, noteEntry) => {
         context.setOpenEditor(!context.openEditor);
-        context.setIsNew(false);
+        context.setIsNew(false); // Sets isNew to false so that a patch request is sent on submittal
         context.setCurrentNote({
             _id: noteId,
             title: noteTitle,
             entry: noteEntry,
-        });
+        }); // The selected note passed as a prop from the SwiperGrid component is set as the active note for the editor
     };
 
+    // Deletes a note using the ID of the note selected
     const onDelete = async (id) => {
         try {
             const res = await axios.delete(`/notes/${id}`);
@@ -60,7 +65,7 @@ function NoteCard(props) {
                 <IconButton
                     ripple={true}
                     className="!border !border-sepia-100 !bg-opacity-0 hover:opacity-70"
-                    onClick={() => handleOpenEditor(note._id, note.title, note.entry)}
+                    onClick={() => onOpenEditor(note._id, note.title, note.entry)}
                 >
                     <PencilSquareIcon className="h-5 w-5 text-sepia-200" />
                 </IconButton>

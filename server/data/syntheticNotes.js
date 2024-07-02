@@ -1,4 +1,4 @@
-const notes = [
+const syntheticNotes = [
     {
         title: "Meeting Minutes",
         entry:
@@ -96,5 +96,5 @@ const notes = [
     },
 ];
 
-module.exports = notes;
+module.exports = syntheticNotes;
 

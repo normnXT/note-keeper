@@ -1,5 +1,3 @@
-import Header from "../components/Header";
-import SwiperGrid from "../components/SwiperGrid";
 import React, {
     useEffect,
     useRef,
@@ -7,40 +5,47 @@ import React, {
     useCallback,
     useContext,
 } from "react";
+import { useNavigate } from "react-router-dom";
+
+import Header from "../components/Header";
+import SwiperGrid from "../components/SwiperGrid";
+import Spinner from "../components/Spinner";
+import { Context } from "../App";
+
 import { Button, Dialog, Input } from "@material-tailwind/react";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
-import { Context } from "../App";
 import { toast } from "react-toastify";
-import Spinner from "../components/Spinner";
-import { useNavigate } from "react-router-dom";
+
 
 function Home() {
     const context = useContext(Context);
     const navigate = useNavigate()
+    const editorRef = useRef(null); // Stores the tinyMCE editor object as a reference
     const [isLoading, setIsLoading] = useState(false);
 
-    const editorRef = useRef(null);
-
-    const handleOpenEditor = () => {
+    // Opens editor to make a new note and not an edit
+    const onOpenEditor = () => {
         if (Object.keys(context.userData).length === 0) {
-            navigate("/login");
+            navigate("/login"); // If there is no authenticated user redirect the user to the login page
         } else {
             context.setOpenEditor(!context.openEditor);
-            context.setIsNew(true);
-            context.setCurrentNote({ _id: "", title: "", entry: "" });
+            context.setIsNew(true); // Sets isNew state to true to ensure a post request is sent on submittal
+            context.setCurrentNote({ _id: "", title: "", entry: "" }); // Clears the active note so the editor is blank
         }
     };
 
+    // Checks if notes exist for the current authenticated user on render
+    // If the database is slow to respond a loading spinner will display instead of the notes
     const getNotes = useCallback(async () => {
         try {
-            setIsLoading(true); // Set loading state to true before making the API call
+            setIsLoading(true);
             const res = await axios.get("/notes");
             context.setNotes(res.data);
         } catch (err) {
             console.error(err);
         } finally {
-            setIsLoading(false); // Set loading state to false after the API call is completed
+            setIsLoading(false);
         }
     }, []);
 
@@ -48,10 +53,27 @@ function Home() {
         getNotes();
     }, [getNotes]);
 
+    // Checks for an active Google session on render
+    const getGoogleProfile = useCallback(async () => {
+        try {
+            const res = await axios.get("/auth/login/success", {
+                withCredentials: true,
+            });
+            context.setUserData(res.data.user);
+        } catch (err) {
+            console.log(err);
+        }
+    }, []);
+
+    useEffect(() => {
+        getGoogleProfile();
+    }, [getGoogleProfile]);
+
     const onSubmit = async () => {
         try {
+            // The isNew state is set everytime an editor modal is opened by a user
+            // If true a new note will be submitted, otherwise a patch/edit will be made
             if (context.isNew) {
-                // console.log(currentNote);
                 const res = await axios.post("/notes", {
                     title: context.currentNote.title,
                     entry: context.currentNote.entry,
@@ -61,7 +83,6 @@ function Home() {
                     toast.success("Note submitted successfully");
                 }
             } else {
-                // console.log(currentNote);
                 const res = await axios.patch(
                     `/notes/${context.currentNote._id}`,
                     {
@@ -77,7 +98,7 @@ function Home() {
                     toast.success("Note updated successfully");
                 }
             }
-            handleOpenEditor();
+            onOpenEditor(); // Closes editor on submission
         } catch (err) {
             console.error(err);
             toast.error(err.response.data);
@@ -102,7 +123,7 @@ function Home() {
         <div className="flex flex-col gap-4 p-4">
             <Dialog
                 open={context.openEditor}
-                handler={handleOpenEditor}
+                handler={onOpenEditor}
                 dismiss={{ outsidePress: false }}
                 className="flex h-[30rem] flex-col gap-4 bg-darkgray-100 p-4"
             >
@@ -113,7 +134,7 @@ function Home() {
                     value={context.currentNote.title}
                     id="title"
                     onChange={onTitleChange}
-                    className="flex gap-4 !border !border-sepia-100 !text-lg !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
+                    className="!border !border-sepia-100 !text-lg !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                     labelProps={{ className: "hidden" }}
                 />
                 <Editor
@@ -168,7 +189,7 @@ function Home() {
                         Submit
                     </Button>
                     <Button
-                        onClick={handleOpenEditor}
+                        onClick={onOpenEditor}
                         ripple={true}
                         className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200 hover:opacity-70"
                     >

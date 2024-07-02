@@ -1,6 +1,7 @@
-import { Card, Input, Button } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Card, Input, Button } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import axios from "axios";
 
@@ -11,6 +12,8 @@ function Register() {
     const [registerPassword, setRegisterPassword] = useState("");
     const [confirmRegisterPassword, setConfirmRegisterPassword] = useState("");
 
+    // Passwords must match and emails cannot already exist in the database, this is verified by the backend route
+    // Mismatching passwords or the email already being registered returns status 400 and a descriptive message that is toasted
     const onRegister = async (e) => {
         e.preventDefault();
 
@@ -106,7 +109,6 @@ function Register() {
                     type="submit"
                     variant="outlined"
                     className="mt-6 !border-sepia-100 !font-semibold text-sepia-200"
-                    // onClick={onRegister}
                     fullWidth
                 >
                     Sign up

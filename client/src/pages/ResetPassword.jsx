@@ -1,6 +1,7 @@
-import { Card, Input, Button } from "@material-tailwind/react";
-import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { Card, Input, Button } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import axios from "axios";
 
@@ -10,6 +11,7 @@ function ResetPassword() {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    // Password matching is verified by the backend route, users are notified if the passwords do not match by a toast
     const onSubmitPassword = async (e) => {
         e.preventDefault();
 

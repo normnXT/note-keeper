@@ -1,31 +1,33 @@
-const passport = require("passport");
 const express = require("express");
-const dotenv = require("dotenv");
-const bcrypt = require("bcryptjs");
+
 const User = require("../models/User");
 const {
     sendThankYouEmail,
     sendPasswordResetEmail,
 } = require("../utils/sendEmail");
 
+const passport = require("passport");
+const dotenv = require("dotenv");
+const bcrypt = require("bcryptjs")
+
+
+// Loads .env into process.env
+dotenv.config();
+
 const router = express.Router();
 router.use(express.json());
-
-dotenv.config();
 
 // GET /local/test
 router.get("/test", (req, res) => {
     res.send("Hello World!");
 });
 
-// log the user in using local passport strategy
+// POST /local/login authenticates users using the local passport strategy
 router.post("/login", (req, res, next) => {
-    // authenticate the user using our local passport strategy
     passport.authenticate("local", (err, user) => {
         if (err) {
             res.send(err);
         }
-        // if authentication failed
         if (!user) {
             res.status(400).send("Your email or password is incorrect");
         } else {
@@ -33,7 +35,6 @@ router.post("/login", (req, res, next) => {
                 if (err) {
                     throw err;
                 }
-                // if no errors, log in is successful, send user details to client
                 res.status(200).send({
                     id: req.user.id,
                     displayName: req.user.displayName,
@@ -44,8 +45,7 @@ router.post("/login", (req, res, next) => {
     })(req, res, next);
 });
 
-// /register is an HTTP POST method. Client POSTS register form data to backend to be created as a user.
-// accepts form inputs from frontend register page
+// POST /local/register will verify a users submitted registration form and registers them to the user database
 router.post("/register", async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
@@ -76,17 +76,16 @@ router.post("/register", async (req, res) => {
     }
 });
 
+// POST /local/sendResetEmail emails a user with a link to reset their password
 router.post("/sendResetEmail", async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
-        // if user was found
         if (user) {
             sendPasswordResetEmail(user.email, user._id);
             res.status(200).send(
                 "An email containing instructions on how to reset your password has been sent",
             );
         } else {
-            // if no user was found
             res.status(400).send("No account is associated to that email");
         }
     } catch (err) {
@@ -95,6 +94,7 @@ router.post("/sendResetEmail", async (req, res) => {
     }
 });
 
+// POST /local/resetPassword updates a users stored and hashed password
 router.post("/resetPassword", async (req, res) => {
     const { _id, newPassword, confirmPassword } = req.body;
     // hash and salt new password with bcrypt
@@ -123,6 +123,8 @@ router.post("/resetPassword", async (req, res) => {
     }
 });
 
+// GET /local/logout will log a user out
+// A callback function for error handling must be passed to req.logout due to the asynchronicity of the logout method
 router.get("/logout", (req, res, next) => {
     req.logout(function (err) {
         if (err) {

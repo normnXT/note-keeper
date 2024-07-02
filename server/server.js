@@ -1,47 +1,47 @@
-const dotenv = require("dotenv");
-const mongoose = require("mongoose");
 const express = require("express");
-const app = express();
-const cors = require("cors");
 const session = require("express-session");
-const cookieParser = require("cookie-parser");
-const passport = require("passport");
-const bcrypt = require("bcryptjs");
-const LocalStrategy = require("passport-local").Strategy;
-const AuthStrategy = require("passport-google-oauth2").Strategy;
 
 const adminRouter = require("./routes/admin");
 const localRouter = require("./routes/local");
 const noteRouter = require("./routes/notes");
 const authRouter = require("./routes/auth");
-const mongo_uri = require("./config/keys").mongoProdURI;
 const User = require("./models/User");
+
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const passport = require("passport");
+const bcrypt = require("bcryptjs");
+const LocalStrategy = require("passport-local").Strategy;
+const OAuthStrategy = require("passport-google-oauth2").Strategy;
+
 
 // Loads .env into process.env
 dotenv.config();
 
+const app = express();
 app.use(express.json());
 
-// Sets up express session to store user session data server side
+// Sets up express session to store user data server side
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: true,
+        resave: false, // Session will only be resaved if it is modified
+        saveUninitialized: false, // Sessions will only be saved once initialized
         cookie: {
             maxAge: 1000 * 60 * 60 * 24, // 1 day
         },
     }),
 );
 
-app.use(cookieParser(process.env.COOKIE_SECRET));
-
-// Initializes passport session and sets passport strategy
+// Initializes passport session
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Google passport strategy for OAuth 2.0 login
+// https://developers.google.com/identity/protocols/oauth2
 passport.use(
-    new AuthStrategy(
+    new OAuthStrategy(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -73,6 +73,8 @@ passport.use(
     ),
 );
 
+// Passport strategy for email/password login combination
+// User submitted passwords are compared with stored hashes
 passport.use(
     new LocalStrategy(
         { usernameField: "email", passwordField: "password" },
@@ -101,11 +103,16 @@ passport.use(
     ),
 );
 
+// On user login, stores user ID in the session store
 passport.serializeUser((user, done) => {
+    console.log('serializing')
     done(null, user.id);
 });
 
+// On each subsequent API request, deserializer uses the stored user ID to retrieve user data and store it under req.user
+// Only users with a Google profile have a user.image, so it is optional
 passport.deserializeUser((id, done) => {
+    console.log('deserializing')
     User.findOne({ _id: id })
         .then((user) => {
             if (!user) {
@@ -144,7 +151,7 @@ app.use(
 
 // Database connection
 mongoose
-    .connect(mongo_uri)
+    .connect(process.env.MONGO_URI)
     .then(() => console.log(`Mongodb Connected`))
     .catch((error) => console.log(error));
 

@@ -1,10 +1,13 @@
-import { Card, Input, Button } from "@material-tailwind/react";
-import google_color from "../assets/google_color.svg";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { Context } from "../App";
+import google_color from "../assets/google_color.svg";
+
+import { Card, Input, Button } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Context } from "../App";
+
 
 function Login() {
     const navigate = useNavigate();
@@ -12,9 +15,9 @@ function Login() {
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
 
-    const onLogin = async (e) => {
+    const onLocalLogin = async (e) => {
         e.preventDefault();
-        console.log("test");
+
         const user = {
             email: loginEmail,
             password: loginPassword,
@@ -37,7 +40,7 @@ function Login() {
         }
     };
 
-    const loginGoogle = () => {
+    const onGoogleLogin = () => {
         try {
             window.open("http://localhost:4000/auth/google/callback", "_self");
         } catch (err) {
@@ -84,7 +87,7 @@ function Login() {
                 <Button
                     variant="outlined"
                     className="mt-6 !border-sepia-100 !font-semibold text-sepia-200"
-                    onClick={onLogin}
+                    onClick={onLocalLogin}
                     fullWidth
                 >
                     Sign In
@@ -92,7 +95,7 @@ function Login() {
                 <Button
                     variant="outlined"
                     className="mt-2 flex items-center justify-center gap-2 border !border-sepia-100 px-4 py-2 !font-semibold text-sepia-200"
-                    onClick={loginGoogle}
+                    onClick={onGoogleLogin}
                     fullWidth
                 >
                     <img

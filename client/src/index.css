@@ -6,6 +6,12 @@
     html {
         font-family: ui-sans-serif, system-ui, sans-serif;
     }
+
+    /*
+    TinyMCE editors use html to style their text, and to get the stored notes to render properly in their cards, some of
+    the base tailwind styling needs to be reverted
+    https://tailwindcss.com/docs/preflight
+    */
     ul, ol {
         list-style: revert;
         padding-left: revert;
@@ -17,6 +23,10 @@
         z-index: 1;
     }
 
+    /*
+    Sets the z-index of the pop-ups and dropdown boxes of the tinyMCE editor, which is necessary due to the editor
+    being in a modal
+    */
     .tox.tox-silver-sink.tox-tinymce-aux {
         z-index: 200000 !important;
     }

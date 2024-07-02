@@ -1,6 +1,7 @@
-import { Card, Input, Button } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Card, Input, Button } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import axios from "axios";
 
@@ -8,6 +9,7 @@ function ResetPasswordEmail() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
 
+    // Submits a users email to verify it exists in the user database, if it exists a password reset email is sent
     const onSubmitEmail = async (e) => {
         e.preventDefault();
 

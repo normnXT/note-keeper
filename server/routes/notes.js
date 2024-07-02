@@ -9,7 +9,7 @@ router.get("/test", (req, res) => {
     res.send("Hello World!");
 });
 
-// GET /notes will get all notes
+// GET /notes gets all notes stored under a specific user ID
 router.get("/", async (req, res) => {
     if (!req.user) {
         return res.status(401).send("User not authenticated");
@@ -40,7 +40,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-// GET /notes/:id will get a single note
+// // GET /notes/:id will get a single note
 // router.get("/:id", async (req, res) => {
 //     try {
 //         const note = await Note.findById(req.params.id);
@@ -51,7 +51,7 @@ router.post("/", async (req, res) => {
 //     }
 // });
 
-// PATCH /notes/:id will update a single note
+// PATCH /notes/:id updates a single note with the edits made by users
 router.patch("/:id", async (req, res) => {
     try {
         const updatedNote = await Note.findByIdAndUpdate(
@@ -66,7 +66,7 @@ router.patch("/:id", async (req, res) => {
     }
 });
 
-// DELETE /notes/:id will delete a single note
+// DELETE /notes/:id will delete a single note selected by users
 router.delete("/:id", async (req, res) => {
     try {
         const deletedNote = await Note.findByIdAndDelete(req.params.id);

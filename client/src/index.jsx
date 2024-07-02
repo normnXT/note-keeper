@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import reportWebVitals from "./reportWebVitals";
 import {
     createBrowserRouter,
     createRoutesFromElements,
@@ -14,6 +13,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ResetPasswordEmail from "./pages/ResetPasswordEmail";
 import ResetPassword from "./pages/ResetPassword";
+import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
 const router = createBrowserRouter(

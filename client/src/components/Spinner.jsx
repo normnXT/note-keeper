@@ -1,6 +1,7 @@
 import React from 'react';
 import { Spinner as MaterialSpinner } from '@material-tailwind/react';
 
+
 const Spinner = () => {
   return (
     <div className="fixed inset-0 flex justify-center items-center">
