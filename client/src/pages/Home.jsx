@@ -40,7 +40,7 @@ function Home() {
     const getNotes = useCallback(async () => {
         try {
             setIsLoading(true);
-            const res = await axios.get("/notes");
+            const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/notes`);
             context.setNotes(res.data);
         } catch (err) {
             console.error(err);
@@ -56,7 +56,7 @@ function Home() {
     // Checks for an active Google session on render
     const getGoogleProfile = useCallback(async () => {
         try {
-            const res = await axios.get("/auth/login/success", {
+            const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/auth/login/success`, {
                 withCredentials: true,
             });
             context.setUserData(res.data.user);
@@ -74,7 +74,7 @@ function Home() {
             // The isNew state is set everytime an editor modal is opened by a user
             // If true a new note will be submitted, otherwise a patch/edit will be made
             if (context.isNew) {
-                const res = await axios.post("/notes", {
+                const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/notes`, {
                     title: context.currentNote.title,
                     entry: context.currentNote.entry,
                 });
@@ -84,7 +84,7 @@ function Home() {
                 }
             } else {
                 const res = await axios.patch(
-                    `/notes/${context.currentNote._id}`,
+                    `${process.env.REACT_APP_SERVER_URL}/notes/${context.currentNote._id}`,
                     {
                         title: context.currentNote.title,
                         entry: context.currentNote.entry,

@@ -17,7 +17,7 @@ function Header() {
     const onLocalLogout = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.get("/local/logout", {
+            const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/local/logout`, {
                 withCredentials: true,
             });
             if (res.status === 200) {
@@ -42,7 +42,7 @@ function Header() {
     };
 
     const onGoogleLogout = () => {
-        window.open("http://localhost:4000/auth/logout", "_self");
+        window.open(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, "_self");
     };
 
     // Positions for the "Add Note" button

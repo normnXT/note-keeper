@@ -1,13 +1,11 @@
 const express = require("express");
 const session = require("express-session");
 
-const adminRouter = require("./routes/admin");
 const localRouter = require("./routes/local");
 const noteRouter = require("./routes/notes");
 const authRouter = require("./routes/auth");
 const User = require("./models/User");
 
-const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const passport = require("passport");
@@ -15,9 +13,6 @@ const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
 const OAuthStrategy = require("passport-google-oauth2").Strategy;
 
-
-// Loads .env into process.env
-dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -135,7 +130,6 @@ passport.deserializeUser((id, done) => {
 });
 
 // Route handling to follow /notes, /auth, and /local subdirectories
-app.use("/admin", adminRouter);
 app.use("/notes", noteRouter);
 app.use("/auth", authRouter);
 app.use("/local", localRouter);

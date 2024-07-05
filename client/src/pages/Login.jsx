@@ -24,7 +24,7 @@ function Login() {
         };
 
         try {
-            const res = await axios.post("/local/login", user, {
+            const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/local/login`, user, {
                 withCredentials: true,
             });
             if (res.status === 400) {
@@ -42,7 +42,7 @@ function Login() {
 
     const onGoogleLogin = () => {
         try {
-            window.open("http://localhost:4000/auth/google/callback", "_self");
+            window.open(`${process.env.REACT_APP_SERVER_URL}/auth/google`, "_self");
         } catch (err) {
             toast.error(err.response.data);
         }

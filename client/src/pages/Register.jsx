@@ -25,7 +25,7 @@ function Register() {
         };
 
         try {
-            const res = await axios.post("/local/register", user, {
+            const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/local/register`, user, {
                 withCredentials: true,
             });
             if (res.status === 400) {
