@@ -31,7 +31,7 @@ function NoteCard(props) {
     // Deletes a note using the ID of the note selected
     const onDelete = async (id) => {
         try {
-            const res = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/notes/${id}`);
+            const res = await axios.delete(`/api/notes/${id}`);
             if (res.status === 200) {
                 const updatedNotes = context.notes.filter(
                     (note) => note._id !== id,
