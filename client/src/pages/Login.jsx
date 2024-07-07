@@ -42,7 +42,7 @@ function Login() {
 
     const onGoogleLogin = () => {
         try {
-            window.open(`${process.env.REACT_APP_SERVER_URL}/api/auth/google`, "_self");
+            window.open(`${process.env.REACT_APP_SERVER_URL}/api/auth/google/callback`, "_self");
         } catch (err) {
             toast.error(err.response.data);
         }

@@ -13,7 +13,6 @@ const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
 const OAuthStrategy = require("passport-google-oauth2").Strategy;
 
-
 const app = express();
 app.use(express.json());
 
@@ -25,6 +24,7 @@ app.use(
         saveUninitialized: false, // Sessions will only be saved once initialized
         cookie: {
             maxAge: 1000 * 60 * 60 * 24, // 1 day
+            secure: true,
         },
     }),
 );
@@ -40,7 +40,7 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "/auth/google/callback",
+            callbackURL: '/api/auth/google/callback',
             scope: ["profile", "email"],
         },
         async (accessToken, refreshToken, profile, done) => {
@@ -49,7 +49,13 @@ passport.use(
                     email: profile.emails[0].value,
                 });
 
-                if (!user) {
+                if (user) {
+                    user.googleId = profile.id;
+                    user.displayName = profile.displayName;
+                    user.image = profile.photos[0].value;
+
+                    await user.save()
+                } else {
                     const newUser = new User({
                         googleId: profile.id,
                         displayName: profile.displayName,
@@ -100,14 +106,14 @@ passport.use(
 
 // On user login, stores user ID in the session store
 passport.serializeUser((user, done) => {
-    console.log('serializing')
+    console.log("serializing");
     done(null, user.id);
 });
 
 // On each subsequent API request, deserializer uses the stored user ID to retrieve user data and store it under req.user
 // Only users with a Google profile have a user.image, so it is optional
 passport.deserializeUser((id, done) => {
-    console.log('deserializing')
+    console.log("deserializing");
     User.findOne({ _id: id })
         .then((user) => {
             if (!user) {

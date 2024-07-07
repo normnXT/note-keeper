@@ -36,6 +36,10 @@ router.get(
         successRedirect: process.env.CLIENT_URL,
         failureRedirect: `${process.env.SERVER_URL}/api/auth/login/failed`,
     }),
+    (req, res) => {
+        console.log("Google callback route reached");
+        res.redirect(process.env.CLIENT_URL);
+    }
 );
 
 // GET /auth/logout will log a user out
