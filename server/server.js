@@ -6,6 +6,7 @@ const noteRouter = require("./routes/notes");
 const authRouter = require("./routes/auth");
 const User = require("./models/User");
 
+const MongoStore = require('connect-mongo')
 const mongoose = require("mongoose");
 const cors = require("cors");
 const passport = require("passport");
@@ -22,10 +23,7 @@ app.use(
         secret: process.env.SESSION_SECRET,
         resave: false, // Session will only be resaved if it is modified
         saveUninitialized: false, // Sessions will only be saved once initialized
-        cookie: {
-            maxAge: 1000 * 60 * 60 * 24, // 1 day
-            secure: true,
-        },
+        store: MongoStore.create({ mongoUrl: process.env.MONGO_URI })
     }),
 );
 
