@@ -130,9 +130,9 @@ passport.deserializeUser((id, done) => {
 });
 
 // Route handling to follow /notes, /auth, and /local subdirectories
-app.use("/notes", noteRouter);
-app.use("/auth", authRouter);
-app.use("/local", localRouter);
+app.use("/api/notes", noteRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/local", localRouter);
 
 // Enables cross-origin resource sharing between Google API and client
 app.use(

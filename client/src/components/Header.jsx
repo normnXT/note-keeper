@@ -42,7 +42,7 @@ function Header() {
     };
 
     const onGoogleLogout = () => {
-        window.open('/api/auth/logout', "_self");
+        window.open(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`, "_self");
     };
 
     // Positions for the "Add Note" button
