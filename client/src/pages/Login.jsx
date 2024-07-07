@@ -42,7 +42,7 @@ function Login() {
 
     const onGoogleLogin = () => {
         try {
-            window.open("http://localhost:4000/auth/google/callback", "_self");
+            window.open("http://localhost:4000/auth/google", "_self");
         } catch (err) {
             toast.error(err.response.data);
         }

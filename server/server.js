@@ -17,7 +17,7 @@ const OAuthStrategy = require("passport-google-oauth2").Strategy;
 
 
 // Loads .env into process.env
-dotenv.config();
+dotenv.config({ path: "./config/.env.dev" });
 
 const app = express();
 app.use(express.json());
