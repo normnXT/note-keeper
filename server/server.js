@@ -26,7 +26,7 @@ app.use(
     }),
 );
 
-// Sets up express session to store user data server side
+// Sets up express session to store user data server side and on MongoDB Atlas
 app.set("trust proxy", 1);
 app.use(
     session({
@@ -100,7 +100,7 @@ passport.use(
         async (email, password, done) => {
             try {
                 const user = await User.findOne({ email: email });
-
+                console.log("User returned by profile email:", user)
                 if (!user) {
                     return done(null, false);
                 } else {
@@ -108,6 +108,7 @@ passport.use(
                         if (err) throw err;
 
                         if (res === true) {
+                            console.log("User before done:", user)
                             return done(null, user);
                         } else {
                             return done(null, false);
