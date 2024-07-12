@@ -11,6 +11,8 @@ router.get("/test", (req, res) => {
 
 // GET /notes gets all notes stored under a specific user ID
 router.get("/", async (req, res) => {
+    console.log(req.session)
+    console.log(req.user)
     if (!req.user) {
         return res.status(401).send("User not authenticated");
     } else {

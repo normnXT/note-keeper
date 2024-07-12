@@ -6,24 +6,42 @@ const noteRouter = require("./routes/notes");
 const authRouter = require("./routes/auth");
 const User = require("./models/User");
 
-const MongoStore = require('connect-mongo')
+const MongoStore = require("connect-mongo");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
-const OAuthStrategy = require("passport-google-oauth2").Strategy;
+const OAuthStrategy = require("passport-google-oauth20").Strategy;
 
 const app = express();
 app.use(express.json());
 
+// Enables cross-origin resource sharing between API's and client
+app.use(
+    cors({
+        origin: process.env.CLIENT_URL,
+        methods: "GET,POST,PUT,DELETE",
+        credentials: true,
+    }),
+);
+
 // Sets up express session to store user data server side
+app.set("trust proxy", 1);
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
         resave: false, // Session will only be resaved if it is modified
         saveUninitialized: false, // Sessions will only be saved once initialized
-        store: MongoStore.create({ mongoUrl: process.env.MONGO_URI })
+        proxy: true,
+        secure: true,
+        cookie: {
+            secure: true,
+            maxAge: 1000 * 60 * 60 * 24,
+            sameSite: "none",
+            httpOnly: true,
+        },
+        store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     }),
 );
 
@@ -38,21 +56,23 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: '/api/auth/google/callback',
+            callbackURL: `${process.env.SERVER_URL}/api/auth/google/callback`,
+            proxy: true,
             scope: ["profile", "email"],
         },
         async (accessToken, refreshToken, profile, done) => {
+            console.log({ accessToken, refreshToken, ...profile});
             try {
                 let user = await User.findOne({
                     email: profile.emails[0].value,
                 });
-
+                console.log("User returned by profile email:", user)
                 if (user) {
                     user.googleId = profile.id;
                     user.displayName = profile.displayName;
                     user.image = profile.photos[0].value;
 
-                    await user.save()
+                    await user.save();
                 } else {
                     const newUser = new User({
                         googleId: profile.id,
@@ -60,10 +80,10 @@ passport.use(
                         email: profile.emails[0].value,
                         image: profile.photos[0].value,
                     });
-
+                    console.log("User before save():", user)
                     user = await newUser.save();
                 }
-
+                console.log("User before done():", user)
                 return done(null, user);
             } catch (err) {
                 return done(err, null);
@@ -105,47 +125,43 @@ passport.use(
 // On user login, stores user ID in the session store
 passport.serializeUser((user, done) => {
     console.log("serializing");
-    done(null, user.id);
+    console.log(user.id);
+    process.nextTick(function () {
+        done(null, user.id);
+    });
 });
 
-// On each subsequent API request, deserializer uses the stored user ID to retrieve user data and store it under req.user
+// On each subsequent API request, deserializer uses the stored user ID to retrieve user data and stores it under req.user
 // Only users with a Google profile have a user.image, so it is optional
 passport.deserializeUser((id, done) => {
     console.log("deserializing");
-    User.findOne({ _id: id })
-        .then((user) => {
-            if (!user) {
-                return done(null, false);
-            }
+    process.nextTick(function () {
+        User.findOne({ _id: id })
+            .then((user) => {
+                if (!user) {
+                    return done(null, false);
+                }
 
-            const userInfo = {
-                id: user._id,
-                displayName: user.displayName,
-                email: user.email,
-                image: user.image || null,
-            };
+                const userInfo = {
+                    id: user._id,
+                    displayName: user.displayName,
+                    email: user.email,
+                    image: user.image || null,
+                };
 
-            done(null, userInfo);
-        })
-        .catch((err) => {
-            console.log(err);
-            done(err);
-        });
+                done(null, userInfo);
+            })
+            .catch((err) => {
+                console.log(err);
+                done(err);
+            });
+    });
 });
 
 // Route handling to follow /notes, /auth, and /local subdirectories
 app.use("/api/notes", noteRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/local", localRouter);
-
-// Enables cross-origin resource sharing between Google API and client
-app.use(
-    cors({
-        origin: `${process.env.CLIENT_URL}`,
-        methods: "GET,POST,PUT,DELETE",
-        credentials: true,
-    }),
-);
 
 // Database connection
 mongoose

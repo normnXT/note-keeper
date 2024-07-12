@@ -2,7 +2,6 @@ const passport = require("passport");
 const express = require("express");
 const dotenv = require("dotenv");
 
-
 // Loads .env into process.env
 dotenv.config();
 
@@ -32,15 +31,17 @@ router.get("/google", passport.authenticate("google", ["profile", "email"]));
 // GET /auth/google/callback will use the authentication code to get an access token to make API requests on the users behalf
 router.get(
     "/google/callback",
-    passport.authenticate("google", {
-        successRedirect: process.env.CLIENT_URL,
-        failureRedirect: `${process.env.SERVER_URL}/api/auth/login/failed`,
-    })
+    passport.authenticate("google", { failureRedirect: '/login/failed', prompt: 'consent',  accessType: 'offline' }),
+    (req, res) => {
+        console.log("Session after Google auth:", req.session);
+        console.log("User after Google auth:", req.user);
+        res.redirect(process.env.CLIENT_URL);
+    },
 );
 
 // GET /auth/logout will log a user out
 // A callback function for error handling must be passed to req.logout due to the asynchronicity of the logout method
-router.get("/logout", (req, res, next) => {
+router.post("/logout", (req, res, next) => {
     req.logout(function (err) {
         if (err) {
             return next(err);
