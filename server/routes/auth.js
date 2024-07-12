@@ -2,7 +2,6 @@ const passport = require("passport");
 const express = require("express");
 const dotenv = require("dotenv");
 
-
 // Loads .env into process.env
 dotenv.config();
 
@@ -33,9 +32,13 @@ router.get("/google", passport.authenticate("google", ["profile", "email"]));
 router.get(
     "/google/callback",
     passport.authenticate("google", {
-        successRedirect: process.env.CLIENT_URL,
         failureRedirect: `${process.env.SERVER_URL}/auth/login/failed`,
+        keepSessionInfo: true,
     }),
+    (req, res) => {
+        // Successful authentication, redirect home.
+        res.redirect(`${process.env.CLIENT_URL}`);
+    },
 );
 
 // GET /auth/logout will log a user out
