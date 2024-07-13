@@ -40,6 +40,7 @@ app.use(
             maxAge: 1000 * 60 * 60 * 24,
             sameSite: "none",
             httpOnly: true,
+            domain: ".notekeeper.xyz",
         },
         store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     }),
