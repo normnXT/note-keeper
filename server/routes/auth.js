@@ -31,7 +31,7 @@ router.get("/google", passport.authenticate("google", ["profile", "email"]));
 // GET /auth/google/callback will use the authentication code to get an access token for making API requests on the users behalf
 router.get(
     "/google/callback",
-    passport.authenticate("google", { failureRedirect: '/login/failed', prompt: 'consent', accessType: 'offline' }),
+    passport.authenticate("google", { successRedirect: process.env.CLIENT_URL, failureRedirect: '/login/failed', prompt: 'consent', accessType: 'offline' }),
     (req, res) => {
         console.log("Session after Google auth:", req.session);
         console.log("User after Google auth:", req.user);

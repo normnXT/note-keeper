@@ -40,7 +40,9 @@ function Home() {
     const getNotes = useCallback(async () => {
         try {
             setIsLoading(true);
-            const res = await axios.get('/api/notes');
+            const res = await axios.get('/api/notes', {
+                withCredentials: true,
+            });
             context.setNotes(res.data);
         } catch (err) {
             console.error(err);
