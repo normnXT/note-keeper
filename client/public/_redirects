@@ -1,1 +1,2 @@
 https://www.notekeeper.xyz/api/* https://api.notekeeper.xyz/api/:splat 200!
+https://notekeeper.xyz/api/* https://api.notekeeper.xyz/api/:splat 200!
