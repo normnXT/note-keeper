@@ -38,7 +38,6 @@ function Header() {
             context.setOpenEditor(!context.openEditor);
             context.setIsNew(true); // Sets isNew state to true to ensure a post request is sent on submittal
             context.setCurrentNote({ _id: "", title: "", entry: "" }); // Clears the active note so the editor is blank
-            context.setEditorLoading(true);
         }
     };
 

@@ -26,7 +26,6 @@ function NoteCard(props) {
             title: noteTitle,
             entry: noteEntry,
         }); // The selected note passed as a prop from the SwiperGrid component is set as the active note for the editor
-        context.setEditorLoading(true);
     };
 
     // Deletes a note using the ID of the note selected
