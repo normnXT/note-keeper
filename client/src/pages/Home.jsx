@@ -8,7 +8,7 @@ import React, {
 import { useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
-import SlickCarousel from "../components/SlickCarousel";
+import SwiperGrid from "../components/SwiperGrid";
 import Spinner from "../components/Spinner";
 import { Context } from "../App";
 
@@ -198,7 +198,7 @@ function Home() {
                 </div>
             </Dialog>
             <Header />
-            {isLoading ? <Spinner /> : <SlickCarousel />}
+            {isLoading ? <Spinner /> : <SwiperGrid />}
         </div>
     );
 }
