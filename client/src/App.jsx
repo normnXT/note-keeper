@@ -8,6 +8,7 @@ export const Context = createContext(undefined);
 
 function App() {
     const [openEditor, setOpenEditor] = useState(false);
+    const [editorLoading, setEditorLoading] = useState(false);
     const [isNew, setIsNew] = useState(true);
     const [notes, setNotes] = useState([]);
     const [userData, setUserData] = useState({});
@@ -22,6 +23,8 @@ function App() {
             value={{
                 openEditor,
                 setOpenEditor,
+                editorLoading,
+                setEditorLoading,
                 isNew,
                 setIsNew,
                 notes,

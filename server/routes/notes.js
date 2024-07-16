@@ -14,14 +14,14 @@ router.get("/", async (req, res) => {
     console.log(req.session)
     console.log(req.user)
     if (!req.user) {
-        return res.status(401).send("User not authenticated");
+        return res.status(401).json({ error: "User not authenticated" });
     } else {
         try {
             const notes = await Note.find({ user: req.user.id });
             res.status(200).json(notes);
         } catch (err) {
             console.error(err);
-            res.status(404).send("No notes found");
+            res.status(404).json({ error: "No notes found" });
         }
     }
 });
@@ -35,10 +35,9 @@ router.post("/", async (req, res) => {
         });
         const newNoteRes = await newNote.save();
         res.status(201).json(newNoteRes);
-        // throw new Error('Test error');
     } catch (err) {
         console.error(err);
-        res.status(500).send("Failed to create note");
+        res.status(500).json({ error: "Failed to create note" });
     }
 });
 
@@ -64,7 +63,7 @@ router.patch("/:id", async (req, res) => {
         res.status(200).json(updatedNote);
     } catch (err) {
         console.error(err);
-        res.status(500).send("Failed to update note");
+        res.status(500).json({ error: "Failed to update note" });
     }
 });
 
@@ -75,7 +74,7 @@ router.delete("/:id", async (req, res) => {
         res.status(200).send(deletedNote._id);
     } catch (err) {
         console.error(err);
-        res.status(404).send("Failed to delete note");
+        res.status(404).json({ error: "Failed to delete note" });
     }
 });
 

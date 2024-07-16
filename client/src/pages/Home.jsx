@@ -17,10 +17,9 @@ import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-
 function Home() {
     const context = useContext(Context);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const editorRef = useRef(null); // Stores the tinyMCE editor object as a reference
     const [isLoading, setIsLoading] = useState(false);
 
@@ -32,6 +31,7 @@ function Home() {
             context.setOpenEditor(!context.openEditor);
             context.setIsNew(true); // Sets isNew state to true to ensure a post request is sent on submittal
             context.setCurrentNote({ _id: "", title: "", entry: "" }); // Clears the active note so the editor is blank
+            context.setEditorLoading(true);
         }
     };
 
@@ -40,12 +40,13 @@ function Home() {
     const getNotes = useCallback(async () => {
         try {
             setIsLoading(true);
-            const res = await axios.get('/api/notes', {
+            const res = await axios.get("/api/notes", {
                 withCredentials: true,
             });
             context.setNotes(res.data);
         } catch (err) {
             console.error(err);
+            toast.error("Failed to get user notes");
         } finally {
             setIsLoading(false);
         }
@@ -55,28 +56,29 @@ function Home() {
         getNotes();
     }, [getNotes]);
 
-    // Checks for an active Google session on render
-    const getGoogleProfile = useCallback(async () => {
+    // Checks for an active session on render
+    const getUserProfile = useCallback(async () => {
         try {
-            const res = await axios.get('/api/auth/login/success', {
+            const res = await axios.get("/api/auth/login/success", {
                 withCredentials: true,
             });
             context.setUserData(res.data.user);
         } catch (err) {
-            console.log(err);
+            console.error(err);
+            toast.error("Failed to get user profile");
         }
     }, []);
 
     useEffect(() => {
-        getGoogleProfile();
-    }, [getGoogleProfile]);
+        getUserProfile();
+    }, [getUserProfile]);
 
     const onSubmit = async () => {
         try {
             // The isNew state is set everytime an editor modal is opened by a user
             // If true a new note will be submitted, otherwise a patch/edit will be made
             if (context.isNew) {
-                const res = await axios.post('/api/notes', {
+                const res = await axios.post("/api/notes", {
                     title: context.currentNote.title,
                     entry: context.currentNote.entry,
                 });
@@ -103,7 +105,9 @@ function Home() {
             onOpenEditor(); // Closes editor on submission
         } catch (err) {
             console.error(err);
-            toast.error(err.response.data);
+            const errorMessage =
+                err.response?.data?.error || "An error occurred";
+            toast.error(errorMessage);
         }
     };
 
@@ -129,75 +133,85 @@ function Home() {
                 dismiss={{ outsidePress: false }}
                 className="flex h-[30rem] flex-col gap-4 bg-darkgray-100 p-4"
             >
-                <Input
-                    variant="outlined"
-                    placeholder="Title"
-                    size="lg"
-                    value={context.currentNote.title}
-                    id="title"
-                    onChange={onTitleChange}
-                    className="!border !border-sepia-100 !text-lg !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
-                    labelProps={{ className: "hidden" }}
-                />
-                <Editor
-                    tinymceScriptSrc="/tinymce/tinymce.min.js"
-                    licenseKey="gpl"
-                    onInit={(evt, editor) => (editorRef.current = editor)}
-                    disableEnforceFocus={true}
-                    value={context.currentNote.entry}
-                    onEditorChange={onEditorChange}
-                    init={{
-                        height: 350,
-                        menubar: false,
-                        skin: "custom",
-                        content_css: "custom",
-                        highlight_on_focus: false,
-                        plugins: [
-                            "advlist",
-                            "autolink",
-                            "lists",
-                            "link",
-                            "image",
-                            "charmap",
-                            "preview",
-                            "anchor",
-                            "searchreplace",
-                            "visualblocks",
-                            "code",
-                            "fullscreen",
-                            "insertdatetime",
-                            "media",
-                            "table",
-                            "code",
-                            "help",
-                            "wordcount",
-                        ],
-                        toolbar:
-                            "undo redo | blocks | " +
-                            "bold italic forecolor | alignleft aligncenter " +
-                            "alignright alignjustify | bullist numlist outdent indent | " +
-                            "removeformat | help",
-                        content_style:
-                            "body { font-family:Roboto,Arial,sans-serif; font-size:14px }",
-                    }}
-                    className="tox-tinymce-aux"
-                />
-                <div className="flex flex-row gap-2 self-end">
-                    <Button
-                        onClick={onSubmit}
-                        ripple={true}
-                        className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200 hover:opacity-70"
-                    >
-                        Submit
-                    </Button>
-                    <Button
-                        onClick={onOpenEditor}
-                        ripple={true}
-                        className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200 hover:opacity-70"
-                    >
-                        Close
-                    </Button>
-                </div>
+                {context.editorLoading ? (
+                    <Spinner />
+                ) : (
+                    <>
+                        <Input
+                            variant="outlined"
+                            placeholder="Title"
+                            size="lg"
+                            value={context.currentNote.title}
+                            id="title"
+                            onChange={onTitleChange}
+                            className="!border !border-sepia-100 !text-lg !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
+                            labelProps={{ className: "hidden" }}
+                        />
+
+                        <Editor
+                            tinymceScriptSrc="/tinymce/tinymce.min.js"
+                            licenseKey="gpl"
+                            onInit={(evt, editor) => {
+                                editorRef.current = editor;
+                                context.setEditorLoading(false);
+                            }}
+                            disableEnforceFocus={true}
+                            value={context.currentNote.entry}
+                            onEditorChange={onEditorChange}
+                            init={{
+                                height: 350,
+                                menubar: false,
+                                skin: "custom",
+                                content_css: "custom",
+                                highlight_on_focus: false,
+                                plugins: [
+                                    "advlist",
+                                    "autolink",
+                                    "lists",
+                                    "link",
+                                    "image",
+                                    "charmap",
+                                    "preview",
+                                    "anchor",
+                                    "searchreplace",
+                                    "visualblocks",
+                                    "code",
+                                    "fullscreen",
+                                    "insertdatetime",
+                                    "media",
+                                    "table",
+                                    "code",
+                                    "help",
+                                    "wordcount",
+                                ],
+                                toolbar:
+                                    "undo redo | blocks | " +
+                                    "bold italic forecolor | alignleft aligncenter " +
+                                    "alignright alignjustify | bullist numlist outdent indent | " +
+                                    "removeformat | help",
+                                content_style:
+                                    "body { font-family:Roboto,Arial,sans-serif; font-size:14px }",
+                            }}
+                            className="tox-tinymce-aux"
+                        />
+                        <div className="flex flex-row gap-2 self-end">
+                            <Button
+                                onClick={onSubmit}
+                                ripple={true}
+                                className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200 hover:opacity-70"
+                            >
+                                Submit
+                            </Button>
+                            <Button
+                                onClick={onOpenEditor}
+                                ripple={true}
+                                className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200 hover:opacity-70"
+                            >
+                                Close
+                            </Button>
+                        </div>
+                    </>
+                )}
             </Dialog>
             <Header />
             {isLoading ? <Spinner /> : <SwiperGrid />}

@@ -26,6 +26,7 @@ function NoteCard(props) {
             title: noteTitle,
             entry: noteEntry,
         }); // The selected note passed as a prop from the SwiperGrid component is set as the active note for the editor
+        context.setEditorLoading(true);
     };
 
     // Deletes a note using the ID of the note selected
@@ -41,7 +42,8 @@ function NoteCard(props) {
             }
         } catch (err) {
             console.error(err);
-            toast.error(err.response.data);
+            const errorMessage = err.response?.data?.error || "An error occurred";
+            toast.error(errorMessage);
         }
     };
 

@@ -15,13 +15,13 @@ router.get("/login/success", (req, res) => {
             user: req.user,
         });
     } else {
-        res.status(403).send("Not authenticated");
+        res.status(403).json({ error: "User not authenticated" });
     }
 });
 
 // GET /auth/login/failed notifies the client of login failure
 router.get("/login/failed", (req, res) => {
-    res.status(401).send("Login failure");
+    res.status(401).json({ error: "Google authentication failed" });
 });
 
 // GET /auth/google initiates the OAuth flow and identifies the permissions needed from the user
@@ -31,13 +31,16 @@ router.get("/google", passport.authenticate("google", ["profile", "email"]));
 // GET /auth/google/callback will use the authentication code to get an access token for making API requests on the users behalf
 router.get(
     "/google/callback",
-    passport.authenticate("google", { successRedirect: process.env.CLIENT_URL, failureRedirect: '/login/failed', prompt: 'consent', accessType: 'offline' }),
+    passport.authenticate("google", {
+        successRedirect: process.env.CLIENT_URL,
+        failureRedirect: "/login/failed",
+        prompt: "consent",
+        accessType: "offline",
+    }),
     (req, res) => {
-        console.log("Session after Google auth:", req.session);
-        console.log("User after Google auth:", req.user);
-        setTimeout(() => {
-            res.redirect(process.env.CLIENT_URL);
-        }, 2000);
+        console.log("Session after callback:", req.session);
+        console.log("User after callback:", req.user);
+        res.redirect(process.env.CLIENT_URL);
     },
 );
 
