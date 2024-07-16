@@ -12,16 +12,22 @@ import "swiper/css/grid";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
+
 SwiperCore.use([Navigation, Pagination, Mousewheel, Grid]);
 
 function SwiperGrid() {
     const context = useContext(Context);
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const [swiperParams, setSwiperParams] = useState({
         slidesPerView: 1,
         allowTouchMove: false,
         spaceBetween: 12,
         mousewheel: true,
+        breakpoints: {
+          640: {
+            slidesPerView: 3,
+          }
+        },
         grid: {
             fill: "column",
         },
@@ -32,26 +38,6 @@ function SwiperGrid() {
         navigation: {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
-        },
-        breakpoints: {
-            640: {
-                slidesPerView: 3,
-                slidesPerGroup: 3,
-                allowTouchMove: false,
-                spaceBetween: 12,
-                mousewheel: true,
-                grid: {
-                    fill: "column",
-                },
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-            },
         },
     });
 
@@ -137,12 +123,18 @@ function SwiperGrid() {
             ) : (
                 <div className="fixed inset-0 flex items-center justify-center text-2xl font-semibold text-sepia-200">
                     {Object.keys(context.userData).length > 0 ? (
-                        <span onClick={onOpenEditor} className="cursor-pointer">
+                        <span
+                            onClick={onOpenEditor}
+                            className="cursor-pointer"
+                        >
                             <span className="opacity-60">Start adding </span>
                             <span>notes!</span>
                         </span>
                     ) : (
-                        <span onClick={onOpenEditor} className="cursor-pointer">
+                        <span
+                            onClick={onOpenEditor}
+                            className="cursor-pointer"
+                        >
                             <span className="opacity-60">Sign in to </span>
                             <span>keep notes.</span>
                         </span>
