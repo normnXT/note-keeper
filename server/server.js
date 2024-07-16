@@ -1,7 +1,6 @@
 const express = require("express");
 const session = require("express-session");
 
-const adminRouter = require("./routes/admin");
 const localRouter = require("./routes/local");
 const noteRouter = require("./routes/notes");
 const authRouter = require("./routes/auth");
@@ -136,7 +135,6 @@ passport.deserializeUser((id, done) => {
 });
 
 // Route handling to follow /notes, /auth, and /local subdirectories
-app.use("/admin", adminRouter);
 app.use("/notes", noteRouter);
 app.use("/auth", authRouter);
 app.use("/local", localRouter);
