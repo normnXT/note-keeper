@@ -58,6 +58,8 @@ function SwiperGrid() {
                 setSwiperParams((prevParams) => ({
                     ...prevParams,
                     grid: { rows: 1 },
+                    slidesPerView: 1,
+                    slidesPerGroup: 1,
                 }));
             } else if (windowHeight < 768) {
                 setSwiperParams((prevParams) => ({
