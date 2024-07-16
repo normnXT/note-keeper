@@ -8,7 +8,7 @@ import React, {
 import { useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
-import SlickCarousel from "../components/SlickCarousel";
+import SwiperGrid from "../components/SwiperGrid";
 import Spinner from "../components/Spinner";
 import { Context } from "../App";
 
@@ -46,7 +46,6 @@ function Home() {
             context.setNotes(res.data);
         } catch (err) {
             console.error(err);
-            toast.error("Failed to get user notes");
         } finally {
             setIsLoading(false);
         }
@@ -65,7 +64,6 @@ function Home() {
             context.setUserData(res.data.user);
         } catch (err) {
             console.error(err);
-            toast.error("Failed to get user profile");
         }
     }, []);
 
@@ -204,7 +202,7 @@ function Home() {
                 </div>
             </Dialog>
             <Header />
-            {isLoading ? <Spinner /> : <SlickCarousel />}
+            {isLoading ? <Spinner /> : <SwiperGrid />}
         </div>
     );
 }

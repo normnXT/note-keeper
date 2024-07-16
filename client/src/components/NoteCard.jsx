@@ -25,7 +25,7 @@ function NoteCard(props) {
             _id: noteId,
             title: noteTitle,
             entry: noteEntry,
-        }); // The selected note passed as a prop from the SwiperGrid component is set as the active note for the editor
+        }); // The selected note passed as a prop from the SlickCarousel component is set as the active note for the editor
     };
 
     // Deletes a note using the ID of the note selected
