@@ -19,11 +19,16 @@ function SwiperGrid() {
     const context = useContext(Context);
     const navigate = useNavigate()
     const [swiperParams, setSwiperParams] = useState({
-        slidesPerView: 3,
-        slidesPerGroup: 3,
+        slidesPerView: 1,
         allowTouchMove: false,
         spaceBetween: 12,
         mousewheel: true,
+        breakpoints: {
+          640: {
+            slidesPerView: 3,
+            slidesPerGroup: 3,
+          }
+        },
         grid: {
             fill: "column",
         },
@@ -54,14 +59,7 @@ function SwiperGrid() {
     useEffect(() => {
         const handleResize = () => {
             const windowHeight = window.innerHeight;
-            if (windowHeight < 576) {
-                setSwiperParams((prevParams) => ({
-                    ...prevParams,
-                    grid: { rows: 1 },
-                    slidesPerView: 1,
-                    slidesPerGroup: 1,
-                }));
-            } else if (windowHeight < 768) {
+            if (windowHeight < 900) {
                 setSwiperParams((prevParams) => ({
                     ...prevParams,
                     grid: { rows: 2 },
