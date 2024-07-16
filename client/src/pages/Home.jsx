@@ -155,6 +155,7 @@ function Home() {
                         skin: "custom",
                         content_css: "custom",
                         highlight_on_focus: false,
+                        resize: false,
                         plugins: [
                             "advlist",
                             "autolink",
