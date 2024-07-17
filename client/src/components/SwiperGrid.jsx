@@ -21,9 +21,10 @@ function SwiperGrid() {
     const [swiperParams, setSwiperParams] = useState({
         slidesPerView: 3,
         slidesPerGroup: 3,
-        allowTouchMove: false,
+        allowTouchMove: true,
         spaceBetween: 12,
         mousewheel: true,
+        setWrapperSize: true,
         grid: {
             fill: "column",
         },
@@ -48,9 +49,8 @@ function SwiperGrid() {
         }
     };
 
-    // Swiper does not natively support multi-row grids
+    // Swiper does not natively support responsive multi-row grids
     // This function sets the Swiper grid row parameter based on the height of the browser window
-    // Uses standard 16:9 aspect ratio heights, likely not fully responsive on atypical screen ratios
     useEffect(() => {
         const handleResize = () => {
             const windowHeight = window.innerHeight;
@@ -99,11 +99,11 @@ function SwiperGrid() {
         <div className="z-0 px-10">
             {context.notes.length > 0 ? (
                 <>
-                    <Swiper {...swiperParams} className="h-[86vh]">
+                    <Swiper {...swiperParams} className="h-[calc(100vh-10rem)]">
                         <div>
                             {context.notes.map((cardNote) => (
                                 <SwiperSlide key={cardNote._id}>
-                                    <NoteCard note={cardNote} />
+                                    <NoteCard note={cardNote}/>
                                 </SwiperSlide>
                             ))}
                         </div>

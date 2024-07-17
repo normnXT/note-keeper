@@ -47,7 +47,7 @@ function NoteCard(props) {
     };
 
     return (
-        <Card className="min-h-[244px] bg-darkgray-100 hover:bg-darkgray-200">
+        <Card className="!h-[100%] bg-darkgray-100 hover:bg-darkgray-200">
             <CardBody>
                 <div
                     dangerouslySetInnerHTML={{

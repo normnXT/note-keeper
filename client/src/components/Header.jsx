@@ -44,7 +44,7 @@ function Header() {
 
     const onGoogleLogout = () => {
         try {
-            window.open(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`, "_self");
+            window.open(`http://localhost:4000/api/auth/logout`, "_self");
         } catch (err) {
             toast.error("An error occurred");
         }

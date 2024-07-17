@@ -123,7 +123,7 @@ function Home() {
     };
 
     return (
-        <div className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col h-lvh gap-4 p-4">
             <Dialog
                 open={context.openEditor}
                 handler={onOpenEditor}
