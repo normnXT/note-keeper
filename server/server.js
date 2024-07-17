@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 
+const seedRouter = require("./utils/seeder");
 const localRouter = require("./routes/local");
 const noteRouter = require("./routes/notes");
 const authRouter = require("./routes/auth");
@@ -138,6 +139,7 @@ passport.deserializeUser((id, done) => {
 app.use("/api/notes", noteRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/local", localRouter);
+app.use("/api/seed", seedRouter);
 
 // Enables cross-origin resource sharing between Google API and client
 app.use(
