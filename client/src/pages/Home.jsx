@@ -5,13 +5,14 @@ import {
     useContext,
 } from "react";
 
+import EditorModal from "../components/EditorModal";
+import CarouselWrapper from "../components/CarouselWrapper";
 import Header from "../components/Header";
-import SwiperGrid from "../components/SwiperGrid";
 import Spinner from "../components/Spinner";
 import { Context } from "../App";
 
 import axios from "axios";
-import EditorModal from "../components/EditorModal";
+
 
 
 function Home() {
@@ -59,7 +60,7 @@ function Home() {
         <div className="flex flex-col h-lvh gap-4 p-4">
             <EditorModal />
             <Header />
-            {isLoading ? <Spinner /> : <SwiperGrid />}
+            {isLoading ? <Spinner /> : <CarouselWrapper />}
         </div>
     );
 }
