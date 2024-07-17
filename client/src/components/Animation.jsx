@@ -32,7 +32,7 @@ function Animation() {
         setDataset(newDataset);
     }, 2000);
 
-    // PositionA is in the header component and positionB is in the center of the screen, to the upper-right of text spans contained in the SwiperGrid component
+    // PositionA is in the header component and positionB is in the center of the screen, to the upper-right of text spans contained in the DesktopCarousel component
     // A mix of absolute and relative positioning in positionB is needed for responsiveness
     // Explicitly stating 0vw, 0vh for positionA is necessary for the animation to transition properly back to the header
     const variants = {
