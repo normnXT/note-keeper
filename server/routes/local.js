@@ -26,16 +26,16 @@ router.get("/test", (req, res) => {
 router.post("/login", (req, res, next) => {
     passport.authenticate("local", (err, user) => {
         if (err) {
-            res.send(err);
+            res.status(500).json({ error: "An error occurred during authentication" });
         }
         if (!user) {
-            res.status(400).send("Your email or password is incorrect");
+            res.status(400).json({ error: "Your email or password is incorrect" });
         } else {
             req.login(user, (err) => {
                 if (err) {
-                    throw err;
+                    res.status(500).json({ error: "An error occurred during login" });
                 }
-                res.status(200).send({
+                res.status(200).json({
                     id: req.user.id,
                     displayName: req.user.displayName,
                     email: req.user.email,
@@ -51,7 +51,7 @@ router.post("/register", async (req, res) => {
         const user = await User.findOne({ email: req.body.email });
 
         if (user) {
-            res.status(400).send("A user already exists with that email");
+            res.status(400).json({ error: "A user already exists with that email" });
         } else {
             const { displayName, email, password, confirmPassword } = req.body;
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -63,16 +63,16 @@ router.post("/register", async (req, res) => {
                 });
                 const savedNewUser = await newUser.save();
                 sendThankYouEmail(savedNewUser.email, savedNewUser.displayName);
-                res.status(200).send("Registered successfully");
+                res.status(200).json({ success: "Registered successfully" });
             } else {
-                res.status(400).send(
-                    "Registration failed due to mismatching passwords",
-                );
+                res.status(400).json({
+                    error: "Registration failed due to mismatching passwords",
+                });
             }
         }
     } catch (err) {
         console.log(err);
-        res.status(500).send("An error occurred during registration");
+        res.status(500).json({ error: "An error occurred during registration" });
     }
 });
 
@@ -82,15 +82,15 @@ router.post("/sendResetEmail", async (req, res) => {
         const user = await User.findOne({ email: req.body.email });
         if (user) {
             sendPasswordResetEmail(user.email, user._id);
-            res.status(200).send(
-                "An email containing instructions on how to reset your password has been sent",
-            );
+            res.status(200).json({
+                success: "An email containing instructions on how to reset your password has been sent",
+            });
         } else {
-            res.status(400).send("No account is associated to that email");
+            res.status(400).json({ error: "No account is associated to that email" });
         }
     } catch (err) {
         console.log(err);
-        res.status(500).send("An error occurred while sending the reset email");
+        res.status(500).json({ error: "An error occurred while sending the reset email" });
     }
 });
 
@@ -108,18 +108,18 @@ router.post("/resetPassword", async (req, res) => {
                 { new: true },
             );
             if (updatedPassword) {
-                res.status(200).send("Password successfully updated");
+                res.status(200).json({ success: "Password successfully updated" });
             } else {
-                res.status(400).send("Invalid userID");
+                res.status(400).json({ error:"Invalid user identification" });
             }
         } else {
-            res.status(400).send(
-                "Registration failed due to mismatching passwords",
-            );
+            res.status(400).json({
+                error: "Registration failed due to mismatching passwords",
+            });
         }
     } catch (err) {
         console.log(err);
-        res.status(400).send("An error occurred during password reset");
+        res.status(400).json({ error:"An error occurred during password reset" });
     }
 });
 

@@ -11,7 +11,7 @@ function ResetPassword() {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    // Password matching is verified by the backend route, users are notified if the passwords do not match by a toast
+    // Password matching is verified by the backend route, users are notified if the passwords do not match through toast
     const onSubmitPassword = async (e) => {
         e.preventDefault();
 
@@ -22,18 +22,17 @@ function ResetPassword() {
         };
 
         try {
-            const res = await axios.post("/local/resetPassword", data, {
+            const res = await axios.post('/api/local/resetPassword', data, {
                 withCredentials: true,
             });
-            if (res.status === 400) {
-                toast.error(res.data);
-            } else {
+            if (res.status === 200) {
                 navigate("/");
-                toast.success(res.data);
+                toast.success(res.data.success);
             }
         } catch (err) {
             console.log(err);
-            toast.error(err.response.data);
+            const errorMessage = err.response?.data?.error || "An error occurred";
+            toast.error(errorMessage);
         }
     };
 

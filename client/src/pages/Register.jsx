@@ -25,18 +25,17 @@ function Register() {
         };
 
         try {
-            const res = await axios.post("/local/register", user, {
+            const res = await axios.post('/api/local/register', user, {
                 withCredentials: true,
             });
-            if (res.status === 400) {
-                toast.error(res.data);
-            } else {
+            if (res.status === 200) {
                 navigate("/");
-                toast.success(res.data);
+                toast.success(res.data.success);
             }
         } catch (err) {
             console.log(err);
-            toast.error(err.response.data);
+            const errorMessage = err.response?.data?.error || "An error occurred";
+            toast.error(errorMessage);
         }
     };
 

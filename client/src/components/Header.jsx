@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Animation from "./Animation";
@@ -13,11 +13,12 @@ import { motion } from "framer-motion";
 function Header() {
     const context = useContext(Context);
     const navigate = useNavigate();
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 640);
 
     const onLocalLogout = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.get("/local/logout", {
+            const res = await axios.get('/api/local/logout', {
                 withCredentials: true,
             });
             if (res.status === 200) {
@@ -42,8 +43,24 @@ function Header() {
     };
 
     const onGoogleLogout = () => {
-        window.open("http://localhost:4000/auth/logout", "_self");
+        try {
+            window.open(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`, "_self");
+        } catch (err) {
+            toast.error("An error occurred");
+        }
     };
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 640);
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
 
     // Positions for the "Add Note" button
     // The button moves to and from the start of the header based on the position of the Animation component
@@ -102,15 +119,19 @@ function Header() {
                     </div>
                     {Object.keys(context.userData).length > 0 ? (
                         <div className="flex flex-row items-center justify-between gap-3 self-end">
-                            <span className="!text-md !font-light text-sepia-200">
-                                Hello, {context.userData.displayName}
-                            </span>
-                            {context.userData?.image && (
-                                <img
-                                    src={context.userData.image}
-                                    className="mr-3 h-10 w-10 rounded-full"
-                                    alt="profile"
-                                />
+                            {!isMobile && (
+                                <>
+                                    <span className="!text-md !font-light text-sepia-200">
+                                        Hello, {context.userData.displayName}
+                                    </span>
+                                    {context.userData?.image && (
+                                        <img
+                                            src={context.userData.image}
+                                            className="mr-3 h-10 w-10 rounded-full"
+                                            alt="profile"
+                                        />
+                                    )}
+                                </>
                             )}
                             <Button
                                 ripple={true}

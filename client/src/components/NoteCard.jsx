@@ -25,13 +25,13 @@ function NoteCard(props) {
             _id: noteId,
             title: noteTitle,
             entry: noteEntry,
-        }); // The selected note passed as a prop from the SwiperGrid component is set as the active note for the editor
+        }); // The selected note passed as a prop from the SlickCarousel component is set as the active note for the editor
     };
 
     // Deletes a note using the ID of the note selected
     const onDelete = async (id) => {
         try {
-            const res = await axios.delete(`/notes/${id}`);
+            const res = await axios.delete(`/api/notes/${id}`);
             if (res.status === 200) {
                 const updatedNotes = context.notes.filter(
                     (note) => note._id !== id,
@@ -41,7 +41,8 @@ function NoteCard(props) {
             }
         } catch (err) {
             console.error(err);
-            toast.error(err.response.data);
+            const errorMessage = err.response?.data?.error || "An error occurred";
+            toast.error(errorMessage);
         }
     };
 
