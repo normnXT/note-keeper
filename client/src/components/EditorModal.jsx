@@ -1,7 +1,4 @@
-import {
-    useRef,
-    useContext,
-} from "react";
+import { useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Context } from "../App";
@@ -93,7 +90,7 @@ function EditorModal() {
                 value={context.currentNote.title}
                 id="title"
                 onChange={onTitleChange}
-                className="!border !border-sepia-100 !text-lg !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
+                className="border border-sepia-100 text-lg text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
                 labelProps={{ className: "hidden" }}
             />
             <Editor
@@ -144,14 +141,14 @@ function EditorModal() {
                 <Button
                     onClick={onSubmit}
                     ripple={true}
-                    className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200 hover:opacity-70"
+                    className="border border-sepia-100 bg-opacity-0 text-sm font-semibold text-sepia-200 hover:opacity-70"
                 >
                     Submit
                 </Button>
                 <Button
                     onClick={onOpenEditor}
                     ripple={true}
-                    className="!border !border-sepia-100 !bg-opacity-0 !text-sm !font-semibold text-sepia-200 hover:opacity-70"
+                    className="border border-sepia-100 bg-opacity-0 text-sm font-semibold text-sepia-200 hover:opacity-70"
                 >
                     Close
                 </Button>
