@@ -9,14 +9,16 @@ import { Navbar, Button } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 
+
 function Header() {
     const context = useContext(Context);
     const navigate = useNavigate();
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 640);
 
     const onLocalLogout = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.get("/api/local/logout", {
+            const res = await axios.get('/api/local/logout', {
                 withCredentials: true,
             });
             if (res.status === 200) {
@@ -42,18 +44,30 @@ function Header() {
 
     const onGoogleLogout = () => {
         try {
-            window.open(`http://localhost:4000/api/auth/logout`, "_self");
+            window.open(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`, "_self");
         } catch (err) {
             toast.error("An error occurred");
         }
     };
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 640);
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
 
     // Positions for the "Add Note" button
     // The button moves to and from the start of the header based on the position of the Animation component
     // Two seconds is the duration that it takes for the animation component to transition to/from the center of the screen
     const variants = {
         positionA: {
-            x: 62.5,
+            x: 76,
             transition: {
                 duration: 2,
             },
@@ -84,71 +98,62 @@ function Header() {
             }}
             className="navbar"
         >
-            <Navbar className="mx-auto h-[90px] border-none bg-darkgray-100 px-6 py-4">
-                <div className="flex h-full items-center justify-between">
-                    <div className="flex items-center space-x-4">
+            <Navbar className="mx-auto border-none bg-darkgray-100 px-6 py-4">
+                <div className="flex items-center justify-between">
+                    <div className="self-start">
                         <Animation />
                         <motion.div
                             animate={
-                                context.notes.length === 0
-                                    ? "positionB"
-                                    : "positionA"
+                                context.notes.length === 0 ? "positionB" : "positionA"
                             }
                             variants={variants}
-                            className="flex items-center"
                         >
                             <Button
-                                variant="outlined"
-                                size={!context.isMobile ? "lg" : "md"}
-                                className="border border-sepia-100 px-4 2xs:px-5 xs:px-6 text-xs font-semibold text-sepia-200 focus:outline-none focus:ring-0 xs:text-lg"
+                                ripple={true}
+                                className="!border !border-sepia-100 !bg-opacity-0 !text-lg !font-semibold text-sepia-200 hover:opacity-70"
                                 onClick={onOpenEditor}
                             >
                                 Add Note
                             </Button>
                         </motion.div>
                     </div>
-                    <div className="flex items-center space-x-4">
-                        {Object.keys(context.userData).length > 0 ? (
-                            <div className="flex items-center">
-                                {!context.isMobile && (
-                                    <>
-                                        <span className="text-md mr-3 font-light text-sepia-200">
-                                            Hello,{" "}
-                                            {context.userData.displayName}
-                                        </span>
-                                        {context.userData?.image && (
-                                            <img
-                                                src={context.userData.image}
-                                                className="mr-6 h-10 w-10 rounded-full"
-                                                alt="profile"
-                                            />
-                                        )}
-                                    </>
-                                )}
-                                <Button
-                                    variant="outlined"
-                                    size={!context.isMobile ? "lg" : "md"}
-                                    className="border border-sepia-100 px-4 2xs:px-5 xs:px-6 text-xs font-semibold text-sepia-200 focus:outline-none focus:ring-0 xs:text-lg"
-                                    onClick={
-                                        context.userData.googleId
-                                            ? onGoogleLogout
-                                            : onLocalLogout
-                                    }
-                                >
-                                    Logout
-                                </Button>
-                            </div>
-                        ) : (
+                    {Object.keys(context.userData).length > 0 ? (
+                        <div className="flex flex-row items-center justify-between gap-3 self-end">
+                            {!isMobile && (
+                                <>
+                                    <span className="!text-md !font-light text-sepia-200">
+                                        Hello, {context.userData.displayName}
+                                    </span>
+                                    {context.userData?.image && (
+                                        <img
+                                            src={context.userData.image}
+                                            className="mr-3 h-10 w-10 rounded-full"
+                                            alt="profile"
+                                        />
+                                    )}
+                                </>
+                            )}
                             <Button
-                                variant="outlined"
-                                size={!context.isMobile ? "lg" : "md"}
-                                className="border border-sepia-100 px-4 2xs:px-5 xs:px-6 text-xs font-semibold text-sepia-200 focus:outline-none focus:ring-0 xs:text-lg"
-                                onClick={() => navigate("/login")}
+                                ripple={true}
+                                className="!border !border-sepia-100 !bg-opacity-0 !text-lg !font-semibold text-sepia-200 hover:opacity-70"
+                                onClick={
+                                    context.userData.googleId
+                                        ? onGoogleLogout
+                                        : onLocalLogout
+                                }
                             >
-                                Sign in
+                                Logout
                             </Button>
-                        )}
-                    </div>
+                        </div>
+                    ) : (
+                        <Button
+                            ripple={true}
+                            className="!border !border-sepia-100 !bg-opacity-0 !text-lg !font-semibold text-sepia-200 hover:opacity-70"
+                            onClick={() => navigate("/login")}
+                        >
+                            Sign in
+                        </Button>
+                    )}
                 </div>
             </Navbar>
         </motion.div>

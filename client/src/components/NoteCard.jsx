@@ -12,9 +12,10 @@ import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+
 function NoteCard(props) {
     const context = useContext(Context);
-    const { note } = props;
+    const { note } = props
 
     // Opens editor to make changes to a note selected using the ID of the note where the edit button is pressed
     const onOpenEditor = (noteId, noteTitle, noteEntry) => {
@@ -40,46 +41,41 @@ function NoteCard(props) {
             }
         } catch (err) {
             console.error(err);
-            const errorMessage =
-                err.response?.data?.error || "An error occurred";
+            const errorMessage = err.response?.data?.error || "An error occurred";
             toast.error(errorMessage);
         }
     };
 
     return (
-        <Card className="mb-8 h-[100%] bg-darkgray-100 hover:bg-darkgray-200">
-            <CardBody className="px-6 pb-0 pt-6">
+        <Card className="!h-[100%] bg-darkgray-100 hover:bg-darkgray-200">
+            <CardBody>
                 <div
                     dangerouslySetInnerHTML={{
                         __html: note.title,
                     }}
-                    className="line-clamp-1 text-xl font-medium text-sepia-200"
+                    className="line-clamp-1 text-xl !font-medium text-sepia-200"
                 />
                 <div
                     dangerouslySetInnerHTML={{
                         __html: note.entry,
                     }}
-                    className={`${!context.isMobile ? "line-clamp-3" : "line-clamp-5"} font-light text-sepia-100`}
+                    className="line-clamp-3 !font-light text-sepia-100"
                 />
             </CardBody>
-            <CardFooter className="mt-auto flex flex-row gap-2 self-end px-6 pb-6 pt-0">
+            <CardFooter className="mt-auto flex flex-row gap-2 self-end">
                 <IconButton
                     ripple={true}
-                    size={!context.isMobile ? "md" : "sm"}
-                    className="border border-sepia-100 bg-opacity-0 hover:opacity-70"
-                    onClick={() =>
-                        onOpenEditor(note._id, note.title, note.entry)
-                    }
+                    className="!border !border-sepia-100 !bg-opacity-0 hover:opacity-70"
+                    onClick={() => onOpenEditor(note._id, note.title, note.entry)}
                 >
-                    <PencilSquareIcon className="h-4 w-4 text-sepia-200 xs:h-5 xs:w-5" />
+                    <PencilSquareIcon className="h-5 w-5 text-sepia-200" />
                 </IconButton>
                 <IconButton
                     ripple={true}
-                    size={!context.isMobile ? "md" : "sm"}
-                    className="border border-sepia-100 bg-opacity-0 hover:opacity-70"
+                    className="!border !border-sepia-100 !bg-opacity-0 hover:opacity-70"
                     onClick={() => onDelete(note._id)}
                 >
-                    <TrashIcon className="h-4 w-4 text-sepia-200 xs:h-5 xs:w-5" />
+                    <TrashIcon className="h-5 w-5 text-sepia-200" />
                 </IconButton>
             </CardFooter>
         </Card>

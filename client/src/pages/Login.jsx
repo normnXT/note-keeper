@@ -8,6 +8,7 @@ import { Card, Input, Button } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import axios from "axios";
 
+
 function Login() {
     const navigate = useNavigate();
     const context = useContext(Context);
@@ -23,7 +24,7 @@ function Login() {
         };
 
         try {
-            const res = await axios.post("/api/local/login", user, {
+            const res = await axios.post('/api/local/login', user, {
                 withCredentials: true,
             });
             if (res.status === 200) {
@@ -33,15 +34,14 @@ function Login() {
             }
         } catch (err) {
             console.log(err);
-            const errorMessage =
-                err.response?.data?.error || "An error occurred";
+            const errorMessage = err.response?.data?.error || "An error occurred";
             toast.error(errorMessage);
         }
     };
 
     const onGoogleLogin = () => {
         try {
-            window.open(`http://localhost:4000/api/auth/google`, "_self");
+            window.open(`${process.env.REACT_APP_SERVER_URL}/api/auth/google`, "_self");
         } catch (err) {
             toast.error("An error occurred");
         }
@@ -64,7 +64,7 @@ function Login() {
                         onChange={(e) => setLoginEmail(e.target.value)}
                         size="lg"
                         placeholder="name@mail.com"
-                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
+                        className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
@@ -77,7 +77,7 @@ function Login() {
                         onChange={(e) => setLoginPassword(e.target.value)}
                         size="lg"
                         placeholder="••••••••"
-                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
+                        className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
@@ -85,7 +85,7 @@ function Login() {
                 </div>
                 <Button
                     variant="outlined"
-                    className="mt-6 border border-sepia-100 font-semibold text-sepia-200"
+                    className="mt-6 !border-sepia-100 !font-semibold text-sepia-200"
                     onClick={onLocalLogin}
                     fullWidth
                 >
@@ -93,7 +93,7 @@ function Login() {
                 </Button>
                 <Button
                     variant="outlined"
-                    className="mt-2 flex items-center justify-center gap-2 border border-sepia-100 px-4 py-2 font-semibold text-sepia-200"
+                    className="mt-2 flex items-center justify-center gap-2 border !border-sepia-100 px-4 py-2 !font-semibold text-sepia-200"
                     onClick={onGoogleLogin}
                     fullWidth
                 >
@@ -108,7 +108,7 @@ function Login() {
                 <div className="flex flex-row gap-2">
                     <Button
                         variant="outlined"
-                        className="mt-2 border border-sepia-100 font-semibold text-sepia-200"
+                        className="mt-2 !border-sepia-100 !font-semibold text-sepia-200"
                         onClick={() => navigate("/register")}
                         fullWidth
                     >
@@ -116,7 +116,7 @@ function Login() {
                     </Button>
                     <Button
                         variant="outlined"
-                        className="mt-2 border border-sepia-100 font-semibold text-sepia-200"
+                        className="mt-2 !border-sepia-100 !font-semibold text-sepia-200"
                         onClick={() => navigate("/resetpasswordemail")}
                         fullWidth
                     >

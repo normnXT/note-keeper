@@ -83,7 +83,7 @@ function DesktopCarousel() {
 
     return (
         <>
-            <Swiper {...swiperParams} className="mx-10 h-[calc(100vh-10rem)]">
+            <Swiper {...swiperParams} className="h-[calc(100vh-10rem)] mx-10">
                 <div>
                     {context.notes.map((cardNote) => (
                         <SwiperSlide key={cardNote._id}>

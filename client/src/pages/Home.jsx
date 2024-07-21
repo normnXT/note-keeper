@@ -1,4 +1,9 @@
-import { useEffect, useState, useCallback, useContext } from "react";
+import {
+    useEffect,
+    useState,
+    useCallback,
+    useContext,
+} from "react";
 
 import EditorModal from "../components/EditorModal";
 import CarouselWrapper from "../components/CarouselWrapper";
@@ -7,6 +12,8 @@ import Spinner from "../components/Spinner";
 import { Context } from "../App";
 
 import axios from "axios";
+
+
 
 function Home() {
     const context = useContext(Context);
@@ -17,7 +24,7 @@ function Home() {
     const getNotes = useCallback(async () => {
         try {
             setIsLoading(true);
-            const res = await axios.get("/api/notes", {
+            const res = await axios.get('/api/notes', {
                 withCredentials: true,
             });
             context.setNotes(res.data);
@@ -35,7 +42,7 @@ function Home() {
     // Checks for an active session on render
     const getUserProfile = useCallback(async () => {
         try {
-            const res = await axios.get("/api/auth/login/success", {
+            const res = await axios.get('/api/auth/login/success', {
                 withCredentials: true,
             });
             context.setUserData(res.data.user);
@@ -48,8 +55,9 @@ function Home() {
         getUserProfile();
     }, [getUserProfile]);
 
+
     return (
-        <div className="flex h-lvh flex-col gap-4 p-4">
+        <div className="flex flex-col h-lvh gap-4 p-4">
             <EditorModal />
             <Header />
             {isLoading ? <Spinner /> : <CarouselWrapper />}
