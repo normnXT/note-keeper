@@ -100,7 +100,7 @@ function Header() {
                             <Button
                                 variant="outlined"
                                 size={!context.isMobile ? "lg" : "md"}
-                                className="2xs:text-md border border-sepia-100 text-xs font-semibold text-sepia-200 focus:outline-none focus:ring-0 xs:text-lg"
+                                className="border border-sepia-100 px-4 2xs:px-5 xs:px-6 text-xs font-semibold text-sepia-200 focus:outline-none focus:ring-0 xs:text-lg"
                                 onClick={onOpenEditor}
                             >
                                 Add Note
@@ -128,7 +128,7 @@ function Header() {
                                 <Button
                                     variant="outlined"
                                     size={!context.isMobile ? "lg" : "md"}
-                                    className="2xs:text-md border border-sepia-100 text-xs font-semibold text-sepia-200 focus:outline-none focus:ring-0 xs:text-lg"
+                                    className="border border-sepia-100 px-4 2xs:px-5 xs:px-6 text-xs font-semibold text-sepia-200 focus:outline-none focus:ring-0 xs:text-lg"
                                     onClick={
                                         context.userData.googleId
                                             ? onGoogleLogout
@@ -142,7 +142,7 @@ function Header() {
                             <Button
                                 variant="outlined"
                                 size={!context.isMobile ? "lg" : "md"}
-                                className="2xs:text-md border border-sepia-100 text-xs font-semibold text-sepia-200 focus:outline-none focus:ring-0 xs:text-lg"
+                                className="border border-sepia-100 px-4 2xs:px-5 xs:px-6 text-xs font-semibold text-sepia-200 focus:outline-none focus:ring-0 xs:text-lg"
                                 onClick={() => navigate("/login")}
                             >
                                 Sign in
