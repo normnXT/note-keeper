@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
 import { ToastContainer } from "react-toastify";
@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 export const Context = createContext(undefined);
 
 function App() {
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 640);
     const [openEditor, setOpenEditor] = useState(false);
     const [isNew, setIsNew] = useState(true);
     const [notes, setNotes] = useState([]);
@@ -17,9 +18,23 @@ function App() {
         entry: "",
     });
 
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 640);
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
     return (
         <Context.Provider
             value={{
+                isMobile,
+                setIsMobile,
                 openEditor,
                 setOpenEditor,
                 isNew,

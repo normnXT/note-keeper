@@ -18,7 +18,7 @@ function ResetPasswordEmail() {
         };
 
         try {
-            const res = await axios.post('/api/local/sendResetEmail', data, {
+            const res = await axios.post("/api/local/sendResetEmail", data, {
                 withCredentials: true,
             });
             if (res.status === 200) {
@@ -27,7 +27,8 @@ function ResetPasswordEmail() {
             }
         } catch (err) {
             console.log(err);
-            const errorMessage = err.response?.data?.error || "An error occurred";
+            const errorMessage =
+                err.response?.data?.error || "An error occurred";
             toast.error(errorMessage);
         }
     };
@@ -49,7 +50,7 @@ function ResetPasswordEmail() {
                         onChange={(e) => setEmail(e.target.value)}
                         size="lg"
                         placeholder="name@mail.com"
-                        className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
+                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
@@ -58,7 +59,7 @@ function ResetPasswordEmail() {
                 <Button
                     type="submit"
                     variant="outlined"
-                    className="mt-6 !border-sepia-100 !font-semibold text-sepia-200"
+                    className="mt-6 border-sepia-100 font-semibold text-sepia-200"
                     fullWidth
                 >
                     Request Email

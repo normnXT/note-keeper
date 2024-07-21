@@ -25,7 +25,7 @@ function Register() {
         };
 
         try {
-            const res = await axios.post('/api/local/register', user, {
+            const res = await axios.post("/api/local/register", user, {
                 withCredentials: true,
             });
             if (res.status === 200) {
@@ -34,7 +34,8 @@ function Register() {
             }
         } catch (err) {
             console.log(err);
-            const errorMessage = err.response?.data?.error || "An error occurred";
+            const errorMessage =
+                err.response?.data?.error || "An error occurred";
             toast.error(errorMessage);
         }
     };
@@ -55,7 +56,7 @@ function Register() {
                         value={registerName}
                         onChange={(e) => setRegisterName(e.target.value)}
                         size="lg"
-                        className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
+                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
@@ -68,7 +69,7 @@ function Register() {
                         onChange={(e) => setRegisterEmail(e.target.value)}
                         size="lg"
                         placeholder="name@mail.com"
-                        className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
+                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
@@ -81,7 +82,7 @@ function Register() {
                         onChange={(e) => setRegisterPassword(e.target.value)}
                         size="lg"
                         placeholder="••••••••"
-                        className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
+                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
@@ -98,7 +99,7 @@ function Register() {
                         }
                         size="lg"
                         placeholder="••••••••"
-                        className="!border !border-sepia-100 !text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
+                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
@@ -107,7 +108,7 @@ function Register() {
                 <Button
                     type="submit"
                     variant="outlined"
-                    className="mt-6 !border-sepia-100 !font-semibold text-sepia-200"
+                    className="mt-6 border-sepia-100 font-semibold text-sepia-200"
                     fullWidth
                 >
                     Sign up

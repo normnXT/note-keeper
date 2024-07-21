@@ -18,7 +18,7 @@ function MobileCarousel() {
     const context = useContext(Context);
     const swiperParams = {
         slidesPerView: 1,
-        slidesPerGroup: 2,
+        slidesPerGroup: 1,
         allowTouchMove: true,
         spaceBetween: 12,
         mousewheel: true,
@@ -31,15 +31,19 @@ function MobileCarousel() {
     };
 
     return (
-            <Swiper {...swiperParams} style={{ "--swiper-pagination-color": "#fff" }} className="h-[calc(100vh-8.5rem)]">
-                <div>
-                    {context.notes.map((cardNote) => (
-                        <SwiperSlide key={cardNote._id}>
-                            <NoteCard note={cardNote} />
-                        </SwiperSlide>
-                    ))}
-                </div>
-            </Swiper>
+        <Swiper
+            {...swiperParams}
+            style={{ "--swiper-pagination-color": "#fff" }}
+            className="h-[calc(100vh-8.5rem)]"
+        >
+            <div>
+                {context.notes.map((cardNote) => (
+                    <SwiperSlide key={cardNote._id}>
+                        <NoteCard note={cardNote} />
+                    </SwiperSlide>
+                ))}
+            </div>
+        </Swiper>
     );
 }
 
