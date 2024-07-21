@@ -9,7 +9,6 @@ import useInterval from "@use-it/interval";
 import { motion } from "framer-motion";
 import { range as _range, random as _random } from "lodash";
 
-
 const colors = ["#dddfd4", "#F4ECD8", "#e8dec3", "#d3d3d3"];
 
 const getColor = () => colors[_random(0, 3)];
