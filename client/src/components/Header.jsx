@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Animation from "./Animation";
+import IconAnimation from "./iconAnimation";
 import { Context } from "../App";
 
 import axios from "axios";
@@ -42,14 +42,14 @@ function Header() {
 
     const onGoogleLogout = () => {
         try {
-            window.open(`https://api.notekeeper.xyz/api/auth/logout`, "_self");
+            window.open(`http://localhost:4000/api/auth/logout`, "_self");
         } catch (err) {
             toast.error("An error occurred");
         }
     };
 
     // Positions for the "Add Note" button
-    // The button moves to and from the start of the header based on the position of the Animation component
+    // The button moves to and from the start of the header based on the position of the IconAnimation component
     // Two seconds is the duration that it takes for the animation component to transition to/from the center of the screen
     const variants = {
         positionA: {
@@ -87,7 +87,7 @@ function Header() {
             <Navbar className="mx-auto h-[90px] border-none bg-darkgray-100 px-6 py-4">
                 <div className="flex h-full items-center justify-between">
                     <div className="flex items-center space-x-4">
-                        <Animation />
+                        <IconAnimation />
                         <motion.div
                             animate={
                                 context.notes.length === 0

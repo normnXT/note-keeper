@@ -56,7 +56,7 @@ function Register() {
                         value={registerName}
                         onChange={(e) => setRegisterName(e.target.value)}
                         size="lg"
-                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
+                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
@@ -69,7 +69,7 @@ function Register() {
                         onChange={(e) => setRegisterEmail(e.target.value)}
                         size="lg"
                         placeholder="name@mail.com"
-                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
+                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
@@ -82,7 +82,7 @@ function Register() {
                         onChange={(e) => setRegisterPassword(e.target.value)}
                         size="lg"
                         placeholder="••••••••"
-                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
+                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
@@ -99,7 +99,7 @@ function Register() {
                         }
                         size="lg"
                         placeholder="••••••••"
-                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
+                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
