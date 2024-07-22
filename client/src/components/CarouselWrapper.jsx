@@ -46,7 +46,7 @@ function CarouselWrapper() {
         <div className="z-0">
             {context.notes.length > 0 ? (
                 <>
-                    {windowWidth > 700 ? (
+                    {windowWidth > 640 ? (
                         <DesktopCarousel />
                     ) : (
                         <MobileCarousel />
