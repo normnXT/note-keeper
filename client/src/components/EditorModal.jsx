@@ -90,7 +90,7 @@ function EditorModal() {
                 value={context.currentNote.title}
                 id="title"
                 onChange={onTitleChange}
-                className="border border-sepia-100 text-lg text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
+                className="border border-sepia-100 text-lg text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                 labelProps={{ className: "hidden" }}
             />
             <Editor
@@ -106,7 +106,6 @@ function EditorModal() {
                     skin: "custom",
                     content_css: "custom",
                     highlight_on_focus: false,
-                    resize: false,
                     plugins: [
                         "advlist",
                         "autolink",

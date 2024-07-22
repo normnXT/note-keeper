@@ -20,7 +20,7 @@ const generateRange = () => {
     return range.map(() => [_random(20, 80), _random(20, 80), getColor()]);
 };
 
-function Animation() {
+function IconAnimation() {
     const context = useContext(Context);
     const [dataset, setDataset] = useState(generateRange());
 
@@ -82,4 +82,4 @@ function Animation() {
     );
 }
 
-export default Animation;
+export default IconAnimation;

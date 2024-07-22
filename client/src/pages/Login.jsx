@@ -64,7 +64,7 @@ function Login() {
                         onChange={(e) => setLoginEmail(e.target.value)}
                         size="lg"
                         placeholder="name@mail.com"
-                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
+                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
@@ -77,7 +77,7 @@ function Login() {
                         onChange={(e) => setLoginPassword(e.target.value)}
                         size="lg"
                         placeholder="••••••••"
-                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:border-gray-500"
+                        className="border border-sepia-100 text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
