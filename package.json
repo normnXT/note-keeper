@@ -1,14 +1,14 @@
 {
   "name": "notes_app_mern",
   "version": "1.0.0",
-  "description": "",
+  "description": "Note keeping application on a MERN stack with responsive swiper grid, rich text editor, local login and Google OAuth login.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "private": true,
   "devDependencies": {
-    "eslint": "^8.57.0",
+    "eslint": "8.57.0",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.13"
   }
