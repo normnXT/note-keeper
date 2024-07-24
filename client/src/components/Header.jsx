@@ -42,7 +42,7 @@ function Header() {
 
     const onGoogleLogout = () => {
         try {
-            window.open(`http://localhost:4000/api/auth/logout`, "_self");
+            window.open(`https://api.notekeeper.xyz/api/auth/logout`, "_self");
         } catch (err) {
             toast.error("An error occurred");
         }

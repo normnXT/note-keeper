@@ -1,17 +1,49 @@
-import { useRef, useContext } from "react";
+import { useRef, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Context } from "../App";
 
-import { Button, Dialog, Input } from "@material-tailwind/react";
+import { Button, Input } from "@material-tailwind/react";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Draggable from "react-draggable";
+import { ArrowsPointingOutIcon } from "@heroicons/react/24/outline";
+
+function DraggableModal({ open, children }) {
+    if (!open) return null;
+    return (
+        <Draggable
+            handle=".drag-handle"
+            defaultPosition={{
+                x: ((window.innerWidth - 800) / 2) - 16,
+                y: (window.innerHeight - 600) / 2,
+            }}
+        >
+            <div className="fixed z-50 rounded-lg bg-darkgray-100 shadow-xl">
+                {children}
+            </div>
+        </Draggable>
+    );
+}
 
 function EditorModal() {
     const context = useContext(Context);
     const navigate = useNavigate();
     const editorRef = useRef(null); // Stores the tinyMCE editor object as a reference
+    const [editorHeight, setEditorHeight] = useState(350);
+    const dialogRef = useRef(null);
+
+    const onEditorResize = (evt, editor) => {
+        const newHeight = editor.getContentAreaContainer().offsetHeight;
+        setEditorHeight(newHeight);
+    };
+
+    useEffect(() => {
+        if (dialogRef.current) {
+            dialogRef.current.style.height = `${editorHeight + 180}px`; // 180px accounts for other elements
+        }
+    }, [editorHeight]);
 
     // Opens editor to make a new note and not an edit
     const onOpenEditor = () => {
@@ -77,82 +109,101 @@ function EditorModal() {
     };
 
     return (
-        <Dialog
-            open={context.openEditor}
-            handler={onOpenEditor}
-            dismiss={{ outsidePress: false }}
-            className="flex h-[30rem] flex-col gap-4 bg-darkgray-100 p-4"
-        >
-            <Input
-                variant="outlined"
-                placeholder="Title"
-                size="lg"
-                value={context.currentNote.title}
-                id="title"
-                onChange={onTitleChange}
-                className="border border-sepia-100 text-lg text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50 focus:!border-gray-500"
-                labelProps={{ className: "hidden" }}
-            />
-            <Editor
-                tinymceScriptSrc="/tinymce/tinymce.min.js"
-                licenseKey="gpl"
-                onInit={(evt, editor) => (editorRef.current = editor)}
-                disableEnforceFocus={true}
-                value={context.currentNote.entry}
-                onEditorChange={onEditorChange}
-                init={{
-                    height: 350,
-                    menubar: false,
-                    skin: "custom",
-                    content_css: "custom",
-                    highlight_on_focus: false,
-                    plugins: [
-                        "advlist",
-                        "autolink",
-                        "lists",
-                        "link",
-                        "image",
-                        "charmap",
-                        "preview",
-                        "anchor",
-                        "searchreplace",
-                        "visualblocks",
-                        "code",
-                        "fullscreen",
-                        "insertdatetime",
-                        "media",
-                        "table",
-                        "code",
-                        "help",
-                        "wordcount",
-                    ],
-                    toolbar:
-                        "undo redo | blocks | " +
-                        "bold italic forecolor | alignleft aligncenter " +
-                        "alignright alignjustify | bullist numlist outdent indent | " +
-                        "removeformat | help",
-                    content_style:
-                        "body { font-family:Roboto,Arial,sans-serif; font-size:14px }",
-                }}
-                className="tox-tinymce-aux"
-            />
-            <div className="flex flex-row gap-2 self-end">
-                <Button
-                    onClick={onSubmit}
-                    ripple={true}
-                    className="border border-sepia-100 bg-opacity-0 text-sm font-semibold text-sepia-200 hover:opacity-70"
-                >
-                    Submit
-                </Button>
-                <Button
-                    onClick={onOpenEditor}
-                    ripple={true}
-                    className="border border-sepia-100 bg-opacity-0 text-sm font-semibold text-sepia-200 hover:opacity-70"
-                >
-                    Close
-                </Button>
+        <DraggableModal open={context.openEditor}>
+            <div
+                ref={dialogRef}
+                className="flex w-[800px] flex-col gap-4 overflow-hidden rounded-lg border border-sepia-100 bg-darkgray-100 p-4"
+            >
+                <Input
+                    variant="outlined"
+                    placeholder="Title"
+                    size="lg"
+                    value={context.currentNote.title}
+                    id="title"
+                    onChange={onTitleChange}
+                    className="!border-2 !border-sepia-100 text-lg !rounded-lg text-sepia-200 placeholder:text-sepia-200 placeholder:opacity-50"
+                    labelProps={{ className: "hidden" }}
+                />
+                <Editor
+                    tinymceScriptSrc="/tinymce/tinymce.min.js"
+                    licenseKey="gpl"
+                    onInit={(evt, editor) => (editorRef.current = editor)}
+                    disableEnforceFocus={true}
+                    value={context.currentNote.entry}
+                    onEditorChange={onEditorChange}
+                    init={{
+                        height: 350,
+                        menubar: false,
+                        skin: "custom",
+                        content_css: "custom",
+                        highlight_on_focus: false,
+                        resize: true, // Enable resize
+                        min_height: 200,
+                        max_height: 600,
+                        plugins: [
+                            "advlist",
+                            "autolink",
+                            "lists",
+                            "link",
+                            "image",
+                            "charmap",
+                            "preview",
+                            "anchor",
+                            "searchreplace",
+                            "visualblocks",
+                            "code",
+                            "fullscreen",
+                            "insertdatetime",
+                            "media",
+                            "table",
+                            "code",
+                            "help",
+                            "wordcount",
+                        ],
+                        toolbar:
+                            "undo redo | blocks | " +
+                            "bold italic forecolor | alignleft aligncenter " +
+                            "alignright alignjustify | bullist numlist outdent indent | " +
+                            "removeformat | help",
+                        content_style: `
+                            body {
+                                font-family: Roboto, Arial, sans-serif;
+                                font-size: 14px;
+                            }
+                        `,
+                        setup: (editor) => {
+                            editor.on("init", () => {
+                                editor.getContainer().style.border =
+                                    "2px solid #F4ECD8";
+                                editor.getContainer().style.borderRadius =
+                                    "0.5rem";
+                            });
+                        },
+                    }}
+                    onResizeEditor={onEditorResize}
+                    className="tox-tinymce-aux"
+                />
+                <div className="mt-2 flex items-center justify-between">
+                    <ArrowsPointingOutIcon className="drag-handle h-6 w-6 cursor-move text-sepia-200" />
+                    <div className="flex flex-row gap-2 self-end">
+                        <Button
+                            onClick={onSubmit}
+                            ripple={true}
+                            className="border border-sepia-100 bg-opacity-0 text-sm font-semibold text-sepia-200 hover:opacity-70"
+                        >
+                            Submit
+                        </Button>
+                        <Button
+                            onClick={onOpenEditor}
+                            ripple={true}
+                            className="border border-sepia-100 bg-opacity-0 text-sm font-semibold text-sepia-200 hover:opacity-70"
+                        >
+                            Close
+                        </Button>
+                    </div>
+                </div>
             </div>
-        </Dialog>
+        </DraggableModal>
     );
 }
 
