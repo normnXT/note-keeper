@@ -45,6 +45,7 @@ Follow these steps to set up a development environment for this project:
    - Set the authorized redirect URIs to:
      - `http://localhost:4000/api/auth/google/callback`
      - `http://localhost:3000/`
+   - Add your login email to the list of test users
    - Copy the Client ID and Client Secret to your `.env.dev` file.
 
 3. **Gmail setup for nodemailer**
