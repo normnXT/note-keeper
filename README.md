@@ -45,7 +45,7 @@ Follow these steps to set up a development environment for this project:
    - Set the authorized redirect URIs to:
      - `http://localhost:4000/api/auth/google/callback`
      - `http://localhost:3000/`
-   - Add your login email to the list of test users
+   - Add your login email to the list of test users.
    - Copy the Client ID and Client Secret to your `.env.dev` file.
 
 3. **Gmail setup for nodemailer**
@@ -63,23 +63,27 @@ Follow these steps to set up a development environment for this project:
    You have two options for setting up the database:
 
    a. Local MongoDB using Docker:
-      - The docker-compose.yaml file is already configured to support a local Mongo database
-      - The database uses the MongoDB 6.0 image and a Docker volume is created to persist data between sessions
-      - Use the provided MongoDB URI to connect the server and database: `mongodb://notes-database:27017/notesdb`
+      - The docker-compose.yaml file is already configured to support a local Mongo database.
+      - The database uses the MongoDB 6.0 image and a Docker volume is created to persist data between sessions.
+      - Use the provided MongoDB URI to connect the server and database: `mongodb://notes-database:27017/notesdb`.
 
    b. MongoDB Atlas or similar services:
       - [Create a free cluster in MongoDB Atlas.](https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster/)
       - Obtain the connection URI from Atlas and ensure it contains your credentials.
       - Replace the `MONGO_URI` in your `.env.dev` with the Atlas URI.
 
-5. **Client proxy**
+5. **Add your session secret**
+    
+   Use a [password generator](https://www.lastpass.com/features/password-generator) to create your `SESSION_SECRET`, and add it to `.env.dev`.
+
+6. **Client proxy**
     
    In `client/package.json`, ensure the proxy is set to:
    ```json
    "proxy": "http://host.docker.internal:4000"
    ```
 
-6. **Build and Run**
+7. **Build and Run**
     
    In the project root directory, run:
    ```
@@ -87,14 +91,14 @@ Follow these steps to set up a development environment for this project:
    ```
    This command will build and start the client, server, and database containers.
 
-7. **Optional: Populate a user's account with notes for development**
+8. **Optional: Populate a user's account with notes for development**
    
    A data seeder has been provided in the `/server/utils` directory, it will insert notes into a users account to more easily test the Swiper carousel and application.
 
    - Create a user account in the application or log in with Google.
    - Find the ObjectId of the created user in the database.
-   - Use Postman or a similar API client to send a POST request to `http://localhost:4000/api/seed/:id`, where `:id` is the user's `ObjectId`. For example:
-     `http://localhost:4000/api/seed/60a12345b678c9abcdef1234`
+   - Use Postman or a similar API client to send a POST request to `http://localhost:4000/api/seed/:id`, where `:id` is the user's `ObjectId`. For example,
+     `http://localhost:4000/api/seed/60a12345b678c9abcdef1234`.
      
    This will create 14 sample HTML notes in the specified user's account.
 
