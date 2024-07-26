@@ -16,7 +16,7 @@ This project uses Docker as a development environment. The docker-compose.yaml f
 
 Follow these steps to set up a development environment for this project:
 
-1. **Environment Variables**
+1. **Environment variables**
    
    Create a file named `.env.dev` in `/server/config` with the following variables:
 
@@ -37,7 +37,7 @@ Follow these steps to set up a development environment for this project:
    dotenv.config({ path: "./config/.env.dev" });
    ```
 
-2. **Google OAuth 2.0 Setup**
+2. **Google OAuth 2.0 setup**
    
    - Go to the [Google Cloud Console](https://console.cloud.google.com/).
    - Create a new project or select an existing one.
@@ -47,7 +47,7 @@ Follow these steps to set up a development environment for this project:
      - `http://localhost:3000/`
    - Copy the Client ID and Client Secret to your `.env.dev` file.
 
-3. **Gmail Setup for Nodemailer**
+3. **Gmail setup for nodemailer**
    
    The mailer is used to send password reset emails and account creation "welcome" emails. It's recommended to create a new Gmail account for the SMTP mailer in its current state, as app passwords are less secure than modern 2-step verification.
    - Use the created Gmail account address for the `EMAIL` variable in `.env.dev`.
@@ -57,7 +57,7 @@ Follow these steps to set up a development environment for this project:
      - Create a new app password and copy it to the `APP_PASSWORD` variable in `.env.dev`.
    
 
-4. **Database Setup**
+4. **Database setup**
    
    You have two options for setting up the database:
 
@@ -71,7 +71,7 @@ Follow these steps to set up a development environment for this project:
       - Obtain the connection URI from Atlas and ensure it contains your credentials.
       - Replace the `MONGO_URI` in your `.env.dev` with the Atlas URI.
 
-5. **Client Proxy Setup**
+5. **Client proxy**
     
    In `client/package.json`, ensure the proxy is set to:
    ```json
@@ -86,7 +86,17 @@ Follow these steps to set up a development environment for this project:
    ```
    This command will build and start the client, server, and database containers.
 
+7. **Optional: Populate a user's account with notes for development**
+   
+   - Create a user account in the application or log in with Google.
+   - Find the ObjectId of the created user in the database.
+   - Use Postman or a similar API client to send a POST request to http://localhost:4000/api/seed/:id, where :id is the user's ObjectId. For example:
+     `http://localhost:4000/api/seed/60a12345b678c9abcdef1234`
+     
+   This will create 14 sample HTML notes in the specified user's account.
+
 Your development environment should now be set up and running. The client will be available at `http://localhost:3000`, and the server at `http://localhost:4000`.
+
 
 ## Production and deployment
 
