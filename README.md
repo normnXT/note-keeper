@@ -93,7 +93,7 @@ Follow these steps to set up a development environment for this project:
 
    - Create a user account in the application or log in with Google.
    - Find the ObjectId of the created user in the database.
-   - Use Postman or a similar API client to send a POST request to http://localhost:4000/api/seed/:id, where :id is the user's ObjectId. For example:
+   - Use Postman or a similar API client to send a POST request to `http://localhost:4000/api/seed/:id`, where `:id` is the user's `ObjectId`. For example:
      `http://localhost:4000/api/seed/60a12345b678c9abcdef1234`
      
    This will create 14 sample HTML notes in the specified user's account.
