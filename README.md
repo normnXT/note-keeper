@@ -6,7 +6,30 @@ I created this project to familiarize myself with Javascript and full-stack web 
 
 ## List of tech features
 
-* 
+* MERN Stack: The project is developed using the MERN stack, which includes:
+
+   * React for the frontend: https://react.dev/reference/react
+   * Express framework for building the API: https://expressjs.com/en/4x/api.html
+   * Node.js as the server's runtime environment: https://nodejs.org/en/docs
+   * MongoDB for the database: https://www.mongodb.com/docs/
+
+* The application uses TinyMCE for rich WYSIWYG text editing, enabling users to create and edit notes in a modern editor.
+Reference: https://www.tiny.cloud/docs/
+
+* A custom solution is implemented to create a multi-row or grid carousel using SwiperJS, allowing for responsive layouts on both desktop and mobile devices.
+Reference: https://swiperjs.com/react
+
+* The application supports user authentication through Google OAuth 2.0, in addition to traditional email/password login.
+Reference: https://developers.google.com/identity/protocols/oauth2
+
+* Docker is used as the development environment, with live reloading enabled.
+Reference: https://docs.docker.com/
+
+* User sessions are handled using Express sessions, ensuring a more secure and persistent authentication versus the popular alternative of JWTs.
+Reference: https://expressjs.com/en/resources/middleware/session.html
+
+* Nodemailer is used as a service for sending emails over SMTP.
+Reference: https://nodemailer.com/about/
 
 ## OAuth and other architecture
 
