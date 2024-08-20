@@ -4,7 +4,7 @@ This is a React application that is served by an Express/Node backend and Mongo 
 
 I created this project to familiarize myself with Javascript and full-stack web development. Due to the purpose of the project being learning, AI and tutorials were not used to produce any code. An enormous amount was learned about JS, MERN, and full-stack web development through research, documentation and iteration!
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/9KhtDzO0XJ4?si=xn5Box8le_bJyj-g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+https://youtu.be/9KhtDzO0XJ4?si=JBER0UlOLjsw4xOP
 
 ## List of tech features
 
