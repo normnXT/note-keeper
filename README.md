@@ -2,9 +2,9 @@
 
 This is a React application that is served by an Express/Node backend and Mongo database, also known as the MERN stack, for the purpose of note keeping. Basic CRUD operations can be performed on a notes database using the UI and a rich HTML WYSIWYG text editor provided by TinyMCE. The application contains one of many possible solutions for creating a desktop/mobile responsive multi-row or grid carousel using the SwiperJS library, which carousel libraries like Swiper do not natively support. Users have the option of logging into an account and initiating an express session, either locally with a registered email/password combination, or by using Google OAuth 2.0. 
 
-I created this project to familiarize myself with Javascript and full-stack web development. Due to the purpose of the project being learning, AI and tutorials were not used to produce any code. An enormous amount was learned about JS, MERN, and full-stack web development through research, documentation and iteration!
+I created this project to familiarize myself with Javascript and full-stack web development. Due to the purpose of the project being learning, AI and tutorials were not used to produce any code. An enormous amount was learned about JS, MERN, and full-stack web development through research, documentation and iteration! Click the image below to watch a quick, unedited preview of the app and Swiper grid functionality without needing to log in or create notes:
 
-https://youtu.be/9KhtDzO0XJ4?si=JBER0UlOLjsw4xOP
+[![Screenshot 2024-08-20 111630](https://github.com/user-attachments/assets/81b26af6-25e4-43ab-bf0c-ce0bd96fa042)](http://www.youtube.com/watch?v=9KhtDzO0XJ4 "Preview")
 
 ## List of tech features
 
