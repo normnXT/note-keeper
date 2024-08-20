@@ -1,5 +1,10 @@
 ## Quick overview
 
+
+[Deployed website](https://notekeeper.xyz/)
+
+**Note: only pre-approved test users can log in using Google OAuth 2.0**
+
 This is a React application that is served by an Express/Node backend and Mongo database, also known as the MERN stack, for the purpose of note-keeping. Basic CRUD operations can be performed on a notes database using the UI and a rich HTML WYSIWYG text editor provided by TinyMCE. The application contains one of many possible solutions for creating a desktop/mobile responsive multi-row or grid carousel using the SwiperJS library, which carousel libraries like Swiper do not natively support. Users have the option of logging into an account either locally with a registered email/password combination or by using Google OAuth 2.0. 
 
 I created this project to familiarize myself with Javascript and full-stack web development. Due to the purpose of the project being learning, AI and tutorials were not used to produce any code. An enormous amount was learned about JS, MERN, and full-stack web development through research, documents and iteration! 
@@ -26,10 +31,10 @@ Reference: https://swiperjs.com/react
 * The application supports user authentication through Google OAuth 2.0, in addition to traditional email/password login.
 Reference: https://developers.google.com/identity/protocols/oauth2
 
-* Docker is used as the development environment, with live reloading enabled.
+* Docker is used as the development environment, with live reloading enabled and a persistent database using images/volumes.
 Reference: https://docs.docker.com/
 
-* User sessions are handled using Express sessions, ensuring a more secure and persistent authentication versus the popular alternative of JWTs.
+* User sessions are handled using Express sessions, ensuring a more secure authentication versus the popular alternative of JWTs.
 Reference: https://expressjs.com/en/resources/middleware/session.html
 
 * Nodemailer is used as a service for sending emails over SMTP.
@@ -76,6 +81,8 @@ router.delete("/:id", async (req, res) => {
 ```
 
 The ID parameter, passed by the client in the URL, is used by the server router to access and delete the note in the Mongo database. The server will provide the client with the deleted notes ID if successful, or it will notify the client that the deletion operation failed. HTTP status codes are also provided to the client in response.
+
+---
 
 ![image](https://github.com/user-attachments/assets/f030c619-f9c8-4d43-a981-c2d795f11f67)
 
@@ -154,7 +161,7 @@ router.get(
 );
 ```
 
-The callback exchanges the authorization code for access and refresh tokens to access the Google API on the users behalf, and the users information. The user's information is saved to the Mongo database as seen in the function that receives the tokens and user information in the PassportJS strategy, and a unique ObjectID is generated that can be used to identify the user and the user's information in the database. If successful it redirects the user from the Google consent and login screen to the client's homepage, and they will be logged in. The user's ObjectID is serialized and stored in the user's session:
+The callback exchanges the authorization code for access and refresh tokens to access the Google API on the users behalf, and the users profile information. The user's information is saved to the Mongo database, as seen in the function that receives the tokens and user information in the PassportJS strategy, and a unique ObjectID is generated that can be used to identify the user and the user's information in the database. If successful it redirects the user from the Google consent and login screen to the client's homepage, and they will be logged in. The user's ObjectID is serialized and stored in the user's session:
 
 ```javascript
 passport.serializeUser((user, done) => {
@@ -289,6 +296,8 @@ Your development environment should now be set up and running. The client will b
 
 ## Production and deployment
 
-The client is hosted on Netlify at `https://notekeeper.xyz/` or `https://www.notekeeper.xyz/`, and the server is hosted on Heroku at `https://api.notekeeper.xyz/`. The services both provide an API to enter and store environment variables, and no `.env` file is required. SSL certificates are handled by Heroku's Automated Certificate Management (ACM) service. Docker is used in development only.   
+The client is deployed on Netlify at `https://notekeeper.xyz/` or `https://www.notekeeper.xyz/`, and the server is deployed on Heroku at `https://api.notekeeper.xyz/`. SSL certificates are handled by Heroku's Automated Certificate Management (ACM) service. The database is hosted on MongoDB Atlas in production and is managed in MongoDBCompass. The database uses a Docker image/volume in development for persistent isolated data. 
 
 ## Significant roadblocks during development and their solutions
+
+
