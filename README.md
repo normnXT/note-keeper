@@ -136,13 +136,13 @@ const onGoogleLogin = () => {
     };
 ```
 
-As a result of the request, the server will use PassportJS to generate a URL that contains query paramaters like the scope of the information required by the application, and a request token will also be provided to Google:
+As a result of the request, the Google login screen will be opened in the browser. The server uses PassportJS to generate a URL that contains query paramaters like the scope of the information required by the application (which can be seen in the browsers URL), and a request token will also be provided to Google:
 
 ```javascript
 router.get("/google", passport.authenticate("google", ["profile", "email"]));
 ```
 
-When the URL is called, an authorization code will be provided by Google in response. Following that, the Google callback URL is called:
+When the URL is called, an authorization code will be provided by Google in response. On user login, the Google callback URL is called:
 
 ```javascript
 router.get(
