@@ -300,4 +300,10 @@ The client is deployed on Netlify at `https://notekeeper.xyz/` or `https://www.n
 
 ## Significant roadblocks during development and their solutions
 
+Express session not persisting after successful login in production only
 
+Creating a responsive multi-row grid of cards (??)
+
+Issues with z-index and styling in the TinyMCE editor and using it in a modal
+
+Dockerizing the application (??)
