@@ -54,7 +54,7 @@ Reference: https://nodemailer.com/about/
 
 ![image](https://github.com/user-attachments/assets/c4c56487-a7a4-4af8-840d-95061ac744c5)
 
-The web application uses a simple three tier client-server architecture. The user interacts with a React client and user actions will prompt the client to send requests to the Node.js server, using functions like this `onClick` function that is used to delete notes:
+The web application uses a simple three tier client-server architecture. The user interacts with a React client. User actions will prompt the client to send requests to the Node.js server which often acts as an interface with the database. The client sends requests using functions like this one that is used to delete notes:
 
 ```javascript
 const onDelete = async (id) => {
@@ -76,7 +76,7 @@ const onDelete = async (id) => {
     };
 ```
 
-When the function is called, the server will route the request using a router function:
+When the function is called, the server will recieve the request and route it using a router function:
 
 ```javascript
 router.delete("/:id", async (req, res) => {
@@ -146,13 +146,13 @@ const onGoogleLogin = () => {
     };
 ```
 
-As a result of the request, the Google login screen will be opened in the browser. The server uses PassportJS to generate a URL that contains query paramaters like the scope of the information required by the application (which can be seen in the browsers URL), and a request token will also be provided to Google:
+In response, the server uses PassportJS to generate a URL pointing to Google's API that contains query paramaters like the scope of the information required by the application (which can be seen in the browsers URL), and a request token will also be provided to Google with the request:
 
 ```javascript
 router.get("/google", passport.authenticate("google", ["profile", "email"]));
 ```
 
-When the URL is called, an authorization code will be provided by Google in response. On user login, the Google callback URL is called:
+When the URL is called, the Google login screen will be opened in the browser, and the request token will be exchanged for an authorization code through the Google API. Upon the user confirming their details, the Google callback URL (specified in the PassportJS strategy) is called:
 
 ```javascript
 router.get(
@@ -171,7 +171,7 @@ router.get(
 );
 ```
 
-The callback exchanges the authorization code for access and refresh tokens to access the Google API on the users behalf, and the users profile information. The user's information is saved to the Mongo database, as seen in the function that receives the tokens and user information in the PassportJS strategy, and a unique ObjectID is generated that can be used to identify the user and the user's information in the database. If successful it redirects the user from the Google consent and login screen to the client's homepage, and they will be logged in. The user's ObjectID is serialized and stored in the user's session:
+The callback exchanges the authorization code for access and refresh tokens to access the Google API on the users behalf, and the users profile information. The user's information is saved to the Mongo database (see the function in the PassportJS strategy), and a unique ObjectID is generated that can be used to identify the user and the user's information in the database. If authorization is successful it redirects the user from the Google consent and login screen to the client's homepage. The user's ObjectID is serialized and stored in the user's session:
 
 ```javascript
 passport.serializeUser((user, done) => {
@@ -180,7 +180,7 @@ passport.serializeUser((user, done) => {
 });
 ```
 
-While they are logged in, the user's session containing their ObjectID can be deserialized (which occurs on subsequent API requests) to then be able to access their information in the Mongo database through `req.user`:
+While they are logged in, the user's session containing their ObjectID can be deserialized to access their profile information in the Mongo database through `req.user`:
 
 ```javascript
 passport.deserializeUser((id, done) => {
@@ -210,51 +210,59 @@ passport.deserializeUser((id, done) => {
 
 ## A roadblock during development and its solution
 
-Many significant roadblocks were resolved over the course of the project, but I would like to document one of the more interesting ones here as a learning exercise. Deploying the application to Heroku and Netlify was more difficult than expected. Express sessions did not persist after login, and the bug only presented itself in production. Express sessions worked as expected in development.
+Many significant roadblocks were resolved over the course of the project, but I will document one of the more interesting ones here as a learning exercise. 
+
+Deploying the application to Heroku and Netlify was more difficult than expected. Express sessions did not persist after login, and the bug only presented itself in production. Express sessions worked as expected in development.
 
 1. Expected result:
 
-When a user successfully logs in for the first time in the Google OAuth 2.0 process, their profile information is retrieved from Google and stored in a database with a unique ObjectID generated for identification. Their session is stored in a `mongoStore` database. The ObjectID is serialized and sent to the client in response to be stored as a session cookie. On subsequent API requests, those credentials are sent along with the clients request to then be deserialized. The deserialized ObjectID is used to authorize the user's request and retrieve any necessary information. When the user logs out or the browser is terminated, the session is cleared. This persistent, secure authentication process is an express session. 
+   When a user successfully logs in for the first time in the Google OAuth 2.0 process, their profile information is retrieved from Google and stored in a database with a unique ObjectID generated for identification. Their session is also stored in a `mongoStore` database. The ObjectID is serialized and sent to the client to be 
+   stored as a session cookie. On subsequent API requests, those credentials are sent along with the clients request to then be deserialized. The deserialized ObjectID is used to authorize the user's request and retrieve any necessary information. When the user logs out or the browser is terminated, the session is 
+   cleared. This persistent, secure authentication process is an express session. 
 
 2. Actual result & investigation:
 
-When the production build was deployed to Heroku and Netlify, the express session process was suddenly failing, the session was lost at some point in the process and no clear error message was presented. 
+   When the production build was deployed to Heroku and Netlify, the express session process was suddenly failing, the session was lost at some point in the process and no clear error message was presented. 
 
-The user's exchanges with the Google API were successful, their profile information was being retrieved and stored in the database. An ObjectID was generated, and the express session was stored in the `mongoStore`. When logging the serializer's execution to the console, it showed that the serializer was running:
+   The user's exchanges with the Google API were successful, their profile information was being retrieved and stored in the database. An ObjectID was generated, and the express session was stored in the `mongoStore`. When logging the serializer's execution to the console, it showed that the serializer was running:
 
-  ```
-  passport.serializeUser((user, done) => {
-    console.log("serializing");
-    console.log(user.id);
-    done(null, user.id);
-  });
-  ```
+    ```
+    passport.serializeUser((user, done) => {
+      console.log("serializing");
+      console.log(user.id);
+      done(null, user.id);
+    });
+    ```
 
-However, on subsequent API requests immediately following authentication that required credentials being sent from the client to the server, the deserializer would not run upon receipt to access the user's ID. Despite the user's session still being in the `mongoStore`, authentication would fail. When logging `req.session` and `req.user`, they would display in the console as undefined:
+   However, on subsequent API requests that required credentials being sent from the client to the server, upon receipt, the deserializer would not run to access the user's ID. Despite the user's session still being in the `mongoStore`, when logging `req.session` and 
+   `req.user`, they would display in the console as undefined:
 
-  ```
-  router.get("/login/success", (req, res) => {
-      console.log(req.session)
-      console.log(req.user)
-      if (req.user) {
-          res.status(200).json({
-              user: req.user,
-          });
-      } else {
-          res.status(403).send("Not authenticated");
-      }
-  });
-  ```
+    ```
+    router.get("/login/success", (req, res) => {
+        console.log(req.session)
+        console.log(req.user)
+        if (req.user) {
+            res.status(200).json({
+                user: req.user,
+            });
+        } else {
+            res.status(403).send("Not authenticated");
+        }
+    });
+    ```
 
-While comparing the cookies for the development and production clients after user login, I eventually concluded that once the server finished with authentication, the session cookie with the user's credentials was not being sent to the client or the session cookie was not being properly stored by the client. The client was not sending the appropriate credentials to the server for authentication because it didn't have them. 
+   While comparing the cookies for the development and production clients after user login, I eventually concluded that once the server finished with authentication, the session cookie with the user's credentials was not being sent to the client or the session cookie was not being properly stored by the client. The client was 
+   not sending the appropriate credentials to the server for authentication because it didn't have them. 
 
 3. Solution:
 
-During development, the client uses `http://localhost:3000` and the server uses `http://localhost:4000`. When first deployed to Netlify (client) and Heroku (server), they used similar domains to `https://client-name.netlify.app` and `https://client-name.herokuapp.com` with generic subdomains. An experienced web developer probably sees the issue now and possibly the solution. 
+   During development, the client uses `http://localhost:3000` and the server uses `http://localhost:4000`. When first deployed to Netlify (client) and Heroku (server), they used similar domains to `https://client-name.netlify.app` and `https://client-name.herokuapp.com` with generic subdomains. The cookies secure field was set 
+   as true for handling HTTPS, sameSite was set as none to accommodate the cross-domain request, and CORS was enabled. An experienced web developer probably sees the issue now. 
 
-The domains `.herokuapp.com` and `.netlify.app` are part of the [Public Suffix List](https://publicsuffix.org/). Most modern browsers block cookies being set for domains on the Public Suffix List to control the scope of where cookies can be set. This is done for heightened security, to avoid "supercookies" that could be set to a top-level domain like ".com", for example. 
+   The domains `.herokuapp.com` and `.netlify.app` are part of the [Public Suffix List](https://publicsuffix.org/), and the domain attribute defaults to the host of the current document URL, not including subdomains. Most modern browsers block cookies being set for domains on the Public Suffix List to control the scope of where 
+   cookies can be set. This is done for heightened security, to avoid "supercookies" that could be set to a top-level domain like ".com", for example. 
 
-The solution ended up being very simple, I found a cheap $2 domain to use and pointed Netlify and Heroku to the custom domain! This immediately resolved all issues with the persistence of express sessions.
+   The solution I decided on ended up being very simple, I found a cheap $2 domain to use and pointed Netlify and Heroku to the custom domain. This immediately resolved all issues with the persistence of express sessions.
 
 
 ## Developing and forking/cloning the project
