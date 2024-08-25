@@ -1,11 +1,12 @@
 ## Table of Contents
 
 1. [Quick overview](#quick-overview)
-2. [List of tech features](#list-of-tech-features)
-3. [OAuth and other architecture](#oauth-and-other-architecture)
-4. [A roadblock during development and its solution](#a-roadblock-during-development-and-its-solution)
-5. [Developing and forking/cloning the project](#developing-and-forkingcloning-the-project)
-6. [Production and deployment](#production-and-deployment)
+2. [YouTube demo](#youtube-demo)
+3. [List of tech features](#list-of-tech-features)
+4. [OAuth and other architecture](#oauth-and-other-architecture)
+5. [A roadblock during development and its solution](#a-roadblock-during-development-and-its-solution)
+6. [Developing and forking/cloning the project](#developing-and-forkingcloning-the-project)
+7. [Production and deployment](#production-and-deployment)
 
 ## Quick overview
 
@@ -13,9 +14,12 @@
 
 **Note: only pre-approved test users can log in using Google OAuth 2.0**
 
-This is a React application that is served by an Express/Node backend and Mongo database, also known as the MERN stack, for the purpose of note-keeping. Basic CRUD operations can be performed on a notes database using the UI and a rich HTML WYSIWYG text editor provided by TinyMCE. The application contains one of many possible solutions for creating a desktop/mobile responsive multi-row or grid carousel using the SwiperJS library, which carousel libraries like Swiper do not natively support. Users have the option of logging into an account either locally with a registered email/password combination or by using Google OAuth 2.0. 
+This is a React application that is served by an Express/Node backend and Mongo database, also known as the MERN stack, for the purpose of note-keeping. Basic create, read, update and delete (CRUD) operations can be performed on a notes database using the UI and a rich HTML WYSIWYG text editor provided by TinyMCE. The application contains one of many possible solutions for creating a desktop/mobile responsive multi-row or grid carousel using the SwiperJS library, which carousel libraries like Swiper do not natively support. Users have the option of logging into an account either locally with a registered email/password combination or by using Google OAuth 2.0. 
 
 I created this project to familiarize myself with Javascript and full-stack web development. Due to the purpose of the project being learning, AI and tutorials were not used to produce any code. An enormous amount was learned about JS, MERN, and full-stack web development through research, documents and iteration! 
+
+
+## YouTube demo
 
 Click the image below to be directed to YouTube to watch a quick, unedited, informal preview of the app and Swiper grid functionality without needing to log in or create notes:
 
