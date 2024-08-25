@@ -1,5 +1,13 @@
-## Quick overview
+## Table of Contents
 
+1. [Quick overview](#quick-overview)
+2. [List of tech features](#list-of-tech-features)
+3. [OAuth and other architecture](#oauth-and-other-architecture)
+4. [A roadblock during development and its solution](#a-roadblock-during-development-and-its-solution)
+5. [Developing and forking/cloning the project](#developing-and-forkingcloning-the-project)
+6. [Production and deployment](#production-and-deployment)
+
+## Quick overview
 
 [Deployed website](https://notekeeper.xyz/)
 
@@ -12,6 +20,7 @@ I created this project to familiarize myself with Javascript and full-stack web 
 Click the image below to be directed to YouTube to watch a quick, unedited, informal preview of the app and Swiper grid functionality without needing to log in or create notes:
 
 [![Screenshot 2024-08-20 111630](https://github.com/user-attachments/assets/81b26af6-25e4-43ab-bf0c-ce0bd96fa042)](http://www.youtube.com/watch?v=9KhtDzO0XJ4 "Preview")
+
 
 ## List of tech features
 
@@ -39,6 +48,7 @@ Reference: https://expressjs.com/en/resources/middleware/session.html
 
 * Nodemailer is used as a service for sending emails over SMTP.
 Reference: https://nodemailer.com/about/
+
 
 ## OAuth and other architecture
 
@@ -170,7 +180,7 @@ passport.serializeUser((user, done) => {
 });
 ```
 
-While they are logged in, the user's session containing their ObjectID can be deserialized (which occurs on each subsequent API request) to access their information in the Mongo database through `req.user`:
+While they are logged in, the user's session containing their ObjectID can be deserialized (which occurs on subsequent API requests) to then be able to access their information in the Mongo database through `req.user`:
 
 ```javascript
 passport.deserializeUser((id, done) => {
@@ -196,6 +206,56 @@ passport.deserializeUser((id, done) => {
         });
 });
 ```
+
+
+## A roadblock during development and its solution
+
+Many significant roadblocks were resolved over the course of the project, but I would like to document one of the more interesting ones here as a learning exercise. Deploying the application to Heroku and Netlify was more difficult than expected. Express sessions did not persist after login, and the bug only presented itself in production. Express sessions worked as expected in development.
+
+1. Expected result:
+
+When a user successfully logs in for the first time in the Google OAuth 2.0 process, their profile information is retrieved from Google and stored in a database with a unique ObjectID generated for identification. Their session is stored in a `mongoStore` database. The ObjectID is serialized and sent to the client in response to be stored as a session cookie. On subsequent API requests, those credentials are sent along with the clients request to then be deserialized. The deserialized ObjectID is used to authorize the user's request and retrieve any necessary information. When the user logs out or the browser is terminated, the session is cleared. This persistent, secure authentication process is an express session. 
+
+2. Actual result & investigation:
+
+When the production build was deployed to Heroku and Netlify, the express session process was suddenly failing, the session was lost at some point in the process and no clear error message was presented. 
+
+The user's exchanges with the Google API were successful, their profile information was being retrieved and stored in the database. An ObjectID was generated, and the express session was stored in the `mongoStore`. When logging the serializer's execution to the console, it showed that the serializer was running:
+
+  ```
+  passport.serializeUser((user, done) => {
+    console.log("serializing");
+    console.log(user.id);
+    done(null, user.id);
+  });
+  ```
+
+However, on subsequent API requests immediately following authentication that required credentials being sent from the client to the server, the deserializer would not run upon receipt to access the user's ID. Despite the user's session still being in the `mongoStore`, authentication would fail. When logging `req.session` and `req.user`, they would display in the console as undefined:
+
+  ```
+  router.get("/login/success", (req, res) => {
+      console.log(req.session)
+      console.log(req.user)
+      if (req.user) {
+          res.status(200).json({
+              user: req.user,
+          });
+      } else {
+          res.status(403).send("Not authenticated");
+      }
+  });
+  ```
+
+While comparing the cookies for the development and production clients after user login, I eventually concluded that once the server finished with authentication, the session cookie with the user's credentials was not being sent to the client or the session cookie was not being properly stored by the client. The client was not sending the appropriate credentials to the server for authentication because it didn't have them. 
+
+3. Solution:
+
+During development, the client uses `http://localhost:3000` and the server uses `http://localhost:4000`. When first deployed to Netlify (client) and Heroku (server), they used similar domains to `https://client-name.netlify.app` and `https://client-name.herokuapp.com` with generic subdomains. An experienced web developer probably sees the issue now and possibly the solution. 
+
+The domains `.herokuapp.com` and `.netlify.app` are part of the [Public Suffix List](https://publicsuffix.org/). Most modern browsers block cookies being set for domains on the Public Suffix List to control the scope of where cookies can be set. This is done for heightened security, to avoid "supercookies" that could be set to a top-level domain like ".com", for example. 
+
+The solution ended up being very simple, I found a cheap $2 domain to use and pointed Netlify and Heroku to the custom domain! This immediately resolved all issues with the persistence of express sessions.
+
 
 ## Developing and forking/cloning the project
 
@@ -298,12 +358,6 @@ Your development environment should now be set up and running. The client will b
 
 The client is deployed on Netlify at `https://notekeeper.xyz/` or `https://www.notekeeper.xyz/`, and the server is deployed on Heroku at `https://api.notekeeper.xyz/`. SSL certificates are handled by Heroku's Automated Certificate Management (ACM) service. The database is hosted on MongoDB Atlas in production and is managed in MongoDBCompass. The database uses a Docker image/volume in development for persistent isolated data. 
 
-## Significant roadblocks during development and their solutions
 
-Express session not persisting after successful login in production only
 
-Creating a responsive multi-row grid of cards (??)
 
-Issues with z-index and styling in the TinyMCE editor and using it in a modal
-
-Dockerizing the application (??)
