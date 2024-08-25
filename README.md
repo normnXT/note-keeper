@@ -58,7 +58,7 @@ Reference: https://nodemailer.com/about/
 
 ![image](https://github.com/user-attachments/assets/c4c56487-a7a4-4af8-840d-95061ac744c5)
 
-The web application uses a simple three tier client-server architecture. The user interacts with a React client. User actions will prompt the client to send requests to the Node.js server which often acts as an interface with the database. The client sends requests using functions like this one that is used to delete notes:
+The web application uses a simple three tier client-server architecture. The user interacts with a React client. User actions will prompt the client to send requests to the Node.js server which often acts as an interface with the database. The client handles user requests using functions like this one that is used to delete a selected note:
 
 ```javascript
 const onDelete = async (id) => {
@@ -80,7 +80,7 @@ const onDelete = async (id) => {
     };
 ```
 
-When the function is called, the server will recieve the request and route it using a router function:
+When the function is called, the server will recieve the request and it will handle it using a router function:
 
 ```javascript
 router.delete("/:id", async (req, res) => {
@@ -100,7 +100,7 @@ The ID parameter, passed by the client in the URL, is used by the server router 
 
 ![image](https://github.com/user-attachments/assets/f030c619-f9c8-4d43-a981-c2d795f11f67)
 
-The Google OAuth 2.0 authentication process is handled by the server with help from PassportJS. The PassportJS authentication strategy is specified in the server.js file:
+The Google OAuth 2.0 authentication process allows users to log in with their Google account through the Google API, and it is handled by the server with help from PassportJS. The PassportJS authentication strategy is specified in the server.js file:
 
 ```javascript
 passport.use(
@@ -230,7 +230,7 @@ Deploying the application to Heroku and Netlify was more difficult than expected
 
    The user's exchanges with the Google API were successful, their profile information was being retrieved and stored in the database. An ObjectID was generated, and the express session was stored in the `mongoStore`. When logging the serializer's execution to the console, it showed that the serializer was running:
 
-    ```
+    ```javascript
     passport.serializeUser((user, done) => {
       console.log("serializing");
       console.log(user.id);
@@ -241,7 +241,7 @@ Deploying the application to Heroku and Netlify was more difficult than expected
    However, on subsequent API requests that required credentials being sent from the client to the server, upon receipt, the deserializer would not run to access the user's ID. Despite the user's session still being in the `mongoStore`, when logging `req.session` and 
    `req.user`, they would display in the console as undefined:
 
-    ```
+    ```javascript
     router.get("/login/success", (req, res) => {
         console.log(req.session)
         console.log(req.user)
